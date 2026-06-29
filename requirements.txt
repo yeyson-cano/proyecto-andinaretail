@@ -1,0 +1,15 @@
+pandas
+numpy
+Faker
+PyYAML
+scipy
+matplotlib
+seaborn
+statsmodels
+scikit-learn
+xgboost
+shap
+PuLP
+simpy
+jupyter
+ipykernel
