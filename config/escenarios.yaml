@@ -1,0 +1,349 @@
+# ============================================================
+# config/escenarios.yaml — AndinaRetail S.A.C.
+# Parámetros de generación de datos sintéticos reproducibles.
+# Fuente canónica: docs/00_especificacion_datos_y_analitica.md, Sección 12.
+# ============================================================
+
+# ----------------------------------------------------------
+# 1. REPRODUCIBILIDAD
+# ----------------------------------------------------------
+semilla: 2026  # Semilla global: aplicar a numpy.random, random y Faker
+
+# ----------------------------------------------------------
+# 2. PERIODO
+# ----------------------------------------------------------
+periodo:
+  inicio: "2023-01-01"
+  fin:    "2025-12-31"
+
+# ----------------------------------------------------------
+# 3. DOMINIOS
+# Valores permitidos — sincronizados con el contrato de datos (§11).
+# Si se agregan o eliminan ítems aquí, debe actualizarse el contrato.
+# ----------------------------------------------------------
+ciudades:
+  - Lima
+  - Arequipa
+  - Trujillo
+  - Cusco
+  - Piura
+
+canales:
+  - Tienda
+  - Web
+  - App
+
+categorias:
+  - Abarrotes
+  - Bebidas
+  - Limpieza
+  - Cuidado Personal
+  - Electrohogar
+  - Hogar
+
+# ----------------------------------------------------------
+# 4. VOLÚMENES
+# ----------------------------------------------------------
+volumenes:
+  # Tiendas físicas (canal=Tienda). Los nodos WEB y APP son 2 filas adicionales
+  # en tiendas.csv, siempre presentes, y NO se cuentan aquí.
+  tiendas_fisicas: 15
+  tiendas_por_ciudad:  # Debe sumar tiendas_fisicas (15)
+    Lima:      5
+    Arequipa:  3
+    Trujillo:  3
+    Cusco:     2
+    Piura:     2
+
+  productos: 500        # SKUs totales en el catálogo
+  productos_por_categoria:  # Proporciones; deben sumar 1.0
+    Abarrotes:        0.25
+    Bebidas:          0.20
+    Limpieza:         0.15
+    Cuidado Personal: 0.15
+    Electrohogar:     0.15
+    Hogar:            0.10
+
+  clientes: 15000
+
+  compras_por_cliente_por_anio:
+    media: 5.0   # Tickets anuales por cliente activo
+    std:   3.5
+    min:   1
+
+  avg_lineas_por_ticket: 2.5   # Líneas de producto por compra
+  std_lineas_por_ticket: 1.5
+  # Estimado resultante: 15 000 × 5 × 3 años × 2.5 ≈ 281 000 líneas en ventas.csv
+
+# ----------------------------------------------------------
+# 5. DISTRIBUCIÓN DE VENTAS
+# ----------------------------------------------------------
+distribucion_ventas:
+  pesos_ciudad:  # Participación de cada ciudad en el volumen total de ventas. Suma = 1.0
+    Lima:      0.40
+    Arequipa:  0.20
+    Trujillo:  0.18
+    Cusco:     0.12
+    Piura:     0.10
+
+  pesos_categoria:  # Frecuencia relativa de venta por categoría. Suma = 1.0
+    Abarrotes:        0.28
+    Bebidas:          0.22
+    Limpieza:         0.14
+    Cuidado Personal: 0.14
+    Electrohogar:     0.12
+    Hogar:            0.10
+
+# ----------------------------------------------------------
+# 6. PRECIOS Y MÁRGENES
+# ----------------------------------------------------------
+precios:
+  # Margen bruto base para toda la empresa antes del escenario Trujillo.
+  # Determina: costo_unitario = precio_lista × (1 − margen_bruto_base_pct)
+  margen_bruto_base_pct: 0.28
+
+  # Rangos de precio_lista en PEN por categoría (distribución uniforme dentro del rango).
+  precio_lista_por_categoria:
+    Abarrotes:
+      min:    2.0
+      max:   80.0
+    Bebidas:
+      min:    3.0
+      max:   60.0
+    Limpieza:
+      min:    5.0
+      max:  120.0
+    Cuidado Personal:
+      min:    8.0
+      max:  200.0
+    Electrohogar:
+      min:   50.0
+      max: 2500.0
+    Hogar:
+      min:   10.0
+      max:  500.0
+
+# ----------------------------------------------------------
+# 7. DESCUENTOS
+# ----------------------------------------------------------
+descuentos:
+  media_pct:              0.08   # Descuento promedio en condiciones normales
+  std_pct:                0.06   # Desviación estándar del descuento
+  maximo_pct:             0.35   # Techo absoluto (sincronizado con contrato §11.3)
+  proporcion_sin_descuento: 0.40 # Fracción de líneas donde descuento_pct = 0
+
+# ----------------------------------------------------------
+# 8. ESTACIONALIDAD
+# ----------------------------------------------------------
+estacionalidad:
+  # Multiplicadores mensuales sobre el volumen base mensual.
+  # Suma ≈ 12.0 para preservar el volumen anual esperado.
+  multiplicadores_mensuales:
+    1:  0.85   # Enero
+    2:  0.80   # Febrero — mes más bajo
+    3:  0.90   # Marzo
+    4:  0.90   # Abril
+    5:  0.95   # Mayo
+    6:  0.95   # Junio
+    7:  1.20   # Julio — pico Fiestas Patrias / campaña escolar
+    8:  0.90   # Agosto
+    9:  0.90   # Septiembre
+    10: 0.95   # Octubre
+    11: 1.00   # Noviembre
+    12: 1.40   # Diciembre — pico navideño y fin de año
+
+  # Crecimiento interanual del volumen total de ventas.
+  crecimiento_anual_pct: 0.07  # 7 % de incremento de 2023 a 2024 y de 2024 a 2025
+
+  # Rangos de aceptación para el validador del dataset.
+  rangos_aceptacion:
+    julio:
+      min_pct_sobre_base: 15
+      max_pct_sobre_base: 25
+    diciembre:
+      min_pct_sobre_base: 30
+      max_pct_sobre_base: 45
+
+# ----------------------------------------------------------
+# 9. CANAL DIGITAL
+# ----------------------------------------------------------
+canal_digital:
+  participacion_inicial: 0.20   # Participación de (Web + App) el 2023-01-01
+  participacion_final:   0.38   # Participación de (Web + App) el 2025-12-31
+  curva: "lineal"               # Forma de crecimiento: "lineal" | "exponencial"
+
+  # Distribución interna Web/App dentro del canal digital.
+  # App gana participación frente a Web a lo largo del periodo.
+  split_web_app_inicial: 0.60   # Fracción Web al inicio (App = 0.40)
+  split_web_app_final:   0.45   # Fracción Web al final  (App = 0.55)
+
+  rango_aceptacion:
+    participacion_minima_2023: 0.18
+    participacion_maxima_2023: 0.23
+    participacion_minima_2025: 0.35
+    participacion_maxima_2025: 0.42
+
+# ----------------------------------------------------------
+# 10. ESCENARIO DIAGNÓSTICO — TRUJILLO
+# ----------------------------------------------------------
+trujillo:
+  inicio_problema: "2025-04-01"  # Inicio del Q2 2025
+
+  # Canales afectados por el deterioro.
+  canales_afectados:
+    - Tienda
+    - Web
+    - App
+
+  # ── Parámetros CAUSALES (inputs del generador) ──
+  # El resultado esperado (caída de margen 6–9 pp) NO va aquí;
+  # se verifica en la sección de validación.
+
+  # Incremento de descuento promedio en Trujillo respecto al resto del país.
+  aumento_descuento_pp: 6
+
+  # Incremento porcentual del costo de almacenamiento en Trujillo.
+  aumento_costo_almacenamiento_pct: 30
+
+  # Porcentaje de ventas de Trujillo que se desplaza hacia categorías
+  # de menor margen (Abarrotes y Bebidas) desde inicio_problema.
+  desplazamiento_mix_menor_margen_pct: 15
+
+# ----------------------------------------------------------
+# 11. RELACIÓN DESCUENTO–DEMANDA
+# ----------------------------------------------------------
+relacion_descuento_demanda:
+  # Por cada +10 pp de descuento_pct, la cantidad vendida aumenta en el rango definido.
+  aumento_descuento_pp_referencia: 10
+  aumento_demanda_pct_esperado:
+    min: 8
+    max: 12
+
+  # Ruido sobre el efecto de elasticidad (desviación estándar normalizada).
+  elasticidad_ruido_std_pct: 0.05
+
+# ----------------------------------------------------------
+# 12. INVENTARIO
+# ----------------------------------------------------------
+inventario:
+  # Tasa de holding mensual usada para calcular inventario.costo_almacenamiento.
+  # Fórmula: costo_almacenamiento = stock_promedio × tasa × costo_unitario
+  tasa_holding_mensual_pct: 0.02
+
+  # Cobertura objetivo: stock_objetivo = demanda_mensual_esperada × cobertura_stock_meses
+  cobertura_stock_meses: 2.0
+  std_cobertura:          0.5   # Variación aleatoria alrededor del objetivo
+
+  reabastecimiento_frecuencia: "mensual"
+
+# ----------------------------------------------------------
+# 13. CLIENTES
+# ----------------------------------------------------------
+clientes:
+  edad_min: 18
+  edad_max: 80
+
+  distribucion_genero:  # Suma = 1.0
+    M:               0.48
+    F:               0.48
+    No especificado: 0.04
+
+  # Ciudad de residencia del cliente (ancla geográfica para ventas digitales).
+  distribucion_ciudad:  # Suma = 1.0
+    Lima:      0.45
+    Arequipa:  0.18
+    Trujillo:  0.16
+    Cusco:     0.11
+    Piura:     0.10
+
+  # Los clientes pueden haberse registrado antes del inicio del periodo de ventas.
+  fecha_registro_min: "2020-01-01"
+
+# ----------------------------------------------------------
+# 14. CHURN
+# ----------------------------------------------------------
+churn:
+  fecha_evaluacion:         "2025-12-31"
+  ventana_inactividad_dias: 90  # Cliente inactivo = sin compras en los últimos N días
+
+  proporcion_objetivo:
+    min: 0.25
+    max: 0.35
+
+  # Pesos para construir el score de riesgo de churn a partir de métricas RFM.
+  # Deben sumar 1.0.
+  pesos_rfm:
+    recencia:   0.50  # Tiempo desde la última compra — predictor más fuerte
+    frecuencia: 0.30  # Número de compras en el periodo histórico
+    valor:      0.20  # Gasto total acumulado
+
+# ----------------------------------------------------------
+# 15. CALIDAD DE DATOS
+# ----------------------------------------------------------
+calidad_datos:
+  faltantes:
+    proporcion_objetivo: 0.020   # 2 % de valores faltantes sobre campos elegibles
+    rango_aceptacion:
+      min: 0.010
+      max: 0.030
+
+    # Campos donde se permite introducir nulos (ver contrato §11.3).
+    # Separados por tabla para evitar ambigüedad.
+    campos_permitidos:
+      clientes:
+        - edad
+        - distrito
+        - canal_preferido
+      productos:
+        - subcategoria
+        - marca
+      ventas: []           # Ningún campo de ventas.csv admite nulos (contrato §11.6)
+      inventario: []
+
+  outliers:
+    proporcion_objetivo: 0.005
+    rango_aceptacion:
+      min: 0.003
+      max: 0.008
+    campos_afectados:
+      - cantidad     # tabla ventas
+      - monto_total  # tabla ventas
+    magnitud_maxima_sigma: 4.0  # Outliers de hasta 4σ sobre la media del campo
+
+# ----------------------------------------------------------
+# 16. VALIDACIÓN — CRITERIOS DE ACEPTACIÓN
+# ----------------------------------------------------------
+# Esta sección contiene RESULTADOS ESPERADOS, no parámetros de entrada.
+# El script de validación lee estos rangos y verifica el dataset generado.
+validacion:
+  pico_julio:
+    descripcion: "Ventas de julio respecto al promedio de meses base"
+    rango_pct: [15, 25]
+
+  pico_diciembre:
+    descripcion: "Ventas de diciembre respecto al promedio de meses base"
+    rango_pct: [30, 45]
+
+  digital_2023:
+    descripcion: "Participación digital (Web + App) sobre ventas totales en 2023"
+    rango_pct: [18, 23]
+
+  digital_2025:
+    descripcion: "Participación digital (Web + App) sobre ventas totales en 2025"
+    rango_pct: [35, 42]
+
+  caida_margen_trujillo:
+    descripcion: "Caída de margen bruto en Trujillo: Q2-2025 vs Q1-2025 (en puntos porcentuales)"
+    rango_pp: [6, 9]
+
+  tasa_churn:
+    descripcion: "Proporción de clientes sin compras en los últimos 90 días al 2025-12-31"
+    rango_pct: [25, 35]
+
+  faltantes:
+    descripcion: "Proporción de nulos sobre el total de celdas en campos elegibles"
+    rango_pct: [1.0, 3.0]
+
+  outliers:
+    descripcion: "Proporción de líneas con cantidad o monto_total > 4σ"
+    rango_pct: [0.3, 0.8]

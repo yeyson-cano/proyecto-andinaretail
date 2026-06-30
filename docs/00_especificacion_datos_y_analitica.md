@@ -400,3 +400,187 @@ Los siguientes elementos quedan fuera del alcance de esta tarea y se abordarán 
 - Función objetivo y restricciones del modelo prescriptivo.
 - Criterios automáticos de aceptación del dataset (script de validación).
 - Archivos de salida de cada fase.
+
+## 12. Parámetros de generación y escenarios controlados
+
+Esta sección traduce la narrativa del caso AndinaRetail a parámetros numéricos concretos que el script generador de datos sintéticos consumirá. El archivo de referencia es `config/escenarios.yaml`; los valores aquí documentados y los valores en ese archivo deben mantenerse sincronizados.
+
+Cada parámetro se describe con su nombre de clave YAML, tipo de dato, unidad, rango permitido, valor por defecto y justificación.
+
+### 12.1 Reproducibilidad
+
+El mismo código, semilla y archivo de configuración deben producir exactamente los mismos CSV en cualquier máquina. Las semillas se aplican a `numpy.random`, `random` de la biblioteca estándar y `Faker`.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `semilla` | int | — | [0, 2³²−1] | 2026 | Semilla global para todos los generadores de aleatoriedad |
+
+### 12.2 Periodo
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `periodo.inicio` | date | AAAA-MM-DD | ≤ `periodo.fin` | 2023-01-01 | Primera fecha posible de registro de venta |
+| `periodo.fin` | date | AAAA-MM-DD | ≥ `periodo.inicio` | 2025-12-31 | Última fecha posible de registro de venta |
+
+### 12.3 Dominios
+
+Los listados `ciudades`, `canales` y `categorias` son las enumeraciones autorizadas. Cualquier modificación debe reflejarse también en el contrato de datos (§11). No son parámetros de ajuste numérico sino referencias de valores permitidos para el generador.
+
+### 12.4 Volúmenes y distribuciones
+
+El volumen total de líneas en `ventas.csv` se deriva de los parámetros de clientes y frecuencia de compra, en lugar de especificarse como un número fijo. Esto permite ajustar el dataset sin romper la coherencia interna.
+
+Estimado resultante: `15 000 clientes × 5 compras/año × 3 años × 2,5 líneas/ticket ≈ 281 000 líneas`.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `volumenes.tiendas_fisicas` | int | tiendas | [5, 50] | 15 | Total de tiendas físicas (canal=Tienda). Los nodos WEB y APP son siempre 2 filas adicionales en `tiendas.csv` y no se cuentan aquí |
+| `volumenes.tiendas_por_ciudad.*` | int | tiendas | ≥ 1 | Lima:5, Arequipa:3, Trujillo:3, Cusco:2, Piura:2 | Distribución de las 15 tiendas físicas por ciudad; debe sumar `tiendas_fisicas` |
+| `volumenes.productos` | int | SKUs | [100, 2000] | 500 | Total de productos en el catálogo |
+| `volumenes.productos_por_categoria.*` | float | proporción | (0, 1) por valor; suma = 1.0 | ver YAML | Fracción del catálogo asignada a cada categoría |
+| `volumenes.clientes` | int | clientes | [1000, 100 000] | 15 000 | Total de clientes registrados |
+| `volumenes.compras_por_cliente_por_anio.media` | float | tickets/año | [1, 52] | 5.0 | Promedio de compras anuales por cliente activo |
+| `volumenes.compras_por_cliente_por_anio.std` | float | tickets/año | [0, media] | 3.5 | Desviación estándar de la frecuencia de compra |
+| `volumenes.compras_por_cliente_por_anio.min` | int | tickets/año | ≥ 1 | 1 | Mínimo garantizado de compras por cliente en todo el periodo |
+| `volumenes.avg_lineas_por_ticket` | float | líneas/ticket | [1.0, 10.0] | 2.5 | Media de líneas de producto por compra |
+| `volumenes.std_lineas_por_ticket` | float | líneas/ticket | [0, avg] | 1.5 | Desviación estándar de líneas por compra |
+
+#### Distribución de ventas
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `distribucion_ventas.pesos_ciudad.*` | float | proporción | (0, 1); suma = 1.0 | Lima:0.40, Arequipa:0.20, Trujillo:0.18, Cusco:0.12, Piura:0.10 | Participación de cada ciudad en el volumen total de ventas. Lima domina por tamaño de mercado |
+| `distribucion_ventas.pesos_categoria.*` | float | proporción | (0, 1); suma = 1.0 | Abarrotes:0.28, Bebidas:0.22, ... | Frecuencia relativa de venta por categoría. Abarrotes y Bebidas lideran por alta rotación |
+
+### 12.5 Precios y márgenes base
+
+El `margen_bruto_base_pct` es el parámetro más crítico del generador: determina `costo_unitario` para todos los productos y es la línea de base desde la cual se mide el deterioro de Trujillo.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `precios.margen_bruto_base_pct` | float | proporción | (0, 1) | 0.28 | Margen bruto normal de la empresa. `costo_unitario = precio_lista × (1 − 0.28)` |
+| `precios.precio_lista_por_categoria.*.min` | float | PEN | > 0 | ver YAML | Precio mínimo de catálogo por categoría |
+| `precios.precio_lista_por_categoria.*.max` | float | PEN | > min | ver YAML | Precio máximo de catálogo por categoría. Electrohogar tiene el rango más amplio (50–2 500 PEN) |
+
+### 12.6 Descuentos
+
+El descuento no es uniforme: el 40 % de las líneas no lleva descuento (compras al precio de lista), y el resto sigue una distribución normal truncada en [0, 0.35].
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `descuentos.media_pct` | float | proporción | [0, maximo_pct] | 0.08 | Descuento promedio sobre líneas con descuento > 0 |
+| `descuentos.std_pct` | float | proporción | [0, media_pct] | 0.06 | Desviación estándar del descuento |
+| `descuentos.maximo_pct` | float | proporción | (0, 1) | 0.35 | Techo absoluto — sincronizado con el contrato §11.3 |
+| `descuentos.proporcion_sin_descuento` | float | proporción | [0, 1] | 0.40 | Fracción de líneas de venta donde `descuento_pct = 0` |
+
+### 12.7 Estacionalidad
+
+Los multiplicadores mensuales escalan el volumen base del mes. Un multiplicador de 1.20 en julio significa que julio genera un 20 % más de ventas que un mes con multiplicador 1.0. La suma de los 12 multiplicadores es aproximadamente 12.0, preservando así el volumen anual esperado.
+
+El crecimiento interanual se aplica sobre el volumen base antes de la estacionalidad: el año 2024 genera un 7 % más de ventas que 2023, y 2025 un 7 % más que 2024.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `estacionalidad.multiplicadores_mensuales.*` | float | — | [0.5, 3.0] | ver YAML | Factor mensual de demanda. Suma ≈ 12.0 |
+| `estacionalidad.crecimiento_anual_pct` | float | proporción | [0, 0.30] | 0.07 | Crecimiento interanual de demanda (7 %) |
+| `estacionalidad.rangos_aceptacion.julio` | {min, max} | puntos % | — | [15, 25] | Rango de aceptación del pico de julio para el validador |
+| `estacionalidad.rangos_aceptacion.diciembre` | {min, max} | puntos % | — | [30, 45] | Rango de aceptación del pico de diciembre para el validador |
+
+### 12.8 Crecimiento del canal digital
+
+La participación del canal digital (Web + App) sobre el total de ventas crece de forma gradual desde el 20 % en enero de 2023 hasta el 38 % en diciembre de 2025. Dentro de ese bloque digital, la App gana terreno frente a la Web a lo largo del periodo.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `canal_digital.participacion_inicial` | float | proporción | (0, 1) | 0.20 | Participación digital al inicio del periodo |
+| `canal_digital.participacion_final` | float | proporción | (participacion_inicial, 1) | 0.38 | Participación digital al cierre del periodo |
+| `canal_digital.curva` | string | — | `"lineal"` \| `"exponencial"` | `"lineal"` | Forma del crecimiento a lo largo del tiempo |
+| `canal_digital.split_web_app_inicial` | float | proporción de digital | (0, 1) | 0.60 | Fracción Web dentro del total digital al inicio. App = 1 − valor |
+| `canal_digital.split_web_app_final` | float | proporción de digital | (0, 1) | 0.45 | Fracción Web al cierre. La App pasa de 40 % a 55 % |
+
+### 12.9 Escenario diagnóstico de Trujillo
+
+A partir del 1 de abril de 2025 (inicio del Q2 2025), las ventas de Trujillo experimentan un deterioro artificial de margen generado por tres mecanismos causales simultáneos. El resultado esperado (caída de 6 a 9 puntos porcentuales en el margen bruto) es una consecuencia de estos parámetros y se verifica en el bloque de validación (§12.15), no aquí.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `trujillo.inicio_problema` | date | AAAA-MM-DD | dentro del periodo | 2025-04-01 | Fecha de inicio del deterioro |
+| `trujillo.canales_afectados` | list[string] | — | subconjunto de `canales` | [Tienda, Web, App] | Canales afectados. Si el problema es solo físico, cambiar a [Tienda] |
+| `trujillo.aumento_descuento_pp` | int | puntos porcentuales | [1, 20] | 6 | Incremento de `descuento_pct` promedio en Trujillo respecto al resto del país |
+| `trujillo.aumento_costo_almacenamiento_pct` | int | % | [5, 100] | 30 | Incremento porcentual de `tasa_holding_mensual_pct` para inventario en Trujillo |
+| `trujillo.desplazamiento_mix_menor_margen_pct` | int | % de ventas | [5, 50] | 15 | Porcentaje de ventas de Trujillo que se redirige hacia Abarrotes y Bebidas (categorías de menor margen) |
+
+### 12.10 Relación descuento–demanda
+
+El generador aplica una elasticidad precio-demanda simplificada: cuando el descuento sube, la cantidad vendida aumenta. El efecto no es determinístico; se añade ruido gaussiano para que la relación sea estadísticamente detectable pero no perfecta, lo que justifica el análisis en la Parte 1.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `relacion_descuento_demanda.aumento_descuento_pp_referencia` | int | puntos porcentuales | [1, 35] | 10 | Magnitud de referencia del descuento para la elasticidad |
+| `relacion_descuento_demanda.aumento_demanda_pct_esperado.min` | int | % | ≥ 0 | 8 | Incremento mínimo esperado de cantidad por el aumento de referencia |
+| `relacion_descuento_demanda.aumento_demanda_pct_esperado.max` | int | % | ≥ min | 12 | Incremento máximo esperado de cantidad por el aumento de referencia |
+| `relacion_descuento_demanda.elasticidad_ruido_std_pct` | float | proporción | [0, 0.30] | 0.05 | Desviación estándar del ruido sobre el efecto de elasticidad |
+
+### 12.11 Inventario
+
+El `inventario.csv` registra snapshots mensuales por (producto, tienda). La cobertura objetivo define cuántos meses de demanda esperada se mantienen como stock. El costo de almacenamiento se calcula con la fórmula: `stock_promedio × tasa_holding_mensual_pct × costo_unitario`.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `inventario.tasa_holding_mensual_pct` | float | proporción/mes | (0, 0.10] | 0.02 | Fracción del costo unitario que representa el costo de almacenamiento mensual por unidad |
+| `inventario.cobertura_stock_meses` | float | meses | [0.5, 6.0] | 2.0 | Meses de demanda proyectada que el stock inicial de cada mes debe cubrir |
+| `inventario.std_cobertura` | float | meses | [0, cobertura] | 0.5 | Variación aleatoria alrededor del objetivo de cobertura |
+| `inventario.reabastecimiento_frecuencia` | string | — | `"mensual"` | `"mensual"` | Frecuencia de reposición de stock |
+
+### 12.12 Clientes
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `clientes.edad_min` | int | años | [18, edad_max) | 18 | Edad mínima del cliente al registrarse |
+| `clientes.edad_max` | int | años | (edad_min, 100] | 80 | Edad máxima del cliente al registrarse |
+| `clientes.distribucion_genero.*` | float | proporción | (0, 1); suma = 1.0 | M:0.48, F:0.48, No especificado:0.04 | Distribución del campo `genero` |
+| `clientes.distribucion_ciudad.*` | float | proporción | (0, 1); suma = 1.0 | Lima:0.45, Arequipa:0.18, Trujillo:0.16, Cusco:0.11, Piura:0.10 | Ciudad de residencia del cliente. Ancla geográfica para ventas digitales |
+| `clientes.fecha_registro_min` | date | AAAA-MM-DD | ≤ `periodo.inicio` | 2020-01-01 | Los clientes pueden haberse registrado hasta 3 años antes del inicio del periodo de ventas |
+
+### 12.13 Churn
+
+Un cliente se considera **inactivo** si no realizó ninguna compra en los últimos 90 días previos a `fecha_evaluacion`. La tasa objetivo de churn (25 %–35 %) se logra sesgando la distribución de frecuencias de compra para que una fracción significativa de clientes caiga naturalmente por debajo del umbral. Los pesos RFM guían la probabilidad de inactividad de cada cliente durante la generación.
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `churn.fecha_evaluacion` | date | AAAA-MM-DD | dentro del periodo | 2025-12-31 | Fecha de corte para clasificar clientes como activos o inactivos |
+| `churn.ventana_inactividad_dias` | int | días | [30, 365] | 90 | Días sin compra que determinan la inactividad |
+| `churn.proporcion_objetivo.min` | float | proporción | [0, max] | 0.25 | Límite inferior de la tasa de churn aceptable |
+| `churn.proporcion_objetivo.max` | float | proporción | [min, 1] | 0.35 | Límite superior de la tasa de churn aceptable |
+| `churn.pesos_rfm.recencia` | float | — | (0, 1); suma con los otros = 1.0 | 0.50 | Peso de la recencia en el score de riesgo de churn |
+| `churn.pesos_rfm.frecuencia` | float | — | (0, 1) | 0.30 | Peso de la frecuencia de compra |
+| `churn.pesos_rfm.valor` | float | — | (0, 1) | 0.20 | Peso del gasto histórico acumulado |
+
+### 12.14 Calidad de datos
+
+Los faltantes y los outliers se introducen de forma controlada para que el dataset refleje la calidad real de datos de producción sin comprometer la integridad analítica. El 2 % de faltantes aplica únicamente sobre los campos permitidos (ningún campo de `ventas.csv` admite nulos).
+
+| Parámetro | Tipo | Unidad | Rango permitido | Valor por defecto | Descripción |
+|---|---|---|---|---|---|
+| `calidad_datos.faltantes.proporcion_objetivo` | float | proporción | [0.005, 0.10] | 0.020 | Proporción de valores nulos sobre el total de celdas en campos elegibles |
+| `calidad_datos.faltantes.rango_aceptacion.min` | float | proporción | ≥ 0 | 0.010 | Límite inferior del validador |
+| `calidad_datos.faltantes.rango_aceptacion.max` | float | proporción | ≤ 0.10 | 0.030 | Límite superior del validador |
+| `calidad_datos.faltantes.campos_permitidos.clientes` | list[string] | — | campos nulables de clientes | [edad, distrito, canal_preferido] | Campos de `clientes.csv` donde se permiten nulos |
+| `calidad_datos.faltantes.campos_permitidos.productos` | list[string] | — | campos nulables de productos | [subcategoria, marca] | Campos de `productos.csv` donde se permiten nulos |
+| `calidad_datos.outliers.proporcion_objetivo` | float | proporción | [0.001, 0.02] | 0.005 | Proporción de líneas con valores extremos en `cantidad` o `monto_total` |
+| `calidad_datos.outliers.magnitud_maxima_sigma` | float | σ | [2.0, 6.0] | 4.0 | Magnitud máxima de los outliers expresada en desviaciones estándar |
+
+### 12.15 Criterios de aceptación del dataset
+
+El script de validación usa este bloque para verificar automáticamente que el dataset generado cumple los patrones de negocio esperados. Estos son **resultados**, no entradas: si un criterio falla, debe ajustarse el parámetro causal correspondiente, no el rango de aceptación.
+
+| Criterio | Parámetro causal asociado | Rango objetivo |
+|---|---|---|
+| Pico de julio (% sobre base) | `estacionalidad.multiplicadores_mensuales.7` | 15 % – 25 % |
+| Pico de diciembre (% sobre base) | `estacionalidad.multiplicadores_mensuales.12` | 30 % – 45 % |
+| Participación digital en 2023 | `canal_digital.participacion_inicial` | 18 % – 23 % |
+| Participación digital en 2025 | `canal_digital.participacion_final` | 35 % – 42 % |
+| Caída de margen en Trujillo (pp) | `trujillo.*` | 6 pp – 9 pp |
+| Tasa de churn | `churn.*` | 25 % – 35 % |
+| Proporción de faltantes | `calidad_datos.faltantes.*` | 1.0 % – 3.0 % |
+| Proporción de outliers | `calidad_datos.outliers.*` | 0.3 % – 0.8 % |
