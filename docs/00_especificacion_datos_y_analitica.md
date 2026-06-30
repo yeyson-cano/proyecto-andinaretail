@@ -221,3 +221,182 @@ Los siguientes elementos no se fijan en esta sección y serán desarrollados en 
 - Función objetivo y restricciones del modelo prescriptivo.
 - Criterios automáticos de aceptación del dataset.
 - Archivos de salida de cada fase.
+
+## 11. Contrato de datos
+
+### 11.1 Principios generales
+
+- Los datos serán 100 % sintéticos y reproducibles (semilla fija en `config/`).
+- Las tablas mínimas son: `tiendas`, `productos`, `clientes`, `ventas` e `inventario`.
+- Cada fila de `ventas` representa **una línea de producto dentro de una compra**. Un ticket (compra completa) se identifica por `id_venta`; varias filas pueden compartir el mismo `id_venta`.
+- Las fórmulas oficiales definidas en la sección 11.5 se aplican de forma idéntica en todas las partes del proyecto.
+- La caída artificial de margen en Trujillo desde el Q2 2025 se produce mediante parámetros de generación en `config/`, no mediante excepciones al esquema de datos.
+
+### 11.2 Tablas oficiales
+
+| Tabla | Archivo | Granularidad | Descripción |
+|---|---|---|---|
+| tiendas | tiendas.csv | 1 fila por tienda física o nodo virtual nacional | Catálogo de puntos de venta (físicos y digitales) |
+| productos | productos.csv | 1 fila por producto (SKU) | Catálogo de productos con precios y costos |
+| clientes | clientes.csv | 1 fila por cliente registrado | Datos demográficos y de registro |
+| ventas | ventas.csv | 1 fila por línea de producto dentro de una venta | Tabla de hechos principal del proyecto |
+| inventario | inventario.csv | 1 snapshot mensual por combinación (producto, tienda) | Estado mensual de stock y costos de almacenamiento |
+
+### 11.3 Diccionario preliminar de campos
+
+#### tiendas.csv — PK: `id_tienda`
+
+| Campo | Tipo | Nulable | Dominio / regla | Descripción |
+|---|---|---|---|---|
+| id_tienda | string | No | Único, ej. `T001`, `WEB`, `APP` | Identificador del nodo de venta |
+| nombre | string | No | Ficticio | Nombre de la tienda o nodo |
+| canal | string | No | `Tienda` \| `Web` \| `App` | Canal de venta; determina el valor de `ventas.canal` |
+| ciudad | string | Sí | Lima, Arequipa, Trujillo, Cusco, Piura, `NULL` | `NULL` para los nodos Web y App (alcance nacional) |
+| region | string | Sí | `Costa` \| `Sierra` | `NULL` para nodos digitales. Lima / Trujillo / Piura → Costa; Arequipa / Cusco → Sierra |
+| area_m2 | numeric | Sí | > 0 | Superficie de la tienda; solo aplica cuando `canal = Tienda` |
+| fecha_apertura | date | No | 2020-01-01 a 2022-12-31 | Fecha de apertura o activación del nodo |
+
+> Los canales digitales se representan con **exactamente 1 fila Web y 1 fila App** en esta tabla (nodos nacionales). Para ventas digitales, la ciudad de referencia es `clientes.ciudad`, no `tiendas.ciudad`.
+
+#### productos.csv — PK: `id_producto`
+
+| Campo | Tipo | Nulable | Dominio / regla | Descripción |
+|---|---|---|---|---|
+| id_producto | string | No | Único, ej. `P0001` | Identificador del producto |
+| nombre | string | No | Ficticio | Nombre del producto |
+| categoria | string | No | Abarrotes \| Bebidas \| Limpieza \| Cuidado Personal \| Electrohogar \| Hogar | Categoría principal |
+| subcategoria | string | Sí | Lista controlada por categoría (definir en F0-04) | Subcategoría del producto |
+| marca | string | Sí | Ficticia | Marca del producto |
+| precio_lista | numeric | No | > 0, en PEN | Precio base sin descuento |
+| costo_unitario | numeric | No | > 0 y < `precio_lista` | Costo de adquisición por unidad. El alza artificial en Trujillo va en `config/`, no aquí |
+| fecha_alta | date | No | 2022-01-01 a 2023-01-01 | Fecha desde la cual el producto está disponible para la venta |
+
+#### clientes.csv — PK: `id_cliente`
+
+| Campo | Tipo | Nulable | Dominio / regla | Descripción |
+|---|---|---|---|---|
+| id_cliente | string | No | Único, ej. `C00001` | Identificador del cliente |
+| nombre | string | No | Ficticio (Faker) | Nombre completo generado sintéticamente |
+| edad | integer | Sí | 18 a 80 | Edad en años al momento del registro |
+| genero | string | Sí | `M` \| `F` \| `No especificado` | Género sintético |
+| ciudad | string | No | Lima, Arequipa, Trujillo, Cusco, Piura | Ciudad del cliente — ancla geográfica para ventas digitales |
+| distrito | string | Sí | Ficticio | Distrito dentro de la ciudad |
+| fecha_registro | date | No | 2020-01-01 a 2025-12-31 | Fecha de registro del cliente (puede ser anterior al periodo de ventas) |
+| canal_preferido | string | Sí | `Tienda` \| `Web` \| `App` | Canal de compra más frecuente declarado al registro |
+
+> No existe campo `segmento` en esta tabla. La segmentación RFM es un **output analítico** de la Parte 2, derivado de `ventas`. Incluirlo como campo de entrada haría trivial el ejercicio de segmentación.
+
+#### ventas.csv — PK: `id_linea`
+
+| Campo | Tipo | Nulable | Dominio / regla | Descripción |
+|---|---|---|---|---|
+| id_linea | string | No | Único, ej. `L0000001` | PK de la línea de venta |
+| id_venta | string | No | Puede repetirse; agrupa líneas del mismo ticket | Identificador del ticket o compra |
+| fecha | date | No | 2023-01-01 a 2025-12-31 | Fecha de la transacción |
+| id_cliente | string | No | FK → `clientes.id_cliente` | Cliente que realizó la compra |
+| id_tienda | string | No | FK → `tiendas.id_tienda` | Nodo de venta (tienda física o virtual) |
+| id_producto | string | No | FK → `productos.id_producto` | Producto vendido en esta línea |
+| cantidad | integer | No | ≥ 1 | Unidades vendidas en esta línea |
+| precio_unitario | numeric | No | > 0, en PEN | Precio aplicado en la transacción (puede diferir de `precio_lista` por campaña) |
+| descuento_pct | numeric | No | 0.00 a 0.35 | Porcentaje de descuento aplicado (0 = sin descuento) |
+| monto_total | numeric | No | > 0, en PEN | Campo derivado almacenado; ver fórmula oficial en sección 11.5 |
+| canal | string | No | `Tienda` \| `Web` \| `App` | Denormalización de `tiendas.canal`; debe ser idéntico para cada `id_tienda` |
+| metodo_pago | string | No | `Efectivo` \| `Tarjeta débito` \| `Tarjeta crédito` \| `Billetera digital` \| `Transferencia` | Medio de pago utilizado |
+
+#### inventario.csv — PK compuesta: (`id_producto`, `id_tienda`, `periodo`)
+
+| Campo | Tipo | Nulable | Dominio / regla | Descripción |
+|---|---|---|---|---|
+| id_producto | string | No | FK → `productos.id_producto` | Producto del snapshot |
+| id_tienda | string | No | FK → `tiendas.id_tienda` | Tienda del snapshot |
+| periodo | string | No | Formato `AAAA-MM` | Mes al que corresponde el snapshot |
+| stock_inicial | integer | No | ≥ 0 | Unidades disponibles al inicio del mes |
+| unidades_vendidas | integer | No | ≥ 0 | Unidades salidas por ventas durante el mes |
+| reabastecimiento | integer | No | ≥ 0 | Unidades ingresadas por reposición durante el mes |
+| stock_final | integer | No | ≥ 0 | Derivado: `stock_inicial + reabastecimiento − unidades_vendidas` |
+| costo_almacenamiento | numeric | No | ≥ 0, en PEN | Costo total mensual de almacenamiento de este producto en esta tienda. Cálculo: `stock_promedio × tasa_holding_mensual × costo_unitario`; la tasa es un parámetro de `config/` |
+
+### 11.4 Relaciones entre tablas
+
+```
+ventas.id_cliente    → clientes.id_cliente
+ventas.id_tienda     → tiendas.id_tienda
+ventas.id_producto   → productos.id_producto
+inventario.id_tienda → tiendas.id_tienda
+inventario.id_producto → productos.id_producto
+```
+
+**Regla para geografía digital:** cuando `ventas.canal IN ('Web', 'App')`, la ciudad de la venta se obtiene mediante `ventas → clientes → clientes.ciudad`. No se usa `tiendas.ciudad`, que es `NULL` para los nodos digitales.
+
+**Esquema estrella (Power BI):** `ventas` es la tabla de hechos principal; `tiendas`, `productos` y `clientes` son dimensiones; `inventario` es una tabla de hechos secundaria conectada por `id_producto` e `id_tienda`.
+
+### 11.5 Fórmulas oficiales
+
+```
+# Nivel de línea (ventas.csv)
+venta_bruta     = cantidad × precio_unitario
+descuento_monto = venta_bruta × descuento_pct
+monto_total     = venta_bruta − descuento_monto      ← campo almacenado en ventas.csv
+costo_total     = cantidad × costo_unitario
+margen_bruto    = monto_total − costo_total
+margen_pct      = margen_bruto / monto_total
+
+# Nivel de ticket (medida agregada, no campo almacenado)
+ticket          = SUM(monto_total) agrupado por id_venta
+
+# Nivel de inventario
+stock_final     = stock_inicial + reabastecimiento − unidades_vendidas
+```
+
+**Notas:**
+
+- `margen_pct` no tiene riesgo de división por cero: `monto_total > 0` está garantizado por las reglas de dominio (`cantidad ≥ 1`, `precio_unitario > 0`, `descuento_pct ≤ 0.35 < 1`). No es necesario agregar guarda `NULL`.
+- `margen_bruto < 0` es válido: indica que el costo supera el precio neto. Este es el patrón inyectado artificialmente en Trujillo desde Q2 2025 y no debe tratarse como error en los scripts de validación.
+- `precio_unitario` en `ventas` puede diferir de `productos.precio_lista` (por campañas o precios especiales). El descuento se aplica sobre `precio_unitario`, no sobre `precio_lista`.
+- `ticket` es una medida de negocio, no un campo almacenado. Se calcula al vuelo con un `GROUP BY id_venta`.
+
+### 11.6 Reglas de integridad
+
+1. Ningún campo marcado como no nulable puede contener valores `NULL` o vacíos.
+2. `ventas.fecha` debe estar dentro del rango `2023-01-01` a `2025-12-31`.
+3. `ventas.cantidad ≥ 1`.
+4. `ventas.precio_unitario > 0`, `productos.precio_lista > 0` y `productos.costo_unitario > 0`.
+5. `ventas.descuento_pct ∈ [0.00, 0.35]`.
+6. `ventas.monto_total = ventas.cantidad × ventas.precio_unitario × (1 − ventas.descuento_pct)` (el script de validación debe verificar esta igualdad con tolerancia de ± 0.01 PEN por redondeo).
+7. `ventas.canal = tiendas.canal` para cada `id_tienda` referenciado (consistencia de la denormalización).
+8. `inventario.stock_final = inventario.stock_inicial + inventario.reabastecimiento − inventario.unidades_vendidas`.
+9. `inventario.stock_final ≥ 0`.
+10. `productos.costo_unitario < productos.precio_lista`.
+11. Todas las claves foráneas deben referenciar claves primarias existentes (sin registros huérfanos).
+
+### 11.7 Trazabilidad campos ↔ partes del proyecto
+
+| Campo o fórmula | P1 Estadístico | P2 Descriptivo | P3 Predictivo | P4 Prescriptivo | P5 Power BI |
+|---|---|---|---|---|---|
+| `ventas.monto_total`, `margen_bruto`, `margen_pct` | ✓ | ✓ | ✓ | — | ✓ |
+| `ventas.canal`, `tiendas.canal` | ✓ | ✓ | ✓ | — | ✓ |
+| `tiendas.ciudad`, `clientes.ciudad` | ✓ | ✓ | ✓ | — | ✓ |
+| `productos.categoria` | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `ventas.metodo_pago` | ✓ | — | — | — | ✓ |
+| `ventas.descuento_pct`, `descuento_monto` | ✓ | ✓ | — | — | ✓ |
+| `ventas.fecha` (serie temporal) | — | ✓ | ✓ | — | ✓ |
+| `ticket` (agregado por `id_venta`) | ✓ | ✓ | — | — | ✓ |
+| `clientes.id_cliente`, `clientes.fecha_registro` | — | ✓ | ✓ (churn) | — | ✓ |
+| `inventario.stock_*`, `reabastecimiento` | — | — | — | ✓ | ✓ |
+| `inventario.costo_almacenamiento` | — | ✓ (diagnóstico) | — | ✓ | ✓ |
+
+### 11.8 Aspectos pendientes de definir en tareas posteriores
+
+Los siguientes elementos quedan fuera del alcance de esta tarea y se abordarán en F0-04 o en las secciones de cada parte:
+
+- Volúmenes exactos de filas por tabla.
+- Subcategorías por categoría de producto.
+- Magnitud exacta de los picos de julio y diciembre.
+- Evolución cuantitativa del canal digital a lo largo del periodo.
+- Magnitud de la caída de margen en Trujillo y su codificación en `config/`.
+- Rango de descuentos por categoría o canal.
+- Definición temporal de "cliente inactivo" (umbral de días para churn).
+- Granularidad y horizonte del pronóstico de demanda.
+- Función objetivo y restricciones del modelo prescriptivo.
+- Criterios automáticos de aceptación del dataset (script de validación).
+- Archivos de salida de cada fase.
