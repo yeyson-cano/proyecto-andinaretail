@@ -1,0 +1,516 @@
+# ============================================================
+# config/escenarios.yaml — AndinaRetail S.A.C.
+# Fuente canónica de los parámetros numéricos del dataset.
+# La documentación narrativa debe mantenerse sincronizada con este archivo.
+# ============================================================
+
+metadata:
+  version: "1.0.0"
+  moneda: "PEN"
+  zona_horaria: "America/Lima"
+  locale_faker: "es_PE"
+
+# ------------------------------------------------------------
+# 1. REPRODUCIBILIDAD
+# ------------------------------------------------------------
+reproducibilidad:
+  semilla: 2026
+  librerias:
+    - numpy.random
+    - random
+    - Faker
+
+# ------------------------------------------------------------
+# 2. PERIODO
+# ------------------------------------------------------------
+periodo:
+  inicio: "2023-01-01"
+  fin: "2025-12-31"
+
+# ------------------------------------------------------------
+# 3. DOMINIOS Y CATÁLOGOS
+# ------------------------------------------------------------
+dominios:
+  ciudades:
+    - Lima
+    - Arequipa
+    - Trujillo
+    - Cusco
+    - Piura
+
+  regiones:
+    - Costa
+    - Sierra
+
+  region_por_ciudad:
+    Lima: Costa
+    Arequipa: Sierra
+    Trujillo: Costa
+    Cusco: Sierra
+    Piura: Costa
+
+  tipos_tienda:
+    - Fisica
+    - Virtual
+
+  canales:
+    - Tienda
+    - Web
+    - App
+
+  categorias:
+    - Abarrotes
+    - Bebidas
+    - Limpieza
+    - Cuidado Personal
+    - Electrohogar
+    - Hogar
+
+  subcategorias_por_categoria:
+    Abarrotes:
+      - Arroz y cereales
+      - Conservas
+      - Menestras
+      - Snacks
+      - Desayuno
+    Bebidas:
+      - Agua
+      - Gaseosas
+      - Jugos
+      - Energizantes
+      - Infusiones
+    Limpieza:
+      - Detergentes
+      - Desinfectantes
+      - Lavavajillas
+      - Papel
+      - Accesorios de limpieza
+    Cuidado Personal:
+      - Higiene oral
+      - Cuidado capilar
+      - Cuidado corporal
+      - Afeitado
+      - Higiene femenina
+    Electrohogar:
+      - Cocina
+      - Refrigeracion
+      - Lavado
+      - Climatizacion
+      - Pequenos electrodomesticos
+    Hogar:
+      - Cocina y mesa
+      - Dormitorio
+      - Organizacion
+      - Decoracion
+      - Ferreteria ligera
+
+  marcas_ficticias_por_categoria:
+    Abarrotes: [Andes Selecto, Valle Real, Buen Grano, Casa Norte]
+    Bebidas: [Inti Fresh, Qori, Brisa Andina, Pukara]
+    Limpieza: [LimpiaMax, Sumaq Clean, Killa, Brillo Sur]
+    Cuidado Personal: [Ayni Care, Kantu, Nuna, Vitalia]
+    Electrohogar: [NovaHome, Kuntur, AndeTech, Prisma]
+    Hogar: [Casa Misti, Tawa, Andina Deco, Urbania]
+
+  metodos_pago:
+    - Efectivo
+    - Tarjeta debito
+    - Tarjeta credito
+    - Billetera digital
+    - Transferencia
+
+  segmentos_comerciales:
+    - Masivo
+    - Preferente
+    - Premium
+
+# ------------------------------------------------------------
+# 4. NODOS DE VENTA Y VOLÚMENES
+# Total: 13 tiendas físicas + WEB + APP = 15 nodos.
+# ------------------------------------------------------------
+volumenes:
+  tiendas_fisicas: 13
+
+  tiendas_por_ciudad:
+    Lima: 5
+    Arequipa: 2
+    Trujillo: 2
+    Cusco: 2
+    Piura: 2
+
+  nodos_virtuales:
+    - id_tienda: WEB
+      nombre: Nodo Web Nacional
+      tipo: Virtual
+      canal: Web
+      ciudad: null
+      region: null
+      area_m2: null
+      mantiene_inventario: true
+    - id_tienda: APP
+      nombre: Nodo App Nacional
+      tipo: Virtual
+      canal: App
+      ciudad: null
+      region: null
+      area_m2: null
+      mantiene_inventario: true
+
+  productos: 800
+  clientes: 15000
+
+  tickets_objetivo: 100000
+  lineas_ventas_objetivo: 250000
+  tolerancia_lineas_ventas_pct: 0.02
+
+  lineas_por_ticket:
+    media: 2.5
+    desviacion_estandar: 1.2
+    minimo: 1
+    maximo: 8
+
+  productos_por_categoria:
+    Abarrotes: 0.25
+    Bebidas: 0.20
+    Limpieza: 0.15
+    Cuidado Personal: 0.15
+    Electrohogar: 0.15
+    Hogar: 0.10
+
+# ------------------------------------------------------------
+# 5. DISTRIBUCIONES BASE DE VENTA
+# ------------------------------------------------------------
+distribucion_ventas:
+  pesos_ciudad:
+    Lima: 0.40
+    Arequipa: 0.20
+    Trujillo: 0.18
+    Cusco: 0.12
+    Piura: 0.10
+
+  pesos_categoria:
+    Abarrotes: 0.28
+    Bebidas: 0.22
+    Limpieza: 0.14
+    Cuidado Personal: 0.14
+    Electrohogar: 0.12
+    Hogar: 0.10
+
+  cantidad_normal:
+    probabilidades:
+      1: 0.50
+      2: 0.28
+      3: 0.10
+      4: 0.05
+      5: 0.03
+      6: 0.02
+      7: 0.01
+      8: 0.01
+
+# ------------------------------------------------------------
+# 6. PRECIOS, COSTOS Y MÁRGENES
+# costo_unitario = precio_lista * (1 - margen_bruto_base)
+# ------------------------------------------------------------
+precios:
+  margen_bruto_base_por_categoria:
+    Abarrotes: 0.18
+    Bebidas: 0.22
+    Limpieza: 0.30
+    Cuidado Personal: 0.35
+    Electrohogar: 0.28
+    Hogar: 0.32
+
+  precio_lista_por_categoria:
+    Abarrotes: {min: 2.0, max: 80.0}
+    Bebidas: {min: 3.0, max: 60.0}
+    Limpieza: {min: 5.0, max: 120.0}
+    Cuidado Personal: {min: 8.0, max: 200.0}
+    Electrohogar: {min: 50.0, max: 2500.0}
+    Hogar: {min: 10.0, max: 500.0}
+
+  variacion_historica_precio_pct:
+    minima: -0.03
+    maxima: 0.08
+
+# ------------------------------------------------------------
+# 7. DESCUENTOS
+# precio_unitario es el precio vigente antes del descuento.
+# descuento_pct representa la promoción aplicada a la línea.
+# ------------------------------------------------------------
+descuentos:
+  maximo_pct: 0.35
+
+  por_canal:
+    Tienda:
+      media_pct: 0.06
+      desviacion_estandar_pct: 0.04
+      proporcion_sin_descuento: 0.45
+    Web:
+      media_pct: 0.09
+      desviacion_estandar_pct: 0.05
+      proporcion_sin_descuento: 0.30
+    App:
+      media_pct: 0.10
+      desviacion_estandar_pct: 0.05
+      proporcion_sin_descuento: 0.25
+
+# ------------------------------------------------------------
+# 8. ESTACIONALIDAD Y CRECIMIENTO
+# Los multiplicadores son pesos relativos y se normalizan al generar.
+# ------------------------------------------------------------
+estacionalidad:
+  normalizar_multiplicadores: true
+
+  multiplicadores_mensuales:
+    1: 0.85
+    2: 0.80
+    3: 0.90
+    4: 0.90
+    5: 0.95
+    6: 0.95
+    7: 1.20
+    8: 0.90
+    9: 0.90
+    10: 0.95
+    11: 1.00
+    12: 1.40
+
+  crecimiento_anual_pct: 0.07
+
+# ------------------------------------------------------------
+# 9. CANAL DIGITAL
+# ------------------------------------------------------------
+canal_digital:
+  participacion_inicial: 0.20
+  participacion_final: 0.38
+  curva: lineal
+
+  split_web_inicial: 0.60
+  split_web_final: 0.45
+
+# ------------------------------------------------------------
+# 10. ESCENARIO DIAGNÓSTICO: TRUJILLO
+# El deterioro afecta a las tiendas físicas de Trujillo.
+# ------------------------------------------------------------
+trujillo:
+  inicio_problema: "2025-04-01"
+
+  canales_afectados:
+    - Tienda
+
+  aumento_descuento_pp: 6
+  aumento_costo_almacenamiento_pct: 30
+  desplazamiento_mix_menor_margen_pct: 15
+
+  categorias_destino_mix:
+    - Abarrotes
+    - Bebidas
+
+# ------------------------------------------------------------
+# 11. RELACIÓN DESCUENTO-DEMANDA
+# ------------------------------------------------------------
+relacion_descuento_demanda:
+  aumento_descuento_pp_referencia: 10
+
+  aumento_demanda_pct_esperado:
+    minimo: 8
+    maximo: 12
+
+  ruido_relativo_desviacion_estandar: 0.05
+
+# ------------------------------------------------------------
+# 12. INVENTARIO
+# stock_promedio = (stock_inicial + stock_final) / 2
+# costo_almacenamiento = stock_promedio * tasa_holding * costo_unitario
+# ------------------------------------------------------------
+inventario:
+  incluir_nodos_virtuales: true
+  periodicidad: mensual
+
+  tasa_holding_mensual_pct: 0.02
+
+  cobertura_stock_meses:
+    media: 2.0
+    desviacion_estandar: 0.5
+    minima: 0.5
+    maxima: 4.0
+
+  nivel_servicio_objetivo: 0.95
+
+  reglas:
+    continuidad_mensual: true
+    conciliar_unidades_vendidas_con_ventas: true
+    impedir_stock_final_negativo: true
+
+# ------------------------------------------------------------
+# 13. CLIENTES
+# ------------------------------------------------------------
+clientes:
+  edad:
+    distribucion: normal_truncada
+    media: 38
+    desviacion_estandar: 12
+    minima: 18
+    maxima: 80
+
+  distribucion_genero:
+    M: 0.48
+    F: 0.48
+    No especificado: 0.04
+
+  distribucion_ciudad:
+    Lima: 0.45
+    Arequipa: 0.18
+    Trujillo: 0.16
+    Cusco: 0.11
+    Piura: 0.10
+
+  distribucion_segmento_comercial:
+    Masivo: 0.70
+    Preferente: 0.22
+    Premium: 0.08
+
+  distribucion_canal_preferido:
+    Tienda: 0.60
+    Web: 0.23
+    App: 0.17
+
+  fecha_registro:
+    minima: "2020-01-01"
+    maxima: "2025-12-31"
+
+# ------------------------------------------------------------
+# 14. MÉTODOS DE PAGO
+# ------------------------------------------------------------
+metodos_pago_por_canal:
+  Tienda:
+    Efectivo: 0.30
+    Tarjeta debito: 0.30
+    Tarjeta credito: 0.25
+    Billetera digital: 0.15
+    Transferencia: 0.00
+
+  Web:
+    Efectivo: 0.00
+    Tarjeta debito: 0.20
+    Tarjeta credito: 0.45
+    Billetera digital: 0.20
+    Transferencia: 0.15
+
+  App:
+    Efectivo: 0.00
+    Tarjeta debito: 0.20
+    Tarjeta credito: 0.30
+    Billetera digital: 0.40
+    Transferencia: 0.10
+
+# ------------------------------------------------------------
+# 15. CHURN
+# Cliente inactivo = sin compras durante los últimos 90 días.
+# ------------------------------------------------------------
+churn:
+  fecha_evaluacion: "2025-12-31"
+  ventana_inactividad_dias: 90
+
+  proporcion_objetivo:
+    minima: 0.25
+    maxima: 0.35
+
+  pesos_rfm:
+    recencia: 0.50
+    frecuencia: 0.30
+    valor: 0.20
+
+# ------------------------------------------------------------
+# 16. CALIDAD DE DATOS
+# Los faltantes solo se insertan en campos nulables.
+# Los outliers se introducen en cantidad y luego se recalculan
+# monto_total, costo_total y márgenes.
+# ------------------------------------------------------------
+calidad_datos:
+  faltantes:
+    proporcion_objetivo: 0.02
+
+    campos_permitidos:
+      clientes:
+        - edad
+        - distrito
+        - canal_preferido
+      productos:
+        - subcategoria
+        - marca
+      tiendas: []
+      ventas: []
+      inventario: []
+
+  outliers:
+    proporcion_objetivo: 0.005
+    campo: cantidad
+    cantidad_normal_maxima: 8
+    cantidad_outlier_minima: 9
+    cantidad_outlier_maxima: 20
+    recalcular_campos_derivados: true
+
+# ------------------------------------------------------------
+# 17. SALIDAS
+# ------------------------------------------------------------
+salidas:
+  directorio: datos
+
+  archivos:
+    tiendas: tiendas.csv
+    productos: productos.csv
+    clientes: clientes.csv
+    ventas: ventas.csv
+    inventario: inventario.csv
+
+# ------------------------------------------------------------
+# 18. CRITERIOS DE ACEPTACIÓN DEL DATASET
+# Son resultados esperados; no deben usarse como parámetros causales.
+# ------------------------------------------------------------
+validacion:
+  volumenes:
+    tiendas_total: 15
+    productos: 800
+    clientes: 15000
+    lineas_ventas:
+      minima: 245000
+      maxima: 255000
+
+  pico_julio:
+    comparacion: promedio_meses_base
+    rango_pct: [15, 25]
+
+  pico_diciembre:
+    comparacion: promedio_meses_base
+    rango_pct: [30, 45]
+
+  participacion_digital_2023:
+    rango_pct: [18, 23]
+
+  participacion_digital_2025:
+    rango_pct: [35, 42]
+
+  caida_margen_operativo_trujillo:
+    metrica: margen_operativo_pct
+    periodo_base: "2025-Q1"
+    periodo_afectado: "2025-Q2"
+    rango_pp: [6, 9]
+
+  tasa_churn:
+    rango_pct: [25, 35]
+
+  faltantes:
+    base_calculo: celdas_elegibles
+    rango_pct: [1.0, 3.0]
+
+  outliers:
+    criterio: "ventas.cantidad > 8"
+    rango_pct: [0.3, 0.8]
+
+  integridad:
+    sin_claves_huerfanas: true
+    formulas_con_tolerancia_pen: 0.01
+    fechas_coherentes: true
+    continuidad_inventario: true
+    conciliacion_ventas_inventario: true

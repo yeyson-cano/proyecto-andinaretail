@@ -217,22 +217,28 @@ El tablero deberá permitir revisar:
 - Los descuentos se utilizarán como variable explicativa y predictiva, pero no se optimizarán directamente en esta versión.
 - Los resultados se integrarán en Power BI.
 - Se utilizarán únicamente datos sintéticos y reproducibles.
+- `config/escenarios.yaml` será la fuente canónica de los parámetros numéricos de generación y validación del dataset.
+- El dataset incluirá 15 nodos de venta: 13 tiendas físicas, un nodo Web y un nodo App.
+- Se generarán 800 productos, 15 000 clientes, aproximadamente 100 000 tickets y 250 000 líneas de venta.
+- Los nodos Web y App mantendrán inventario propio y tendrán alcance nacional.
+- El deterioro de margen de Trujillo afectará únicamente a sus tiendas físicas desde el 1 de abril de 2025.
+- La caída de Trujillo se evaluará mediante el margen operativo porcentual, incorporando descuentos, mezcla de productos y costos de almacenamiento.
+- Los criterios automáticos de aceptación del dataset se definirán y ejecutarán a partir de los rangos establecidos en `config/escenarios.yaml`.
 
 ---
 
 ## 10. Aspectos reservados para tareas posteriores
 
-- Volúmenes exactos de registros por tabla.
-- Distribuciones de productos, clientes, precios, costos y cantidades.
-- Magnitud de los picos de julio y diciembre.
-- Evolución cuantitativa del canal digital.
-- Magnitud de la caída de margen operativo en Trujillo.
-- Rangos de descuentos y costos de almacenamiento.
-- Fecha de observación y construcción temporal del target de churn.
-- Granularidad y horizonte definitivos del pronóstico de demanda.
-- Función objetivo y restricciones del modelo prescriptivo.
-- Criterios automáticos de aceptación del dataset.
-- Archivos de salida analíticos de cada fase.
+F0-04 cierra los parámetros de generación, los volúmenes, los patrones controlados y los criterios básicos de aceptación del dataset. Las siguientes decisiones permanecen reservadas para tareas posteriores:
+
+- formulación definitiva de las hipótesis y pruebas estadísticas de la Parte 1;
+- criterios de segmentación RFM o clustering de la Parte 2;
+- fecha de observación, ventana de variables y periodo objetivo del modelo de churn, evitando fuga de información;
+- granularidad y horizonte definitivos del pronóstico de demanda;
+- variables predictoras, particiones temporales y métricas de evaluación de los modelos;
+- variables de decisión, función objetivo y restricciones del modelo prescriptivo;
+- estructura definitiva del modelo de datos, medidas DAX y páginas de Power BI;
+- archivos de salida analíticos específicos de cada una de las cinco partes.
 
 ---
 
@@ -294,12 +300,16 @@ El diagnóstico de Trujillo utilizará principalmente el margen operativo, porqu
 
 ### 11.5 Inventario y nodos digitales
 
-- Los nodos virtuales Web y App se modelan como nodos de cumplimiento que pueden mantener inventario.
-- La cantidad exacta de nodos digitales se definirá en F0-04.
-- Las ventas digitales se atribuyen comercialmente a la ciudad del cliente.
-- Los costos de almacenamiento digital se atribuyen al nodo virtual que atiende la venta.
-- La continuidad mensual exige que el stock final de un mes sea el stock inicial del siguiente.
-- Las unidades vendidas del inventario deben conciliar con las ventas agregadas por producto, nodo y mes.
+- El proyecto utilizará 13 tiendas físicas y exactamente dos nodos virtuales nacionales: `WEB` y `APP`.
+- Los nodos Web y App se modelan como nodos de cumplimiento con inventario propio.
+- Las ventas físicas se relacionan con el inventario de la tienda donde se efectúa la transacción.
+- Las ventas digitales se relacionan con el inventario del nodo Web o App que atiende la compra.
+- La ciudad comercial de una venta digital se obtiene mediante `clientes.ciudad`; no se obtiene de `tiendas.ciudad`, que será nula para los nodos virtuales.
+- El escenario de deterioro de Trujillo se aplicará únicamente a las tiendas físicas ubicadas en esa ciudad.
+- Los costos de almacenamiento se atribuyen al nodo que mantiene el inventario, independientemente de la ciudad del cliente.
+- La continuidad mensual exige que el stock final de un mes sea igual al stock inicial del mes siguiente para una misma combinación producto–nodo.
+- Las unidades vendidas registradas en inventario deben conciliar con las ventas agregadas por producto, nodo y mes.
+- El stock final nunca puede ser negativo.
 
 ### 11.6 Trazabilidad resumida
 
@@ -312,6 +322,340 @@ El diagnóstico de Trujillo utilizará principalmente el margen operativo, porqu
 | Inventario y almacenamiento | — | ✓ | — | ✓ | ✓ |
 | Demanda agregada | — | ✓ | ✓ | ✓ | ✓ |
 
-### 11.7 Pendientes después de F0-03
+### 11.7 Continuidad después de F0-04
 
-F0-04 deberá parametrizar los volúmenes, distribuciones, patrones y tolerancias. F0-05 a F0-07 deberán cerrar las definiciones estadísticas, predictivas y prescriptivas que todavía dependen del contrato.
+F0-04 establece en `config/escenarios.yaml` los volúmenes, distribuciones, patrones controlados, tolerancias y criterios de aceptación del dataset.
+
+El diccionario de datos continúa siendo la fuente canónica del esquema físico, mientras que el archivo YAML es la fuente canónica de los valores numéricos de generación.
+
+Las tareas F0-05, F0-06 y F0-07 deberán utilizar ambos archivos sin redefinir unilateralmente sus campos, fórmulas o parámetros. Cualquier modificación posterior deberá evaluar su impacto sobre el generador, las validaciones, los notebooks y Power BI.
+
+---
+
+## 12. Parámetros de generación y escenarios controlados
+
+### 12.1 Fuente canónica y propósito
+
+Los parámetros numéricos utilizados por el generador de datos sintéticos se encuentran en [`config/escenarios.yaml`](../config/escenarios.yaml).
+
+El archivo YAML es la **fuente canónica de los valores de generación y validación**. Esta sección proporciona su interpretación funcional y de negocio, pero no debe mantener copias independientes de todos los valores.
+
+Ante cualquier diferencia entre esta sección y el archivo YAML, deberá revisarse la modificación más reciente y sincronizar ambos documentos antes de ejecutar nuevamente el generador.
+
+### 12.2 Reproducibilidad
+
+La generación utilizará la semilla global `2026`, aplicada de manera consistente a:
+
+- `numpy.random`;
+- `random`;
+- `Faker`.
+
+Se utilizará `Faker` con configuración regional `es_PE`, moneda PEN y zona horaria `America/Lima`.
+
+La misma versión del código, el mismo archivo de configuración y la misma semilla deberán producir los mismos archivos CSV.
+
+### 12.3 Periodo y volúmenes
+
+El periodo de ventas comprenderá desde el 1 de enero de 2023 hasta el 31 de diciembre de 2025.
+
+Los volúmenes aprobados son:
+
+| Elemento | Valor |
+|---|---:|
+| Tiendas físicas | 13 |
+| Nodos virtuales | 2 (`WEB` y `APP`) |
+| Nodos totales | 15 |
+| Productos | 800 |
+| Clientes | 15 000 |
+| Tickets objetivo | 100 000 |
+| Líneas de venta objetivo | 250 000 |
+| Tolerancia de líneas | ±2 % |
+
+Las tiendas físicas se distribuirán de la siguiente forma:
+
+| Ciudad | Tiendas |
+|---|---:|
+| Lima | 5 |
+| Arequipa | 2 |
+| Trujillo | 2 |
+| Cusco | 2 |
+| Piura | 2 |
+
+Cada ticket tendrá una o más líneas de producto. El promedio objetivo será de 2.5 líneas por ticket, con un máximo ordinario de ocho líneas.
+
+### 12.4 Productos y categorías
+
+El catálogo contendrá 800 productos distribuidos entre las seis categorías oficiales.
+
+| Categoría | Participación del catálogo |
+|---|---:|
+| Abarrotes | 25 % |
+| Bebidas | 20 % |
+| Limpieza | 15 % |
+| Cuidado Personal | 15 % |
+| Electrohogar | 15 % |
+| Hogar | 10 % |
+
+Las subcategorías y marcas ficticias autorizadas están declaradas en `config/escenarios.yaml`. El generador no deberá introducir categorías, subcategorías o marcas fuera de esos catálogos sin actualizar previamente la configuración y el contrato.
+
+### 12.5 Precios, costos y margen base
+
+Los rangos de precios y los márgenes base serán diferentes por categoría, evitando asumir que todos los productos tienen la misma rentabilidad.
+
+| Categoría | Margen bruto base | Rango de precio de lista |
+|---|---:|---:|
+| Abarrotes | 18 % | S/ 2 – S/ 80 |
+| Bebidas | 22 % | S/ 3 – S/ 60 |
+| Limpieza | 30 % | S/ 5 – S/ 120 |
+| Cuidado Personal | 35 % | S/ 8 – S/ 200 |
+| Electrohogar | 28 % | S/ 50 – S/ 2 500 |
+| Hogar | 32 % | S/ 10 – S/ 500 |
+
+El costo unitario base se calculará mediante:
+
+```text
+costo_unitario = precio_lista * (1 - margen_bruto_base_categoria)
+````
+
+`precio_unitario` representará el precio vigente antes de aplicar el descuento de la línea. El descuento promocional se representará únicamente mediante `descuento_pct`, evitando aplicar dos veces la misma reducción de precio.
+
+### 12.6 Descuentos
+
+El descuento máximo permitido será de 35 %.
+
+Las distribuciones variarán por canal:
+
+| Canal  | Descuento promedio | Proporción sin descuento |
+| ------ | -----------------: | -----------------------: |
+| Tienda |                6 % |                     45 % |
+| Web    |                9 % |                     30 % |
+| App    |               10 % |                     25 % |
+
+Las distribuciones deberán truncarse para impedir descuentos negativos o superiores al máximo aprobado.
+
+### 12.7 Estacionalidad y crecimiento
+
+El volumen mensual incorporará estacionalidad controlada.
+
+Los principales picos serán:
+
+* julio: multiplicador de 1.20;
+* diciembre: multiplicador de 1.40.
+
+El resto de los multiplicadores mensuales se encuentra en `config/escenarios.yaml` y se normalizará para conservar el volumen anual objetivo.
+
+Se aplicará un crecimiento interanual de 7 % sobre el volumen base.
+
+El dataset deberá cumplir los siguientes rangos de aceptación:
+
+| Patrón                             | Rango esperado |
+| ---------------------------------- | -------------: |
+| Pico de julio sobre meses base     |    15 % – 25 % |
+| Pico de diciembre sobre meses base |    30 % – 45 % |
+
+### 12.8 Crecimiento del canal digital
+
+La participación combinada de Web y App crecerá gradualmente durante el periodo:
+
+```text
+20 % al inicio de 2023
+38 % al cierre de 2025
+```
+
+El crecimiento utilizará una curva lineal.
+
+Dentro del canal digital:
+
+* Web representará inicialmente 60 % del bloque digital;
+* Web representará finalmente 45 %;
+* App crecerá de 40 % a 55 % del bloque digital.
+
+Los rangos de aceptación serán:
+
+| Indicador                     |       Rango |
+| ----------------------------- | ----------: |
+| Participación digital en 2023 | 18 % – 23 % |
+| Participación digital en 2025 | 35 % – 42 % |
+
+### 12.9 Escenario diagnóstico de Trujillo
+
+El deterioro de margen comenzará el 1 de abril de 2025 y afectará únicamente a las tiendas físicas de Trujillo.
+
+El generador aplicará tres mecanismos causales:
+
+1. incremento de seis puntos porcentuales en el descuento promedio;
+2. incremento de 30 % en el costo de almacenamiento;
+3. desplazamiento de 15 % de las ventas hacia Abarrotes y Bebidas, categorías de menor margen base.
+
+El resultado no se forzará modificando directamente la métrica final. El generador aplicará las causas y el validador comprobará el resultado.
+
+El criterio de aceptación será una caída de entre seis y nueve puntos porcentuales en:
+
+```text
+margen_operativo_pct
+```
+
+La comparación principal se realizará entre 2025-Q1 y 2025-Q2.
+
+### 12.10 Relación entre descuento y demanda
+
+La cantidad vendida deberá depender parcialmente del descuento aplicado.
+
+Como referencia, un incremento de diez puntos porcentuales de descuento producirá un aumento esperado de entre 8 % y 12 % en la demanda, incorporando ruido aleatorio moderado.
+
+La relación deberá ser detectable mediante análisis estadístico, pero no determinística ni perfectamente lineal.
+
+### 12.11 Inventario
+
+El inventario tendrá periodicidad mensual y se registrará por producto y nodo.
+
+Parámetros principales:
+
+| Parámetro                      |                  Valor |
+| ------------------------------ | ---------------------: |
+| Tasa de almacenamiento mensual | 2 % del costo unitario |
+| Cobertura media de stock       |                2 meses |
+| Nivel de servicio objetivo     |                   95 % |
+| Frecuencia de reposición       |                Mensual |
+
+Las fórmulas principales serán:
+
+```text
+stock_promedio = (stock_inicial + stock_final) / 2
+
+costo_almacenamiento =
+stock_promedio * tasa_holding_mensual * costo_unitario
+```
+
+El generador deberá preservar:
+
+* continuidad mensual del inventario;
+* conciliación con las ventas;
+* stock final no negativo;
+* inventario propio para los nodos Web y App.
+
+### 12.12 Clientes
+
+Las edades seguirán una distribución normal truncada con:
+
+```text
+media = 38
+desviación estándar = 12
+mínimo = 18
+máximo = 80
+```
+
+La distribución comercial inicial será:
+
+| Segmento   | Participación |
+| ---------- | ------------: |
+| Masivo     |          70 % |
+| Preferente |          22 % |
+| Premium    |           8 % |
+
+Este segmento comercial no sustituye a la segmentación RFM de la Parte 2.
+
+La distribución del canal preferido será:
+
+| Canal  | Participación |
+| ------ | ------------: |
+| Tienda |          60 % |
+| Web    |          23 % |
+| App    |          17 % |
+
+Las distribuciones de género, ciudad y métodos de pago por canal se encuentran declaradas en el archivo YAML.
+
+### 12.13 Churn
+
+Un cliente será considerado inactivo si no realizó compras durante los 90 días anteriores al 31 de diciembre de 2025.
+
+La proporción objetivo de clientes inactivos será de 25 % a 35 %.
+
+La generación utilizará un score basado en RFM con los siguientes pesos:
+
+| Componente      | Peso |
+| --------------- | ---: |
+| Recencia        | 50 % |
+| Frecuencia      | 30 % |
+| Valor monetario | 20 % |
+
+Estos pesos se utilizarán para generar un patrón aprendible, pero no se almacenarán como una etiqueta explicativa en `clientes.csv`.
+
+La construcción definitiva del dataset de entrenamiento, la ventana histórica y la prevención de fuga de información se definirán en F0-06.
+
+### 12.14 Calidad de datos
+
+El dataset incluirá faltantes y outliers controlados.
+
+#### Valores faltantes
+
+Se introducirá aproximadamente 2 % de valores faltantes sobre las celdas elegibles, con un rango aceptable entre 1 % y 3 %.
+
+Los nulos solo podrán introducirse en:
+
+* `clientes.edad`;
+* `clientes.distrito`;
+* `clientes.canal_preferido`;
+* `productos.subcategoria`;
+* `productos.marca`.
+
+No podrán introducirse nulos en claves, campos derivados, ventas o inventario.
+
+#### Outliers
+
+El 0.5 % de las líneas de venta contendrá cantidades atípicas.
+
+Las cantidades ordinarias estarán entre 1 y 8; las cantidades atípicas estarán entre 9 y 20.
+
+Después de modificar `cantidad`, el generador deberá recalcular:
+
+* `venta_bruta`;
+* `descuento_monto`;
+* `monto_total`;
+* `costo_mercaderia`;
+* márgenes derivados.
+
+No se alterará `monto_total` de manera independiente, porque eso rompería las fórmulas oficiales.
+
+### 12.15 Archivos de salida
+
+El generador producirá en la carpeta `datos/`:
+
+```text
+tiendas.csv
+productos.csv
+clientes.csv
+ventas.csv
+inventario.csv
+```
+
+Los nombres y rutas se encuentran declarados en `config/escenarios.yaml`.
+
+### 12.16 Criterios automáticos de aceptación
+
+El script de validación deberá comprobar, como mínimo:
+
+| Criterio                               | Resultado esperado |
+| -------------------------------------- | -----------------: |
+| Nodos totales                          |                 15 |
+| Productos                              |                800 |
+| Clientes                               |             15 000 |
+| Líneas de ventas                       |  245 000 – 255 000 |
+| Pico de julio                          |        15 % – 25 % |
+| Pico de diciembre                      |        30 % – 45 % |
+| Participación digital 2023             |        18 % – 23 % |
+| Participación digital 2025             |        35 % – 42 % |
+| Caída del margen operativo de Trujillo |        6 pp – 9 pp |
+| Tasa de churn                          |        25 % – 35 % |
+| Valores faltantes elegibles            |          1 % – 3 % |
+| Líneas con cantidad mayor que ocho     |      0.3 % – 0.8 % |
+
+También deberá verificar:
+
+* ausencia de claves primarias duplicadas;
+* ausencia de claves foráneas huérfanas;
+* coherencia temporal de clientes, productos, tiendas y ventas;
+* cumplimiento de las fórmulas monetarias con tolerancia de S/ 0.01;
+* continuidad mensual del inventario;
+* conciliación entre ventas e inventario;
+* ausencia de stock final negativo.

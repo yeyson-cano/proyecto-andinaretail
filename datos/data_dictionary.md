@@ -9,7 +9,15 @@ Este archivo es la **fuente canónica del esquema físico de datos** del proyect
 - los notebooks de las Partes 1 a 4;
 - el modelo de datos de Power BI.
 
-Las decisiones de negocio y el alcance analítico general se documentan en [`docs/00_especificacion_datos_y_analitica.md`](../docs/00_especificacion_datos_y_analitica.md). Los valores concretos de generación —volúmenes, probabilidades, magnitud de patrones y tolerancias— se definirán en `config/escenarios.yaml` durante F0-04.
+Las decisiones de negocio y el alcance analítico general se documentan en [`docs/00_especificacion_datos_y_analitica.md`](../docs/00_especificacion_datos_y_analitica.md).
+
+Los valores concretos de generación —volúmenes, distribuciones, probabilidades, magnitud de patrones, tolerancias y criterios de aceptación— se encuentran en [`config/escenarios.yaml`](../config/escenarios.yaml), que constituye la **fuente canónica de los parámetros numéricos** del proyecto.
+
+En consecuencia:
+
+- este diccionario es la fuente canónica del **esquema físico y sus reglas**;
+- `config/escenarios.yaml` es la fuente canónica de los **valores numéricos de generación y validación**;
+- el documento maestro explica el alcance y la interpretación funcional de ambos.
 
 Toda modificación posterior del esquema debe actualizar este archivo y revisar su impacto en las fases posteriores.
 
@@ -21,7 +29,9 @@ Toda modificación posterior del esquema debe actualizar este archivo y revisar 
 - Las tablas mínimas son `tiendas`, `productos`, `clientes`, `ventas` e `inventario`.
 - Cada fila de `ventas` representa **una línea de producto dentro de una compra**.
 - `id_venta` agrupa todas las líneas pertenecientes al mismo ticket; `id_linea` identifica cada línea de forma única.
-- Los canales digitales se representan mediante nodos virtuales de venta y cumplimiento. El número exacto de nodos se define en F0-04.
+- Los canales digitales se representan mediante dos nodos virtuales nacionales de venta y cumplimiento: `WEB` y `APP`.
+- El dataset contendrá 15 nodos en total: 13 tiendas físicas, un nodo Web y un nodo App.
+- Los nodos virtuales mantienen inventario propio dentro del modelo sintético.
 - La ciudad comercial de una venta física se obtiene de la tienda; la de una venta digital se obtiene del cliente.
 - La segmentación RFM no se almacena como dato fuente: se calcula en la Parte 2.
 - Las fórmulas oficiales de este documento deben utilizarse de manera idéntica en Python y Power BI.
@@ -49,21 +59,34 @@ Toda modificación posterior del esquema debe actualizar este archivo y revisar 
 
 | Campo | Tipo | Nulable | Dominio o regla | Descripción |
 |---|---|---|---|---|
-| id_tienda | string | No | Único; p. ej. `T001`, `VWEB01`, `VAPP01` | Identificador del punto de venta o nodo virtual |
+| id_tienda | string | No | Único; p. ej. `T001`, `WEB`, `APP` | Identificador del punto de venta o nodo virtual |
 | nombre | string | No | Ficticio | Nombre de la tienda o nodo |
 | tipo | string | No | `Fisica` \| `Virtual` | Tipo operativo exigido por el esquema del proyecto |
 | canal | string | No | `Tienda` \| `Web` \| `App` | Canal atendido por el nodo |
 | ciudad | string | Sí | `Lima` \| `Arequipa` \| `Trujillo` \| `Cusco` \| `Piura` \| `NULL` | Ciudad del nodo; puede ser `NULL` en nodos digitales de alcance nacional |
-| region | string | Sí | Lista controlada definida en F0-04 | Región asociada al nodo; puede ser `NULL` en nodos nacionales |
+| region | string | Sí | `Costa` \| `Sierra` \| `NULL` | Región asociada al nodo; será `NULL` en los nodos digitales nacionales |
 | area_m2 | numeric | Sí | `> 0` cuando `tipo = Fisica`; `NULL` cuando `tipo = Virtual` | Área del establecimiento físico |
 | fecha_apertura | date | No | Fecha `<= 2025-12-31` | Fecha de apertura o activación del nodo |
+
+**Mapeo oficial ciudad–región:**
+
+| Ciudad | Región |
+|---|---|
+| Lima | Costa |
+| Arequipa | Sierra |
+| Trujillo | Costa |
+| Cusco | Sierra |
+| Piura | Costa |
 
 **Reglas específicas:**
 
 - Si `tipo = Fisica`, entonces `canal = Tienda`, `ciudad` no es nula y `area_m2 > 0`.
 - Si `tipo = Virtual`, entonces `canal` es `Web` o `App` y `area_m2 = NULL`.
 - Los nodos virtuales representan operaciones de venta y cumplimiento con inventario propio dentro del modelo sintético.
-- La cantidad exacta de nodos físicos y virtuales se decide en F0-04.
+- Se generarán exactamente 13 tiendas físicas, distribuidas entre las cinco ciudades, y dos nodos virtuales nacionales.
+- `id_tienda = WEB` identifica el nodo del canal Web.
+- `id_tienda = APP` identifica el nodo del canal App.
+- Los nodos `WEB` y `APP` mantienen inventario propio.
 
 ---
 
@@ -76,11 +99,13 @@ Toda modificación posterior del esquema debe actualizar este archivo y revisar 
 | id_producto | string | No | Único; p. ej. `P0001` | Identificador del producto |
 | nombre | string | No | Ficticio | Nombre comercial del producto |
 | categoria | string | No | `Abarrotes` \| `Bebidas` \| `Limpieza` \| `Cuidado Personal` \| `Electrohogar` \| `Hogar` | Categoría principal |
-| subcategoria | string | Sí | Lista controlada por categoría | Subcategoría del producto |
-| marca | string | Sí | Ficticia | Marca sintética |
+| subcategoria | string | Sí | Lista controlada por categoría definida en `config/escenarios.yaml` | Subcategoría del producto |
+| marca | string | Sí | Marca ficticia autorizada para la categoría en `config/escenarios.yaml` | Marca sintética |
 | precio_lista | numeric | No | `> 0`, en PEN | Precio de referencia vigente del catálogo |
 | costo_unitario | numeric | No | `> 0` y `< precio_lista`, en PEN | Costo de adquisición por unidad |
 | fecha_alta | date | No | Fecha `<= 2025-12-31` | Fecha desde la cual el producto está disponible |
+
+Las categorías, subcategorías y marcas permitidas se encuentran declaradas en `config/escenarios.yaml`. El generador no deberá crear valores fuera de esos catálogos sin actualizar primero ambos archivos.
 
 **Regla de precios:** `precio_lista` es el precio de referencia del catálogo. No incluye el descuento aplicado a una transacción concreta.
 
@@ -95,12 +120,12 @@ Toda modificación posterior del esquema debe actualizar este archivo y revisar 
 | id_cliente | string | No | Único; p. ej. `C00001` | Identificador del cliente |
 | nombre | string | No | Ficticio, generado con Faker | Nombre completo sintético |
 | edad | integer | Sí | 18 a 80 | Edad del cliente |
-| genero | string | Sí | `M` \| `F` \| `No especificado` | Género sintético |
+| genero | string | No | `M` \| `F` \| `No especificado` | Género sintético |
 | ciudad | string | No | `Lima` \| `Arequipa` \| `Trujillo` \| `Cusco` \| `Piura` | Ciudad de residencia; ancla geográfica de las ventas digitales |
 | distrito | string | Sí | Lista ficticia coherente con la ciudad | Distrito de residencia |
-| fecha_registro | date | No | Fecha `<= 2025-12-31` | Fecha de incorporación del cliente |
+| fecha_registro | date | No | 2020-01-01 a 2025-12-31 | Fecha de incorporación del cliente |
 | canal_preferido | string | Sí | `Tienda` \| `Web` \| `App` | Preferencia asignada sintéticamente al registrarse; no se deriva de ventas futuras |
-| segmento | string | Sí | `Masivo` \| `Preferente` \| `Premium` | Segmento comercial inicial, independiente de la segmentación RFM |
+| segmento | string | No | `Masivo` \| `Preferente` \| `Premium` | Segmento comercial inicial, independiente de la segmentación RFM |
 
 > `segmento` no representa el resultado de RFM. Los segmentos RFM se derivarán exclusivamente del comportamiento observado en `ventas` durante la Parte 2.
 
@@ -264,7 +289,8 @@ El patrón diagnóstico de Trujillo se evaluará principalmente mediante `margen
 19. Toda combinación producto–tienda–mes con ventas debe tener un registro correspondiente en `inventario.csv`.
 20. Los valores faltantes controlados solo se introducirán en campos nulables y no se contarán junto con los nulos estructurales de nodos virtuales.
 21. Los outliers no podrán violar claves, fechas, fórmulas, rangos duros ni integridad referencial.
-22. El umbral de inactividad es de 90 días; F0-06 definirá la fecha de observación y el periodo objetivo sin fuga de información.
+22. Para la validación general del dataset, un cliente se considera inactivo si no realizó compras durante los 90 días anteriores al 2025-12-31.
+23. F0-06 deberá definir por separado la ventana histórica de variables, la fecha de corte y el periodo objetivo utilizados para entrenar y evaluar el modelo predictivo, evitando fuga de información.
 
 ---
 
@@ -288,20 +314,40 @@ El patrón diagnóstico de Trujillo se evaluará principalmente mediante `margen
 
 ---
 
-## 9. Aspectos pendientes para F0-04 y fases posteriores
+## 9. Continuidad después de F0-04
 
-- Volúmenes exactos por tabla.
-- Cantidad y distribución de nodos físicos y virtuales.
-- Lista de subcategorías y marcas por categoría.
-- Distribución de precios, costos y cantidades.
-- Magnitud de los picos de julio y diciembre.
-- Evolución cuantitativa del canal digital.
-- Magnitud de la caída de margen operativo de Trujillo.
-- Rangos de descuentos por canal, categoría, ciudad y periodo.
-- Tasa de almacenamiento mensual y su incremento en Trujillo.
-- Porcentajes y campos concretos para faltantes y outliers.
-- Fecha de observación y construcción temporal del target de churn, manteniendo el umbral de 90 días.
-- Granularidad y horizonte definitivos del pronóstico de demanda.
-- Función objetivo, restricciones y escenarios del modelo prescriptivo.
-- Criterios automáticos de aceptación del dataset.
-- Archivos de salida analíticos de cada fase.
+F0-04 cerró en `config/escenarios.yaml` los siguientes elementos:
+
+- cantidad y distribución de nodos físicos y virtuales;
+- volúmenes objetivo de productos, clientes, tickets y líneas de venta;
+- categorías, subcategorías y marcas ficticias;
+- distribuciones de precios, costos, cantidades, canales y métodos de pago;
+- magnitud de los picos de julio y diciembre;
+- crecimiento del canal digital;
+- causas y rango esperado de la caída del margen operativo de Trujillo;
+- descuentos por canal;
+- tasa de almacenamiento mensual;
+- parámetros de clientes y segmentos comerciales;
+- definición general de churn a 90 días;
+- porcentajes y campos permitidos para faltantes y outliers;
+- archivos CSV producidos por el generador;
+- criterios automáticos de aceptación del dataset.
+
+Las siguientes decisiones permanecen reservadas para las fases analíticas posteriores:
+
+- hipótesis y pruebas estadísticas definitivas de la Parte 1;
+- reglas de construcción e interpretación de la segmentación RFM o clustering;
+- fecha de corte, ventana histórica y periodo objetivo del modelo de churn;
+- granularidad y horizonte definitivos del pronóstico de demanda;
+- variables predictoras, particiones temporales y métricas de los modelos;
+- variables de decisión, función objetivo y restricciones del modelo prescriptivo;
+- estructura final del modelo de Power BI y sus medidas DAX;
+- archivos de salida analíticos específicos de cada parte.
+
+Las tareas posteriores deberán utilizar conjuntamente:
+
+1. este diccionario para conocer el esquema y las reglas de integridad;
+2. `config/escenarios.yaml` para conocer los valores numéricos;
+3. `docs/00_especificacion_datos_y_analitica.md` para conocer el alcance y la interpretación de negocio.
+
+Ninguna fase deberá redefinir unilateralmente campos, fórmulas o parámetros sin actualizar los tres artefactos afectados.
