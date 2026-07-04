@@ -659,3 +659,602 @@ También deberá verificar:
 * continuidad mensual del inventario;
 * conciliación entre ventas e inventario;
 * ausencia de stock final negativo.
+
+---
+
+## 13. Hipotesis estadisticas y variables requeridas
+
+### 13.1 Objetivo y alcance
+
+Esta seccion define la planificacion estadistica de la Parte 1 del proyecto. Su proposito es garantizar que el dataset sintetico permita:
+
+- caracterizar las ventas, los tickets y los clientes;
+- calcular medidas descriptivas e intervalos de confianza;
+- formular y contrastar hipotesis reproducibles;
+- comparar canales y ciudades;
+- analizar asociaciones entre variables categoricas;
+- evaluar relaciones entre variables numericas;
+- interpretar los resultados en terminos del negocio.
+
+Las hipotesis se formulan antes de observar los CSV definitivos. El generador debera proporcionar variables, variacion y representacion suficientes para ejecutar las pruebas, pero no debera modificarse repetidamente hasta obtener resultados estadisticamente significativos.
+
+Los patrones obligatorios del caso -como la caida del margen operativo de Trujillo y la relacion controlada entre descuento y demanda- se validaran como propiedades del dataset. Las demas hipotesis conservaran un caracter inferencial y podran concluir a favor o en contra de la hipotesis nula.
+
+### 13.2 Convenciones estadisticas generales
+
+La Parte 1 utilizara las siguientes convenciones:
+
+| Elemento | Decision |
+|---|---|
+| Nivel de significancia nominal | `alpha = 0.05` |
+| Nivel de confianza | 95 % |
+| Tipo de contraste | Bilateral, salvo justificacion documentada |
+| Correccion por comparaciones multiples | Metodo de Holm |
+| Redondeo monetario | Dos decimales |
+| Semilla de procedimientos remuestreados | 2026 |
+| Numero recomendado de remuestras bootstrap | 5 000 |
+| Unidad de analisis | Se definira por cada hipotesis |
+| Criterio de decision | Valor p ajustado, intervalo de confianza y tamano del efecto |
+
+Para las cuatro hipotesis principales se reportaran:
+
+- estadistico de prueba;
+- valor p original;
+- valor p ajustado mediante Holm;
+- intervalo de confianza;
+- tamano del efecto;
+- interpretacion estadistica;
+- interpretacion de negocio.
+
+Debido al volumen aproximado de 100 000 tickets y 250 000 lineas de venta, un valor p pequeno no sera considerado suficiente para afirmar que una diferencia es relevante. Toda conclusion debera considerar tambien la magnitud del efecto y su importancia practica.
+
+### 13.3 Preparacion de los niveles de analisis
+
+El notebook estadistico construira cuatro vistas derivadas sin modificar los CSV originales.
+
+#### Vista a nivel de linea
+
+Cada observacion corresponde a una fila de `ventas.csv`.
+
+Se utilizara para:
+
+- distribucion de cantidades;
+- distribucion de montos por linea;
+- distribucion de descuentos;
+- correlacion entre descuento y cantidad;
+- analisis de precios y margenes brutos.
+
+#### Vista a nivel de ticket
+
+Cada observacion corresponde a un unico `id_venta`.
+
+```text
+ticket_total =
+SUM(monto_total) agrupado por id_venta
+```
+
+Las variables constantes dentro del ticket seran:
+
+- fecha;
+- cliente;
+- nodo de venta;
+- canal;
+- metodo de pago.
+
+Se derivara:
+
+```text
+grupo_canal =
+    "Fisico"  si canal = "Tienda"
+    "Digital" si canal in ("Web", "App")
+```
+
+#### Vista a nivel de cliente
+
+Cada observacion corresponde a un unico `id_cliente`.
+
+Se utilizara para:
+
+- distribucion de edad;
+- distribucion de genero;
+- distribucion de ciudad;
+- distribucion del segmento comercial;
+- frecuencia descriptiva de clientes por canal preferido.
+
+Esta vista no incluira todavia los segmentos RFM, que corresponden a la Parte 2.
+
+#### Vista a nivel de ciudad-mes
+
+Cada observacion correspondera a una combinacion de ciudad fisica y mes.
+
+Solo se incluiran tiendas con:
+
+```text
+tipo = "Fisica"
+```
+
+Las metricas seran:
+
+```text
+ventas_netas_ciudad_mes =
+SUM(monto_total)
+
+margen_bruto_ciudad_mes =
+SUM(margen_bruto)
+
+costo_almacenamiento_ciudad_mes =
+SUM(costo_almacenamiento)
+
+margen_operativo_ciudad_mes =
+margen_bruto_ciudad_mes - costo_almacenamiento_ciudad_mes
+
+margen_operativo_pct_ciudad_mes =
+margen_operativo_ciudad_mes / ventas_netas_ciudad_mes
+```
+
+Esta vista permitira comparar las ciudades sin asignar artificialmente los costos de los nodos nacionales `WEB` y `APP` a una ciudad concreta.
+
+### 13.4 Plan de estadistica descriptiva
+
+La Parte 1 calculara, como minimo, las siguientes medidas.
+
+| Variable | Nivel | Medidas principales |
+|---|---|---|
+| `monto_total` | Linea | Media, mediana, desviacion estandar, IQR, asimetria y curtosis |
+| `ticket_total` | Ticket | Media, mediana, moda cuando sea interpretable, desviacion estandar, IQR y percentiles |
+| `cantidad` | Linea | Media, mediana, moda, frecuencias, dispersion, asimetria y curtosis |
+| `edad` | Cliente | Media, mediana, moda, desviacion estandar, IQR y distribucion |
+| `descuento_pct` | Linea | Media, mediana, percentiles y proporcion sin descuento |
+| `margen_bruto_pct` | Linea | Media, mediana, dispersion y valores extremos |
+| `margen_operativo_pct` | Ciudad-mes | Media, mediana y dispersion por ciudad |
+| `canal` | Ticket | Frecuencias absolutas y relativas |
+| `categoria` | Linea | Frecuencias absolutas y relativas |
+| `metodo_pago` | Ticket | Frecuencias absolutas y relativas |
+
+Las visualizaciones minimas seran:
+
+- histogramas de `monto_total`, `ticket_total`, `edad` y `cantidad`;
+- boxplots de ticket por grupo de canal;
+- boxplots de margen operativo por ciudad;
+- grafico de dispersion o jitter de descuento frente a cantidad;
+- tabla o mapa de calor de categoria del ticket frente a metodo de pago;
+- barras de frecuencias para canal, ciudad, categoria y metodo de pago;
+- intervalos de confianza de las metricas principales por grupo;
+- matriz descriptiva de correlaciones numericas.
+
+### 13.5 Hipotesis H1 - Ticket fisico frente a digital
+
+#### Pregunta
+
+¿El valor promedio de los tickets difiere entre las compras realizadas en tiendas fisicas y las compras realizadas mediante canales digitales?
+
+#### Unidad de analisis
+
+Un ticket identificado por `id_venta`.
+
+No se utilizaran lineas individuales como observaciones independientes.
+
+#### Variables
+
+| Rol | Variable |
+|---|---|
+| Variable cuantitativa | `ticket_total` |
+| Variable de agrupacion | `grupo_canal` |
+| Grupo 1 | `Fisico` |
+| Grupo 2 | `Digital` |
+
+#### Formulacion
+
+```text
+H0: media_ticket_fisico = media_ticket_digital
+
+H1: media_ticket_fisico != media_ticket_digital
+```
+
+#### Prueba principal
+
+Prueba t de Welch para muestras independientes.
+
+Se utilizara Welch porque no requiere igualdad de varianzas entre los dos grupos.
+
+#### Alternativa robusta
+
+Prueba U de Mann-Whitney si:
+
+- existen distribuciones extremadamente asimetricas;
+- los valores extremos dominan las medias;
+- los diagnosticos desaconsejan una comparacion parametrica.
+
+#### Supuestos y diagnosticos
+
+Se revisara:
+
+- independencia aproximada entre tickets;
+- forma de las distribuciones;
+- graficos Q-Q;
+- asimetria;
+- valores extremos;
+- varianzas mediante Levene o Brown-Forsythe.
+
+La normalidad no se decidira unicamente mediante una prueba de Shapiro-Wilk, porque con muestras grandes puede rechazar desviaciones pequenas sin importancia practica.
+
+#### Tamano del efecto
+
+Se reportara Hedges `g`.
+
+#### Intervalos de confianza
+
+Se calcularan:
+
+- IC 95 % del ticket promedio fisico;
+- IC 95 % del ticket promedio digital;
+- IC 95 % de la diferencia entre medias.
+
+Cuando la distribucion sea muy asimetrica, se utilizara ademas un intervalo bootstrap reproducible.
+
+#### Analisis de sensibilidad
+
+Como comprobacion adicional, podra repetirse la comparacion utilizando el ticket promedio por cliente y grupo de canal, reduciendo la influencia de clientes con un numero muy alto de compras.
+
+#### Interpretacion
+
+La prueba determinara si existe evidencia de una diferencia, pero no se fijara anticipadamente cual canal debe presentar el mayor ticket.
+
+### 13.6 Hipotesis H2 - Margen operativo entre ciudades
+
+#### Pregunta
+
+¿Existen diferencias en el margen operativo porcentual de las tiendas fisicas entre Lima, Arequipa, Trujillo, Cusco y Piura durante el periodo afectado por el escenario diagnostico?
+
+#### Periodo principal
+
+```text
+2025-04-01 a 2025-12-31
+```
+
+Este periodo corresponde al inicio y desarrollo del deterioro controlado de las tiendas fisicas de Trujillo.
+
+#### Unidad de analisis
+
+Una combinacion ciudad-mes.
+
+La metrica sera:
+
+```text
+margen_operativo_pct_ciudad_mes
+```
+
+La comparacion tendra cinco ciudades observadas durante nueve meses.
+
+#### Formulacion
+
+```text
+H0:
+media_Lima = media_Arequipa = media_Trujillo = media_Cusco = media_Piura
+
+H1:
+al menos una ciudad presenta un margen operativo porcentual diferente
+```
+
+#### Modelo principal
+
+Se utilizara un diseno por bloques mediante un modelo lineal aditivo:
+
+```text
+margen_operativo_pct ~ ciudad + mes
+```
+
+- `ciudad` sera el factor principal.
+- `mes` funcionara como bloque para controlar variaciones mensuales comunes.
+- Se evaluara el efecto de ciudad mediante ANOVA de tipo II.
+
+No se utilizaran lineas de venta individuales como observaciones del ANOVA, porque el costo de almacenamiento se encuentra en una granularidad mensual.
+
+#### Diagnosticos
+
+Se revisara:
+
+- normalidad aproximada de los residuos;
+- grafico Q-Q;
+- homogeneidad de la dispersion;
+- observaciones influyentes;
+- coherencia temporal de las metricas.
+
+#### Alternativa no parametrica
+
+Si los supuestos del modelo no son razonables, se utilizara la prueba de Friedman:
+
+- ciudades como tratamientos;
+- meses como bloques.
+
+#### Comparaciones posteriores
+
+Si el contraste global resulta relevante, se realizaran comparaciones emparejadas por mes entre ciudades, aplicando correccion de Holm.
+
+El contraste de mayor interes sera:
+
+```text
+Trujillo frente a las demas ciudades
+```
+
+#### Tamano del efecto
+
+Se reportara:
+
+- eta cuadrado parcial para el efecto global de ciudad;
+- diferencia media mensual entre Trujillo y cada ciudad;
+- tamano del efecto estandarizado para las comparaciones posteriores.
+
+#### Intervalos de confianza
+
+Se calculara el IC 95 % del margen operativo promedio de cada ciudad y de las diferencias mensuales relevantes.
+
+#### Interpretacion
+
+El generador si debera producir la caida de margen operativo de Trujillo definida en `config/escenarios.yaml`, pero no se fijara previamente el valor exacto del estadistico ni del valor p.
+
+### 13.7 Hipotesis H3 - Categoria principal del ticket y metodo de pago
+
+#### Pregunta
+
+¿Existe asociacion entre la categoria principal de una compra y el metodo de pago utilizado?
+
+#### Unidad de analisis
+
+Un ticket identificado por `id_venta`.
+
+El metodo de pago pertenece al ticket, mientras que la categoria pertenece a cada linea. Para evitar contar varias veces la misma compra, se derivara:
+
+```text
+categoria_ticket =
+categoria con el mayor SUM(monto_total) dentro de cada id_venta
+```
+
+Si dos categorias tienen exactamente el mismo monto agregado, se seleccionara de forma deterministica la primera segun orden alfabetico.
+
+#### Variables
+
+| Rol | Variable |
+|---|---|
+| Variable categorica 1 | `categoria_ticket` |
+| Variable categorica 2 | `metodo_pago` |
+
+#### Formulacion
+
+```text
+H0:
+categoria_ticket y metodo_pago son estadisticamente independientes
+
+H1:
+existe asociacion entre categoria_ticket y metodo_pago
+```
+
+#### Prueba principal
+
+Prueba chi-cuadrado de independencia.
+
+#### Supuestos
+
+Se verificara que:
+
+- cada ticket aparezca una sola vez;
+- las categorias sean mutuamente excluyentes;
+- ninguna frecuencia esperada sea menor que uno;
+- como maximo el 20 % de las celdas tenga frecuencia esperada menor que cinco.
+
+Si las condiciones no se cumplen, se evaluara:
+
+- agrupar categorias escasas;
+- utilizar una estimacion Monte Carlo del valor p;
+- analizar tablas estratificadas por canal.
+
+#### Tamano del efecto
+
+Se reportara `V` de Cramer.
+
+#### Analisis posterior
+
+Se examinaran residuos estandarizados ajustados para identificar que combinaciones contribuyen mas a la asociacion global.
+
+Los analisis por celda utilizaran correccion por comparaciones multiples.
+
+#### Analisis de sensibilidad
+
+Debido a que los metodos de pago tienen distribuciones diferentes por canal, se presentaran tambien tablas descriptivas separadas para:
+
+- Tienda;
+- Web;
+- App.
+
+Esto permitira detectar si una asociacion global esta explicada principalmente por el canal.
+
+#### Interpretacion
+
+El dataset debera garantizar representacion suficiente de categorias y metodos de pago, pero no se forzara una asociacion significativa entre ambas variables.
+
+### 13.8 Hipotesis H4 - Descuento y cantidad vendida
+
+#### Pregunta
+
+¿Existe una relacion monotonica entre el porcentaje de descuento y la cantidad vendida por linea?
+
+#### Unidad de analisis
+
+Una linea de `ventas.csv`.
+
+#### Variables
+
+| Rol | Variable |
+|---|---|
+| Variable 1 | `descuento_pct` |
+| Variable 2 | `cantidad` |
+
+#### Formulacion
+
+```text
+H0:
+rho(descuento_pct, cantidad) = 0
+
+H1:
+rho(descuento_pct, cantidad) != 0
+```
+
+#### Prueba principal
+
+Correlacion de Spearman.
+
+Se selecciona Spearman porque:
+
+- `cantidad` es discreta;
+- su distribucion esta concentrada en valores bajos;
+- existen cantidades atipicas controladas;
+- no se asume una relacion lineal perfecta;
+- la relacion esperada es monotonica con ruido.
+
+#### Diagnosticos
+
+Se revisara:
+
+- grafico de dispersion con jitter;
+- tendencia monotonica;
+- presencia de valores extremos;
+- resultados generales y por canal;
+- resultados generales y por categoria.
+
+#### Tamano del efecto
+
+El propio coeficiente `rho` de Spearman sera la medida del efecto.
+
+#### Intervalo de confianza
+
+Se calculara un IC 95 % mediante bootstrap con semilla 2026.
+
+#### Analisis de sensibilidad
+
+La correlacion se calculara:
+
+1. con todas las lineas validas;
+2. excluyendo temporalmente las lineas con `cantidad > 8`;
+3. separada por canal;
+4. separada por categoria cuando exista representacion suficiente.
+
+Los outliers no se eliminaran del dataset original. La comparacion servira unicamente para evaluar cuanto influyen en el resultado.
+
+#### Interpretacion
+
+El generador incorpora una relacion controlada entre descuento y demanda, por lo que se espera una senal positiva detectable, pero no una correlacion perfecta ni un valor p predeterminado.
+
+### 13.9 Intervalos de confianza adicionales
+
+Ademas de los intervalos vinculados a las hipotesis, se calcularan IC 95 % para indicadores relevantes como:
+
+- ticket promedio general;
+- ticket promedio por canal;
+- venta media por linea;
+- edad promedio de clientes;
+- descuento promedio por canal;
+- margen bruto promedio;
+- margen operativo promedio por ciudad;
+- proporcion de tickets digitales;
+- proporcion de clientes por segmento comercial.
+
+Para medias con distribuciones fuertemente asimetricas se preferiran intervalos bootstrap.
+
+Para proporciones se utilizara un metodo apropiado, como Wilson, evitando depender exclusivamente de la aproximacion normal cuando la frecuencia sea baja.
+
+### 13.10 Tratamiento de faltantes y valores atipicos
+
+#### Valores faltantes
+
+Antes del analisis se reportara:
+
+- cantidad de nulos por campo;
+- porcentaje de nulos por campo;
+- patron de faltantes por tabla;
+- diferencia entre nulos estructurales y faltantes introducidos artificialmente.
+
+Las variables principales de las cuatro hipotesis son no nulables. Por tanto, no se preve imputacion para los contrastes principales.
+
+Para `clientes.edad` se utilizaran observaciones disponibles y se informara el numero de casos excluidos. No se imputara edad unicamente para mejorar el resultado de una prueba.
+
+#### Valores atipicos
+
+Los valores atipicos controlados forman parte del diseno del dataset y no seran eliminados automaticamente.
+
+Se realizara:
+
+- identificacion mediante reglas del YAML;
+- comparacion de estadisticas con y sin outliers;
+- uso de medidas robustas como mediana e IQR;
+- analisis de sensibilidad cuando puedan afectar una conclusion.
+
+Cualquier exclusion debera quedar explicitamente justificada y no modificara los CSV originales.
+
+### 13.11 Criterios de aptitud estadistica del dataset
+
+Antes de ejecutar las pruebas se verificara que:
+
+1. existan tickets fisicos y digitales suficientes para realizar H1;
+2. cada `id_venta` mantenga fecha, cliente, nodo, canal y metodo de pago constantes;
+3. las cinco ciudades tengan observaciones mensuales durante el periodo de H2;
+4. ventas e inventario puedan conciliarse para calcular el margen operativo;
+5. las seis categorias tengan representacion en los tickets;
+6. los metodos de pago tengan frecuencias suficientes para construir la tabla de contingencia;
+7. `descuento_pct` y `cantidad` presenten variabilidad distinta de cero;
+8. los outliers no rompan las formulas monetarias;
+9. las variables derivadas se construyan de forma deterministica;
+10. los datos permitan ejecutar las pruebas, aunque no todas produzcan significancia estadistica.
+
+Si alguno de estos requisitos no se cumple, se revisara el proceso generador por insuficiencia metodologica. No se modificaran los datos unicamente para obtener valores p favorables.
+
+### 13.12 Matriz resumida de hipotesis
+
+| ID | Pregunta | Unidad | Prueba principal | Alternativa | Tamano del efecto |
+|---|---|---|---|---|---|
+| H1 | ¿Difiere el ticket entre fisico y digital? | Ticket | t de Welch | Mann-Whitney U | Hedges `g` |
+| H2 | ¿Difiere el margen operativo entre ciudades? | Ciudad-mes | Modelo bloqueado + ANOVA tipo II | Friedman | Eta cuadrado parcial |
+| H3 | ¿Existe asociacion entre categoria y pago? | Ticket | Chi-cuadrado | Monte Carlo / analisis estratificado | V de Cramer |
+| H4 | ¿Existe relacion entre descuento y cantidad? | Linea | Spearman | Analisis estratificado | `rho` de Spearman |
+
+### 13.13 Variables requeridas y disponibilidad
+
+| Hipotesis | Campos fisicos requeridos | Variables derivadas |
+|---|---|---|
+| H1 | `id_venta`, `monto_total`, `canal` | `ticket_total`, `grupo_canal` |
+| H2 | `fecha`, `id_tienda`, `id_producto`, `monto_total`, `cantidad`, `costo_unitario`, `costo_almacenamiento`, `ciudad`, `tipo` | `periodo_mes`, `margen_bruto`, `margen_operativo_pct_ciudad_mes` |
+| H3 | `id_venta`, `id_producto`, `monto_total`, `metodo_pago`, `categoria` | `categoria_ticket` |
+| H4 | `descuento_pct`, `cantidad` | No requiere variable adicional |
+
+La revision de F0-05 concluye que el contrato actual contiene todos los campos fisicos necesarios. No se requiere anadir nuevas columnas a los CSV.
+
+### 13.14 Reproducibilidad del analisis
+
+El notebook de la Parte 1 debera:
+
+- ejecutarse de principio a fin sin intervencion manual;
+- cargar unicamente los CSV oficiales;
+- construir las variables derivadas mediante codigo;
+- utilizar semilla 2026 en procedimientos bootstrap o aleatorios;
+- mostrar las salidas de las pruebas;
+- documentar cada decision mediante celdas Markdown;
+- separar claramente objetivo, metodo, resultado e interpretacion;
+- registrar en la bitacora los prompts de IA relevantes;
+- evitar editar manualmente los resultados producidos por el codigo.
+
+### 13.15 Resultado esperado de F0-05
+
+F0-05 deja definidos:
+
+- cuatro problemas inferenciales;
+- sus hipotesis nulas y alternativas;
+- las unidades de analisis;
+- las variables fisicas y derivadas;
+- las pruebas principales y alternativas;
+- los supuestos;
+- los tamanos del efecto;
+- los intervalos de confianza;
+- el tratamiento de faltantes y outliers;
+- los criterios de aptitud estadistica del dataset;
+- los requisitos de reproducibilidad.
+
+La Parte 1 debera implementar esta especificacion sobre el dataset oficial, sin redefinir unilateralmente las hipotesis o sus granularidades.

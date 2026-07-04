@@ -264,6 +264,70 @@ El patrón diagnóstico de Trujillo se evaluará principalmente mediante `margen
 - La caída de Trujillo debe observarse como una reducción agregada del margen operativo, no como pérdidas generalizadas en todas sus líneas.
 - El costo de almacenamiento no se asigna directamente a cada línea; se incorpora al margen operativo en el nivel producto–nodo–periodo.
 
+### 6.6 Variables derivadas para la Parte 1
+
+Las siguientes variables no se almacenan en los CSV. Se construyen de forma reproducible durante el analisis estadistico.
+
+#### Grupo de canal
+
+```text
+grupo_canal =
+    "Fisico"  si ventas.canal = "Tienda"
+    "Digital" si ventas.canal in ("Web", "App")
+```
+
+Se utilizara para comparar el ticket entre operaciones fisicas y digitales.
+
+#### Total del ticket
+
+```text
+ticket_total = SUM(ventas.monto_total) agrupado por ventas.id_venta
+```
+
+Cada `id_venta` constituye una unica observacion en los analisis realizados a nivel de ticket.
+
+#### Categoria principal del ticket
+
+```text
+categoria_ticket =
+categoria con el mayor SUM(monto_total) dentro de cada id_venta
+```
+
+Si dos o mas categorias presentan el mismo monto agregado, se seleccionara de forma deterministica la primera categoria segun orden alfabetico.
+
+Esta variable se utilizara para analizar la asociacion entre categoria y metodo de pago sin duplicar un mismo ticket por cada linea de producto.
+
+#### Periodo mensual
+
+```text
+periodo_mes = ventas.fecha expresada en formato AAAA-MM
+```
+
+Se utilizara para agregar ventas, margenes e inventario en una granularidad mensual.
+
+#### Margen operativo por ciudad y mes
+
+Para las tiendas fisicas:
+
+```text
+ventas_netas_ciudad_mes =
+SUM(monto_total) por ciudad y periodo_mes
+
+margen_bruto_ciudad_mes =
+SUM(margen_bruto) por ciudad y periodo_mes
+
+costo_almacenamiento_ciudad_mes =
+SUM(costo_almacenamiento) por ciudad y periodo_mes
+
+margen_operativo_ciudad_mes =
+margen_bruto_ciudad_mes - costo_almacenamiento_ciudad_mes
+
+margen_operativo_pct_ciudad_mes =
+margen_operativo_ciudad_mes / ventas_netas_ciudad_mes
+```
+
+La agregacion debera incluir unicamente tiendas fisicas cuando se compare el margen entre ciudades, porque los nodos `WEB` y `APP` son nacionales y no pertenecen a una ciudad especifica.
+
 ---
 
 ## 7. Reglas de integridad y calidad
@@ -300,7 +364,7 @@ El patrón diagnóstico de Trujillo se evaluará principalmente mediante `margen
 |---|---:|---:|---:|---:|---:|
 | `monto_total`, `ticket_total`, `ticket_promedio` | ✓ | ✓ | ✓ | — | ✓ |
 | `margen_bruto`, `margen_bruto_pct` | ✓ | ✓ | — | — | ✓ |
-| `margen_operativo`, `margen_operativo_pct` | — | ✓ | — | ✓ | ✓ |
+| `margen_operativo`, `margen_operativo_pct` | ✓ | ✓ | — | ✓ | ✓ |
 | `canal`, `tipo`, `ciudad_venta` | ✓ | ✓ | ✓ | — | ✓ |
 | `categoria`, `subcategoria` | ✓ | ✓ | ✓ | ✓ | ✓ |
 | `metodo_pago` | ✓ | — | — | — | ✓ |
@@ -309,7 +373,7 @@ El patrón diagnóstico de Trujillo se evaluará principalmente mediante `margen
 | historial por `id_cliente` | — | ✓ | ✓ (churn) | — | ✓ |
 | `segmento` comercial | ✓ | ✓ | ✓ | — | ✓ |
 | `stock_inicial`, `stock_final`, `reabastecimiento` | — | — | — | ✓ | ✓ |
-| `costo_almacenamiento` | — | ✓ | — | ✓ | ✓ |
+| `costo_almacenamiento` | ✓ | ✓ | — | ✓ | ✓ |
 | demanda agregada por categoría y periodo | — | ✓ | ✓ | ✓ | ✓ |
 
 ---
