@@ -133,7 +133,7 @@ Las categorías, subcategorías y marcas permitidas se encuentran declaradas en 
 
 ### 4.4 `ventas.csv`
 
-**PK:** `id_linea`  
+**PK:** `id_linea`
 **Agrupador de ticket:** `id_venta`
 
 | Campo | Tipo | Nulable | Dominio o regla | Descripción |
@@ -330,6 +330,101 @@ La agregacion debera incluir unicamente tiendas fisicas cuando se compare el mar
 
 ---
 
+### 6.7 Datasets derivados para la Parte 3
+Los problemas predictivos no añadirán columnas a los CSV fuente. Sus unidades de análisis, objetivos y variables se construirán de manera reproducible mediante código.
+
+#### Panel mensual de demanda
+Cada observación representa una combinación de:
+periodo_objetivo x id_tienda x categoria
+
+La variable objetivo será:
+demanda_unidades = SUM(ventas.cantidad) para el nodo, la categoría y el periodo objetivo
+
+El panel incluirá todas las combinaciones activas de nodo, categoría y mes. Una combinación se considera activa cuando el nodo ya se encuentra operativo y existe al menos un producto de la categoría disponible en ese periodo. Si una combinación activa no registra ventas durante un mes, demanda_unidades será cero; la observación no se eliminará.
+
+Para predecir el mes t, las variables históricas solo podrán utilizar información disponible hasta el final del mes t-1. Las variables de calendario del propio mes objetivo podrán utilizarse porque son conocidas anticipadamente.
+
+Variables históricas candidatas:
+demanda_lag_1
+demanda_lag_2
+demanda_lag_3
+demanda_lag_6
+demanda_lag_12
+demanda_media_movil_3
+demanda_media_movil_6
+demanda_media_movil_12
+demanda_desviacion_movil_3
+tickets_lag_1
+descuento_promedio_lag_1
+precio_promedio_lag_1
+proporcion_promocion_lag_1
+
+Variables de calendario y tendencia:
+anio
+mes
+trimestre
+tendencia
+mes_sin
+mes_cos
+es_julio
+es_diciembre
+
+No se utilizarán como predictores el descuento, precio, número de tickets o cantidad real del mes objetivo.
+
+#### Dataset cliente-fecha de observación para churn
+Cada observación representa:
+id_cliente x fecha_observacion
+
+Un cliente será elegible cuando:
+clientes.fecha_registro <= fecha_observacion; y haya realizado al menos una compra hasta la fecha de observación.
+
+El target será:
+churn_90d = 1 si el cliente no realiza compras en (fecha_observacion, fecha_observacion + 90 días]
+churn_90d = 0 si registra al menos una compra dentro de esa ventana
+
+La ventana histórica principal será de 365 días anteriores al corte. La recencia se calculará desde la última compra histórica disponible hasta la fecha de observación, aunque esa compra sea anterior a la ventana de 365 días.
+
+Variables candidatas:
+recencia_dias
+frecuencia_tickets_365d
+valor_monetario_365d
+ticket_promedio_365d
+unidades_365d
+meses_activos_365d
+categorias_distintas_365d
+categoria_dominante
+proporcion_digital_365d
+proporcion_web_365d
+proporcion_app_365d
+descuento_promedio_365d
+dias_desde_penultima_compra
+solo_una_compra
+frecuencia_ultimos_90d
+frecuencia_90d_previos
+tendencia_frecuencia
+antiguedad_cliente_dias
+
+Cuando el cliente tenga una sola compra histórica, solo_una_compra = 1 y dias_desde_penultima_compra se representará como dato faltante para que el pipeline lo trate de forma reproducible.
+
+También podrán utilizarse variables de perfil disponibles antes del corte:
+edad
+genero
+ciudad
+segmento
+canal_preferido
+
+No se utilizarán como predictores: id_cliente, nombre, información posterior al corte, el indicador descriptivo final calculado al 31 de diciembre de 2025, segmentos RFM calculados con información futura, o compras realizadas dentro de la ventana objetivo.
+
+#### Diferencia entre churn descriptivo y predictivo
+El indicador descriptivo final identifica clientes inactivos observando los 90 días anteriores al 31 de diciembre de 2025. El target predictivo utiliza cortes históricos y observa los 90 días posteriores a cada fecha de observación. Ambos conceptos emplean el mismo umbral temporal, pero cumplen propósitos diferentes.
+
+#### Salidas derivadas de la Parte 3
+Los resultados predictivos no forman parte de los CSV fuente. Se producirán en la carpeta resultados/ mediante los siguientes archivos:
+predicciones_demanda.csv
+predicciones_churn.csv
+metricas_predictivas.csv
+importancia_variables.csv
+
 ## 7. Reglas de integridad y calidad
 
 1. Las claves primarias deben ser únicas y no nulas.
@@ -353,8 +448,14 @@ La agregacion debera incluir unicamente tiendas fisicas cuando se compare el mar
 19. Toda combinación producto–tienda–mes con ventas debe tener un registro correspondiente en `inventario.csv`.
 20. Los valores faltantes controlados solo se introducirán en campos nulables y no se contarán junto con los nulos estructurales de nodos virtuales.
 21. Los outliers no podrán violar claves, fechas, fórmulas, rangos duros ni integridad referencial.
-22. Para la validación general del dataset, un cliente se considera inactivo si no realizó compras durante los 90 días anteriores al 2025-12-31.
-23. F0-06 deberá definir por separado la ventana histórica de variables, la fecha de corte y el periodo objetivo utilizados para entrenar y evaluar el modelo predictivo, evitando fuga de información.
+22. Para el indicador descriptivo final, un cliente se considera inactivo si no realizó compras durante los 90 días anteriores al 2025-12-31. El denominador se limitará a clientes registrados antes del inicio de esa ventana y con al menos una compra histórica.
+23. Para el modelo predictivo, churn_90d se calculará independientemente para cada fecha de observación y utilizará únicamente compras posteriores al corte para construir el target.
+24. Ninguna variable predictora podrá contener información posterior a su fecha de observación o al inicio del periodo objetivo.
+25. Las transformaciones, imputaciones, codificaciones y escalados se ajustarán únicamente con el conjunto de entrenamiento de cada partición.
+26. id_cliente, nombre, id_venta e id_linea no se utilizarán como variables predictoras.
+27. Todas las observaciones pertenecientes al mismo mes objetivo permanecerán juntas en las particiones temporales del modelo de demanda.
+28. Toda fecha de observación de churn deberá tener su ventana futura completa dentro del periodo disponible del dataset.
+29. Las combinaciones activas nodo-categoría sin ventas en un mes se conservarán con demanda_unidades = 0.
 
 ---
 
@@ -375,43 +476,43 @@ La agregacion debera incluir unicamente tiendas fisicas cuando se compare el mar
 | `stock_inicial`, `stock_final`, `reabastecimiento` | — | — | — | ✓ | ✓ |
 | `costo_almacenamiento` | ✓ | ✓ | — | ✓ | ✓ |
 | demanda agregada por categoría y periodo | — | ✓ | ✓ | ✓ | ✓ |
-
+| `cantidad`, `demanda_unidades`, rezagos y medias móviles | — | ✓ | ✓ (demanda) | ✓ | ✓ |
+| recencia, frecuencia, valor y comportamiento histórico | — | ✓ | ✓ (churn) | — | ✓ |
+| `demanda_predicha`, límites bajo y alto | — | — | ✓ | ✓ | ✓ |
+| `probabilidad_churn`, `prediccion_churn` | — | — | ✓ | — | ✓ |
 ---
 
-## 9. Continuidad después de F0-04
+## 9. Continuidad después de F0-06
 
-F0-04 cerró en `config/escenarios.yaml` los siguientes elementos:
+F0-05 cerró las hipótesis, unidades de análisis, pruebas, supuestos, tamaños del efecto e intervalos de confianza
+de la Parte 1.
 
-- cantidad y distribución de nodos físicos y virtuales;
-- volúmenes objetivo de productos, clientes, tickets y líneas de venta;
-- categorías, subcategorías y marcas ficticias;
-- distribuciones de precios, costos, cantidades, canales y métodos de pago;
-- magnitud de los picos de julio y diciembre;
-- crecimiento del canal digital;
-- causas y rango esperado de la caída del margen operativo de Trujillo;
-- descuentos por canal;
-- tasa de almacenamiento mensual;
-- parámetros de clientes y segmentos comerciales;
-- definición general de churn a 90 días;
-- porcentajes y campos permitidos para faltantes y outliers;
-- archivos CSV producidos por el generador;
-- criterios automáticos de aceptación del dataset.
+F0-06 cerró los siguientes elementos de la Parte 3:
+ - target de demanda en unidades;
+ - granularidad mensual por nodo de venta y categoría;
+ - horizonte de predicción de un mes;
+ - pronóstico operativo para enero de 2026;
+ - rezagos, ventanas móviles y variables históricas permitidas;
+ - particiones temporales de entrenamiento, validación y prueba;
+ - definición prospectiva de `churn_90d`;
+ - fechas de observación, ventana histórica y ventana objetivo;
+ - variables de perfil y comportamiento permitidas;
+ - reglas de elegibilidad y prevención de fuga de información;
+ - modelos base, modelos avanzados, métricas y reglas de selección;
+ - archivos de salida predictiva y su relación con F0-07 y Power BI.
 
-Las siguientes decisiones permanecen reservadas para las fases analíticas posteriores:
-
-- hipótesis y pruebas estadísticas definitivas de la Parte 1;
-- reglas de construcción e interpretación de la segmentación RFM o clustering;
-- fecha de corte, ventana histórica y periodo objetivo del modelo de churn;
-- granularidad y horizonte definitivos del pronóstico de demanda;
-- variables predictoras, particiones temporales y métricas de los modelos;
-- variables de decisión, función objetivo y restricciones del modelo prescriptivo;
-- estructura final del modelo de Power BI y sus medidas DAX;
-- archivos de salida analíticos específicos de cada parte.
+Las siguientes decisiones permanecen reservadas para fases posteriores:
+ - reglas definitivas de segmentación RFM o clustering de la Parte 2;
+ - variables de decisión, función objetivo y restricciones del modelo prescriptivo;
+ - eventual desagregación del pronóstico de categoría a producto para F0-07;
+ - estructura final del modelo de Power BI y sus medidas DAX;
+ - archivos analíticos específicos de las Partes 2, 4 y 5.
 
 Las tareas posteriores deberán utilizar conjuntamente:
 
 1. este diccionario para conocer el esquema y las reglas de integridad;
-2. `config/escenarios.yaml` para conocer los valores numéricos;
-3. `docs/00_especificacion_datos_y_analitica.md` para conocer el alcance y la interpretación de negocio.
+2. `config/escenarios.yaml` para conocer los parámetros numéricos;
+3. `docs/00_especificacion_datos_y_analitica.md` para conocer el alcance y la interpretación funcional.
 
-Ninguna fase deberá redefinir unilateralmente campos, fórmulas o parámetros sin actualizar los tres artefactos afectados.
+Ninguna fase deberá redefinir unilateralmente campos, granularidades, targets, ventanas temporales o fórmulas sin
+actualizar los artefactos afectados y documentar el impacto sobre las demás partes.
