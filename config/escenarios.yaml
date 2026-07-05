@@ -5,7 +5,7 @@
 # ============================================================
 
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   moneda: "PEN"
   zona_horaria: "America/Lima"
   locale_faker: "es_PE"
@@ -406,23 +406,134 @@ metodos_pago_por_canal:
 
 # ------------------------------------------------------------
 # 15. CHURN
-# Cliente inactivo = sin compras durante los últimos 90 días.
+# Se distingue el indicador descriptivo final del target
+# predictivo prospectivo.
 # ------------------------------------------------------------
 churn:
-  fecha_evaluacion: "2025-12-31"
+  fecha_evaluacion_descriptiva: "2025-12-31"
   ventana_inactividad_dias: 90
+
+  elegibilidad_descriptiva:
+    requiere_registro_antes_inicio_ventana: true
+    requiere_compra_historica: true
 
   proporcion_objetivo:
     minima: 0.25
     maxima: 0.35
 
+  # Score dinámico utilizado por el generador para crear una
+  # señal aprendible, imperfecta y con ruido.
   pesos_rfm:
-    recencia: 0.50
-    frecuencia: 0.30
-    valor: 0.20
+    recencia_alta: 0.50
+    frecuencia_baja: 0.30
+    valor_bajo: 0.20
+
+  senal_predictiva:
+    actualizacion: trimestral
+    cuantiles_riesgo: [0.33, 0.67]
+
+    multiplicador_probabilidad_compra:
+      riesgo_bajo: 1.15
+      riesgo_medio: 1.00
+      riesgo_alto: 0.55
+
+    ruido_score_desviacion_estandar: 0.15
+    calibrar_intercepto_para_proporcion_objetivo: true
+    almacenar_score_en_csv: false
 
 # ------------------------------------------------------------
-# 16. CALIDAD DE DATOS
+# 16. MODELADO PREDICTIVO
+# Parámetros reproducibles de construcción y evaluación.
+# ------------------------------------------------------------
+modelado_predictivo:
+  semilla: 2026
+
+  demanda:
+    objetivo: demanda_unidades
+
+    granularidad:
+      - periodo_objetivo
+      - id_tienda
+      - categoria
+
+    horizonte_meses: 1
+    completar_combinaciones_activas_sin_ventas_con_cero: true
+
+    rezagos_meses: [1, 2, 3, 6, 12]
+    ventanas_moviles_meses: [3, 6, 12]
+
+    primer_periodo_objetivo: "2024-01"
+
+    particion:
+      entrenamiento_inicio: "2024-01"
+      entrenamiento_fin: "2025-06"
+      validacion_inicio: "2025-07"
+      validacion_fin: "2025-09"
+      prueba_inicio: "2025-10"
+      prueba_fin: "2025-12"
+    validacion_cruzada:
+      estrategia: ventana_expansiva
+      numero_folds: 4
+      agrupar_por_periodo_objetivo: true
+
+    periodo_pronostico_operativo: "2026-01"
+
+    metricas:
+      - MAE
+      - RMSE
+      - R2
+      - WAPE
+
+  churn:
+    unidad_analisis:
+      - id_cliente
+      - fecha_observacion
+
+    ventana_historica_dias: 365
+    ventana_objetivo_dias: 90
+
+    fechas_observacion:
+      - "2023-12-31"
+      - "2024-03-31"
+      - "2024-06-30"
+      - "2024-09-30"
+      - "2024-12-31"
+      - "2025-03-31"
+      - "2025-06-30"
+      - "2025-09-30"
+
+    cortes_entrenamiento:
+      - "2023-12-31"
+      - "2024-03-31"
+      - "2024-06-30"
+      - "2024-09-30"
+      - "2024-12-31"
+
+    cortes_validacion:
+      - "2025-03-31"
+      - "2025-06-30"
+
+    corte_prueba: "2025-09-30"
+
+    elegibilidad:
+      requiere_registro_previo: true
+      requiere_compra_previa: true
+
+    seleccion_umbral:
+      conjunto: validacion
+      criterio_principal: F1
+      desempate: recall
+
+    metricas:
+      - accuracy
+      - precision
+      - recall
+      - F1
+      - AUC_ROC
+      - PR_AUC
+      - matriz_confusion
+# ------------------------------------------------------------
+# 17. CALIDAD DE DATOS
 # Los faltantes solo se insertan en campos nulables.
 # Los outliers se introducen en cantidad y luego se recalculan
 # monto_total, costo_total y márgenes.
@@ -452,7 +563,7 @@ calidad_datos:
     recalcular_campos_derivados: true
 
 # ------------------------------------------------------------
-# 17. SALIDAS
+# 18. SALIDAS
 # ------------------------------------------------------------
 salidas:
   directorio: datos
@@ -464,8 +575,23 @@ salidas:
     ventas: ventas.csv
     inventario: inventario.csv
 
+salidas_predictivas:
+  directorio: resultados
+
+  archivos:
+    predicciones_demanda: predicciones_demanda.csv
+    predicciones_churn: predicciones_churn.csv
+    metricas_modelos: metricas_predictivas.csv
+    importancia_variables: importancia_variables.csv
+
+  intervalo_demanda:
+    nivel_central_pct: 80
+    cuantil_inferior_residuo: 0.10
+    cuantil_superior_residuo: 0.90
+    truncar_limite_inferior_en_cero: true
+
 # ------------------------------------------------------------
-# 18. CRITERIOS DE ACEPTACIÓN DEL DATASET
+# 19. CRITERIOS DE ACEPTACIÓN DEL DATASET
 # Son resultados esperados; no deben usarse como parámetros causales.
 # ------------------------------------------------------------
 validacion:
@@ -507,6 +633,30 @@ validacion:
   outliers:
     criterio: "ventas.cantidad > 8"
     rango_pct: [0.3, 0.8]
+
+aptitud_predictiva:
+  demanda:
+    panel_mensual_completo: true
+    minimo_meses_objetivo: 24
+    series_con_variacion: true
+    conservar_meses_sin_ventas: true
+    todas_las_categorias_representadas: true
+    todos_los_nodos_representados: true
+
+  churn:
+    ambas_clases_por_corte: true
+    minimo_observaciones_por_clase_y_corte: 100
+    rango_tasa_positiva_por_corte_pct: [15, 60]
+    senal_rfm_aprendible_con_ruido: true
+
+  temporal:
+    ventanas_objetivo_dentro_del_periodo: true
+    impedir_variables_futuras: true
+    impedir_particion_aleatoria: true
+
+  metricas_modelos:
+    no_fijar_metrica_minima: true
+    no_predeterminar_modelo_ganador: true
 
   integridad:
     sin_claves_huerfanas: true

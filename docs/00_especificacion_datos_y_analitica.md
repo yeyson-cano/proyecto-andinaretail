@@ -144,18 +144,17 @@ Preguntas complementarias:
 
 **Preguntas principales:**
 
-> ¿Qué demanda se espera por categoría y periodo?
+> ¿Qué demanda de unidades se espera por nodo, categoría y mes?
 
-> ¿Qué clientes presentan mayor probabilidad de volverse inactivos?
+> ¿Qué clientes presentan mayor probabilidad de no comprar durante los siguientes 90 días?
 
 El proyecto abordará:
+ - regresión de demanda mensual por nodo y categoría, con horizonte de un mes; - clasificación de churn mediante observaciones cliente-fecha de corte y una ventana futura de 90 días.
 
-- un problema de regresión para pronosticar demanda;
-- un problema de clasificación para predecir churn o inactividad.
+El pronóstico operativo final corresponderá a enero de 2026 y servirá como insumo de la Parte 4.
 
-Inicialmente se propone pronosticar demanda por periodo, ciudad, canal y categoría. La granularidad y el horizonte definitivos se validarán en F0-06.
-
-El umbral de inactividad será de 90 días. F0-06 definirá la fecha de observación, el periodo objetivo y la construcción del target para evitar fuga de información.
+El churn predictivo se diferenciará del indicador descriptivo calculado al cierre de 2025. Todas las variables
+deberán utilizar exclusivamente información conocida antes del corte o del inicio del periodo objetivo.
 
 ### 7.4 Parte 4 — Modelo prescriptivo
 
@@ -224,21 +223,30 @@ El tablero deberá permitir revisar:
 - El deterioro de margen de Trujillo afectará únicamente a sus tiendas físicas desde el 1 de abril de 2025.
 - La caída de Trujillo se evaluará mediante el margen operativo porcentual, incorporando descuentos, mezcla de productos y costos de almacenamiento.
 - Los criterios automáticos de aceptación del dataset se definirán y ejecutarán a partir de los rangos establecidos en `config/escenarios.yaml`.
+- La demanda se pronosticará en unidades por mes, nodo de venta y categoría.
+- El horizonte de demanda será de un mes.
+- El pronóstico operativo final corresponderá a enero de 2026.
+- La evaluación predictiva utilizará particiones temporales; no se permitirán particiones aleatorias de filas.
+- El churn se construirá por cliente y fecha de observación.
+- La ventana histórica principal de churn será de 365 días.
+- La ventana objetivo de churn será de 90 días posteriores al corte.
+- El conjunto de prueba final de churn utilizará el corte 2025-09-30.
+- Los conjuntos de prueba permanecerán aislados hasta la evaluación final.
+- No se decidirá anticipadamente qué modelo será el ganador.
+- Los resultados predictivos se generarán como archivos derivados en la carpeta `resultados/`.
 
 ---
 
 ## 10. Aspectos reservados para tareas posteriores
 
-F0-04 cierra los parámetros de generación, los volúmenes, los patrones controlados y los criterios básicos de aceptación del dataset. Las siguientes decisiones permanecen reservadas para tareas posteriores:
+F0-05 cerró la planificación estadística de la Parte 1 y F0-06 cierra la definición de los problemas predictivos
+de la Parte 3.
 
-- formulación definitiva de las hipótesis y pruebas estadísticas de la Parte 1;
-- criterios de segmentación RFM o clustering de la Parte 2;
-- fecha de observación, ventana de variables y periodo objetivo del modelo de churn, evitando fuga de información;
-- granularidad y horizonte definitivos del pronóstico de demanda;
-- variables predictoras, particiones temporales y métricas de evaluación de los modelos;
-- variables de decisión, función objetivo y restricciones del modelo prescriptivo;
-- estructura definitiva del modelo de datos, medidas DAX y páginas de Power BI;
-- archivos de salida analíticos específicos de cada una de las cinco partes.
+Las siguientes decisiones permanecen reservadas para tareas posteriores:
+ - reglas definitivas de construcción e interpretación de la segmentación RFM o clustering de la Parte 2; - variables de decisión, función objetivo y restricciones del modelo prescriptivo; - método de desagregación del pronóstico de categoría a producto, si F0-07 lo requiere; - estructura definitiva del modelo de datos, medidas DAX y páginas de Power BI; - archivos de salida analíticos específicos de las Partes 2, 4 y 5.
+
+Las tareas posteriores deberán respetar las granularidades, targets, ventanas temporales y reglas contra fuga de
+información aprobadas en esta especificación.
 
 ---
 
@@ -565,23 +573,53 @@ La distribución del canal preferido será:
 
 Las distribuciones de género, ciudad y métodos de pago por canal se encuentran declaradas en el archivo YAML.
 
+
 ### 12.13 Churn
 
-Un cliente será considerado inactivo si no realizó compras durante los 90 días anteriores al 31 de diciembre de 2025.
+El proyecto distingue dos conceptos relacionados, pero no equivalentes.
 
-La proporción objetivo de clientes inactivos será de 25 % a 35 %.
+#### Indicador descriptivo final
 
-La generación utilizará un score basado en RFM con los siguientes pesos:
+Para la validación general y el tablero, un cliente será considerado inactivo si no realizó compras durante los 90
+días anteriores al 31 de diciembre de 2025.
 
-| Componente      | Peso |
-| --------------- | ---: |
-| Recencia        | 50 % |
-| Frecuencia      | 30 % |
-| Valor monetario | 20 % |
+El denominador se limitará a clientes registrados antes del inicio de esa ventana y con al menos una compra
+histórica.
 
-Estos pesos se utilizarán para generar un patrón aprendible, pero no se almacenarán como una etiqueta explicativa en `clientes.csv`.
+La proporción objetivo del indicador descriptivo será de 25 % a 35 %.
 
-La construcción definitiva del dataset de entrenamiento, la ventana histórica y la prevención de fuga de información se definirán en F0-06.
+#### Target predictivo prospectivo
+
+Para cada fecha de observación histórica:
+
+```text
+churn_90d = 1
+si el cliente no realiza compras durante los 90 días posteriores al corte
+
+churn_90d = 0
+si realiza al menos una compra durante esa ventana
+```
+Las variables predictoras se calcularán exclusivamente con información disponible hasta la fecha de observación.
+
+#### Señal incorporada por el generador
+
+El generador actualizará trimestralmente un score de riesgo conceptual basado en:
+
+```text
+score_riesgo =
+0.50 * recencia_alta_normalizada
++ 0.30 * frecuencia_baja_normalizada
++ 0.20 * valor_bajo_normalizado
++ ruido
+```
+
+El score afectará de forma probabilística la posibilidad de compras futuras. Los clientes de riesgo alto tendrán
+menor propensión futura de compra; los de riesgo bajo, mayor propensión. La relación conservará ruido para evitar
+un target determinístico.
+
+El score no se almacenará en `clientes.csv`, no se utilizará directamente como predictor y no garantizará una
+métrica específica. El generador calibrará el nivel base para mantener el indicador descriptivo dentro del rango
+aprobado.
 
 ### 12.14 Calidad de datos
 
@@ -661,6 +699,20 @@ También deberá verificar:
 * ausencia de stock final negativo.
 
 ---
+
+### 12.17 Aptitud predictiva del dataset
+
+El script de validación deberá comprobar que el dataset pueda sostener los dos problemas predictivos sin forzar el
+resultado de los modelos.
+
+Para demanda deberá verificarse:
+ - existencia del panel mensual por nodo y categoría; - conservación de combinaciones activas con cero ventas; - al menos 24 meses objetivo evaluables; - representación de los 15 nodos y las seis categorías; - variación temporal distinta de cero; - disponibilidad de los rezagos definidos; - separación correcta entre información histórica y mes objetivo.
+
+Para churn deberá verificarse:
+ - construcción de todas las fechas de observación aprobadas; - ventana futura completa de 90 días para cada corte; - presencia de ambas clases en cada fecha de observación; - al menos 100 observaciones por clase y corte; - tasa positiva entre 15 % y 60 % por corte; - relación imperfecta entre comportamiento RFM histórico y churn futuro; - ausencia de información posterior al corte en las variables.
+
+Estas validaciones determinan que los problemas puedan construirse y evaluarse. No se fijará una métrica mínima,
+no se regenerarán datos únicamente para mejorar resultados y no se predeterminará qué modelo debe ganar.
 
 ## 13. Hipotesis estadisticas y variables requeridas
 
@@ -1258,3 +1310,375 @@ F0-05 deja definidos:
 - los requisitos de reproducibilidad.
 
 La Parte 1 debera implementar esta especificacion sobre el dataset oficial, sin redefinir unilateralmente las hipotesis o sus granularidades.
+
+## 14. Problemas predictivos de demanda y churn
+
+### 14.1 Objetivo y alcance
+
+Esta sección define la planificación de la Parte 3. Su propósito es establecer de forma reproducible:
+ - los dos problemas predictivos; - sus variables objetivo y unidades de análisis; - las ventanas y particiones temporales; - las variables permitidas y prohibidas; - los baselines y modelos candidatos; - el preprocesamiento y la optimización de hiperparámetros; - las métricas de evaluación; - la interpretación de los modelos; - las salidas que consumirán F0-07 y Power BI.
+La Parte 3 implementará un problema de regresión para demanda y un problema de clasificación para churn. La
+especificación se formula antes de observar los resultados definitivos y no predetermina qué modelo será el
+ganador.
+
+### 14.2 Principios comunes de modelado
+
+Los dos problemas respetarán estas reglas:
+
+1. Las particiones serán temporales; no se dividirán filas aleatoriamente.
+2. Los conjuntos de prueba permanecerán aislados hasta la evaluación final.
+3. Las imputaciones, codificaciones y escalados se ajustarán únicamente con datos de entrenamiento mediante
+pipelines.
+4. Los identificadores técnicos no se utilizarán como predictores.
+5. Todo procedimiento aleatorio utilizará la semilla 2026.
+6. Cada modelo se comparará contra al menos un baseline simple.
+7. La selección de hiperparámetros utilizará únicamente entrenamiento y validación temporal.
+8. No se modificará el dataset para obtener métricas favorables.
+9. La selección final considerará métricas, estabilidad, interpretabilidad y utilidad de negocio.
+10. Los resultados serán reproducibles y se exportarán sin edición manual.
+
+### 14.3 Problema de pronóstico de demanda
+
+#### Pregunta
+
+> ¿Cuántas unidades se venderán en cada nodo y categoría durante el siguiente mes?
+
+#### Tipo de problema
+
+Regresión supervisada sobre un panel temporal.
+
+#### Variable objetivo
+
+```text
+demanda_unidades = SUM(ventas.cantidad)
+```
+
+#### Granularidad
+
+```text
+periodo_objetivo × id_tienda × categoria
+```
+
+Se conservarán las combinaciones activas sin ventas con `demanda_unidades = 0`.
+
+#### Horizonte
+
+Un mes hacia adelante.
+
+Para pronosticar el mes `t`, solo se utilizará información disponible hasta el final del mes `t-1`, además de
+variables de calendario conocidas anticipadamente.
+
+#### Pronóstico operativo
+
+Después de seleccionar el modelo mediante los periodos históricos, se reentrenará con toda la información
+disponible hasta diciembre de 2025 y se generará el pronóstico de enero de 2026.
+
+### 14.4 Variables predictoras de demanda
+
+#### Variables estáticas
+ - `id_tienda` tratado como categoría;
+ - ciudad;
+ - región;
+ - tipo de nodo;
+ - canal;
+ - categoría.
+
+#### Variables de calendario conocidas
+ - año;
+ - mes;
+ - trimestre;
+ - tendencia temporal;
+ - `mes_sin` y `mes_cos`;
+ - indicador de julio;
+ - indicador de diciembre.
+#### Variables históricas
+ - demanda rezagada 1, 2, 3, 6 y 12 meses;
+ - media móvil de demanda de 3, 6 y 12 meses;
+ - desviación móvil de 3 meses;
+ - número de tickets del mes anterior;
+ - descuento promedio del mes anterior;
+ - precio promedio del mes anterior;
+ - proporción de líneas promocionadas del mes anterior.
+
+Las medias móviles se calcularán después de desplazar la serie un mes, de modo que no incluyan el target del
+periodo que se intenta predecir.
+
+No se utilizarán el descuento real, el precio real, el número de tickets real ni la cantidad real del mes
+objetivo.
+
+### 14.5 Partición y validación temporal de demanda
+
+Los targets se dividirán así:
+
+| Conjunto | Periodos objetivo |
+|---|---|
+| Entrenamiento | 2024-01 a 2025-06 |
+| Validación final | 2025-07 a 2025-09 |
+| Prueba final | 2025-10 a 2025-12 |
+
+El año 2023 se utilizará como historia para construir rezagos, especialmente el rezago de 12 meses.
+
+La optimización interna utilizará cuatro folds de ventana expansiva. Todas las filas del mismo `periodo_objetivo`
+permanecerán juntas en un mismo fold.
+
+### 14.6 Baselines, modelos y métricas de demanda
+
+#### Baselines obligatorios
+
+1. Pronóstico igual a la demanda del mes anterior.
+2. Pronóstico igual a la demanda del mismo mes del año anterior.
+
+#### Modelos base
+ - Ridge Regression; - DecisionTreeRegressor.
+
+#### Modelos avanzados
+ - RandomForestRegressor; - HistGradientBoostingRegressor.
+
+No se decidirá anticipadamente cuál modelo será el ganador.
+
+#### Métricas
+
+Se reportarán:
+ - MAE; - RMSE; - R²; - WAPE.
+
+```text
+WAPE = SUM(|y_real - y_pred|) / SUM(|y_real|)
+```
+
+MAE será la métrica principal de selección por su interpretación directa en unidades. En caso de resultados muy
+cercanos se considerarán RMSE, estabilidad temporal, WAPE e interpretabilidad.
+
+Las predicciones negativas se truncarán a cero únicamente en la salida final; las métricas deberán reportarse de
+forma coherente indicando si se calcularon antes o después del truncamiento.
+
+### 14.7 Definición del problema de churn
+#### Pregunta
+> ¿Qué clientes presentan mayor probabilidad de no realizar compras durante los 90 días posteriores a una fecha de
+observación?
+
+#### Tipo de problema
+
+Clasificación binaria.
+
+#### Unidad de análisis
+
+```text
+id_cliente × fecha_observacion
+```
+
+#### Elegibilidad
+
+Un cliente será incluido cuando:
+ - se encuentre registrado a la fecha de observación; - tenga al menos una compra histórica hasta esa fecha.
+
+#### Target
+
+```text
+churn_90d = 1
+si no existe ninguna compra en
+(fecha_observacion, fecha_observacion + 90 días]
+
+churn_90d = 0
+en caso contrario
+```
+
+#### Fechas de observación
+
+```text
+2023-12-31
+2024-03-31
+2024-06-30
+2024-09-30
+2024-12-31
+2025-03-31
+2025-06-30
+2025-09-30
+```
+
+La última ventana objetivo termina dentro del periodo disponible del dataset.
+
+### 14.8 Variables predictoras de churn
+
+#### Variables RFM y de comportamiento
+ - recencia en días al corte;
+ - frecuencia de tickets en los últimos 365 días;
+ - valor monetario en los últimos 365 días;
+ - ticket promedio;
+ - unidades compradas;
+ - meses activos;
+ - número de categorías distintas;
+ - categoría dominante;
+ - proporción de compras digitales;
+ - proporción Web;
+ - proporción App;
+ - descuento promedio;
+ - días desde la penúltima compra;
+ - indicador de cliente con una sola compra;
+ - frecuencia de los últimos 90 días;
+ - frecuencia de los 90 días anteriores;
+ - tendencia reciente de frecuencia.
+
+#### Variables de perfil disponibles al corte
+ - edad;
+ - género;
+ - ciudad;
+ - segmento comercial;
+ - canal preferido;
+ - antigüedad del cliente.
+La recencia utilizará toda la historia disponible hasta el corte. Las demás variables de comportamiento utilizarán
+principalmente la ventana de 365 días.
+
+No se utilizarán `id_cliente`, nombre, compras futuras, el indicador descriptivo final, el target ni segmentos
+calculados con información posterior al corte.
+
+### 14.9 Partición y validación temporal de churn
+
+| Conjunto | Fechas de observación |
+|---|---|
+| Entrenamiento | 2023-12-31, 2024-03-31, 2024-06-30, 2024-09-30 y 2024-12-31 |
+| Validación | 2025-03-31 y 2025-06-30 |
+| Prueba final | 2025-09-30 |
+
+Un mismo cliente puede aparecer en distintos cortes porque el objetivo es simular evaluaciones periódicas del
+mismo negocio. Cada fila deberá respetar su propia fecha de observación y no podrá usar datos futuros.
+
+La validación interna avanzará por fechas de observación completas. No se mezclarán filas de una misma fecha entre
+entrenamiento y validación.
+
+### 14.10 Baselines, modelos y métricas de churn
+
+#### Baselines obligatorios
+
+1. Clasificador de clase mayoritaria.
+2. Regla de recencia: predecir churn cuando `recencia_dias > 60`.
+
+#### Modelos base
+ - LogisticRegression; - DecisionTreeClassifier.
+
+#### Modelos avanzados
+ - RandomForestClassifier; - HistGradientBoostingClassifier.
+
+#### Métricas obligatorias
+ - accuracy; - precision; - recall; - F1; - AUC-ROC; - matriz de confusión.
+
+También se reportará PR-AUC por su utilidad cuando la clase positiva no esté equilibrada.
+
+F1 será la métrica principal para seleccionar el umbral de clasificación sobre validación. Si varios umbrales
+obtienen el mismo F1 redondeado a cuatro decimales, se elegirá el de mayor recall. El umbral se congelará antes de
+evaluar el conjunto de prueba.
+
+El valor 0.50 no se asumirá automáticamente como umbral final.
+
+### 14.11 Preprocesamiento y pipelines
+
+Se utilizarán `Pipeline` y `ColumnTransformer` para evitar fuga de información.
+
+#### Variables numéricas
+ - imputación con mediana; - escalamiento con StandardScaler para modelos lineales; - sin escalamiento obligatorio para modelos de árboles.
+
+#### Variables categóricas
+ - imputación con la categoría más frecuente o `Desconocido`; - OneHotEncoder con manejo de categorías desconocidas.
+Cada pipeline se ajustará únicamente con el conjunto de entrenamiento correspondiente.
+
+Los valores faltantes no se rellenarán antes de realizar la partición temporal.
+### 14.12 Optimización de hiperparámetros
+
+La búsqueda se realizará únicamente sobre entrenamiento mediante folds temporales.
+
+Se utilizará `RandomizedSearchCV` como opción principal por eficiencia. `GridSearchCV` podrá utilizarse cuando el
+espacio de búsqueda sea pequeño.
+
+El conjunto de prueba no se consultará para:
+ - seleccionar variables; - elegir modelos; - ajustar hiperparámetros; - seleccionar el umbral; - corregir el generador.
+
+### 14.13 Interpretación de modelos
+
+La Parte 3 deberá explicar qué variables influyen en las predicciones.
+
+Se utilizarán:
+ - coeficientes estandarizados para modelos lineales; - permutation importance como método común de comparación; - SHAP para el modelo avanzado seleccionado cuando sea compatible y ejecutable en el entorno.
+
+Las interpretaciones deberán traducirse a lenguaje de negocio y no presentarse como causalidad demostrada.
+
+### 14.14 Salidas predictivas
+
+#### `resultados/predicciones_demanda.csv`
+
+```text
+periodo_pronostico
+id_tienda
+categoria
+demanda_predicha
+demanda_baja
+demanda_alta
+modelo
+```
+
+`demanda_baja` y `demanda_alta` formarán un intervalo empírico central del 80 %, calculado con los cuantiles 10 %
+y 90 % de los residuos de validación. El límite inferior se truncará en cero.
+
+#### `resultados/predicciones_churn.csv`
+
+```text
+fecha_observacion
+id_cliente
+probabilidad_churn
+prediccion_churn
+nivel_riesgo
+modelo
+```
+
+`nivel_riesgo` se derivará únicamente para comunicación:
+
+```text
+Bajo: probabilidad < 0.30
+Medio: 0.30 <= probabilidad < 0.60
+Alto: probabilidad >= 0.60
+```
+
+La clasificación operativa seguirá utilizando el umbral seleccionado en validación, aunque no coincida con los
+límites descriptivos de nivel de riesgo.
+
+#### `resultados/metricas_predictivas.csv`
+
+```text
+problema
+modelo
+conjunto
+metrica
+valor
+``
+#### `resultados/importancia_variables.csv`
+
+```text
+problema
+modelo
+variable
+importancia
+metodo
+```
+
+### 14.15 Relación con F0-07
+
+La salida principal hacia la Parte 4 será el pronóstico de enero de 2026 por nodo y categoría.
+
+F0-07 deberá:
+ - formular la optimización en esa misma granularidad; o - documentar un método reproducible para desagregar la demanda a producto-nodo mediante participaciones
+históricas.
+
+F0-06 no asignará silenciosamente la demanda de una categoría a productos individuales.
+
+Los límites bajo y alto permitirán evaluar escenarios de demanda conservador, central y alto.
+
+### 14.16 Reproducibilidad
+
+El notebook de la Parte 3 deberá:
+ - ejecutarse de principio a fin sin intervención manual; - cargar únicamente los CSV oficiales y la configuración aprobada; - construir targets y features mediante código; - utilizar semilla 2026; - aplicar particiones temporales declaradas en el YAML; - conservar el conjunto de prueba aislado; - exportar los cuatro archivos de resultados; - mostrar métricas, gráficos e interpretación; - registrar prompts de IA relevantes en la bitácora; - documentar las versiones de librerías y el entorno; - evitar editar manualmente predicciones o métricas.
+
+### 14.17 Resultado esperado de F0-06
+
+F0-06 deja definidos:
+ - un problema de regresión de demanda; - un problema de clasificación de churn; - sus targets y granularidades; - horizontes, ventanas y cortes temporales; - variables permitidas y prohibidas; - reglas de elegibilidad; - baselines y modelos candidatos; - preprocesamiento mediante pipelines; - validación cruzada temporal; - métricas y reglas de selección; - prevención de fuga de información; - interpretación de variables; - salidas hacia F0-07 y Power BI; - criterios de aptitud predictiva del dataset.
+
+La Parte 3 deberá implementar esta especificación sin redefinir unilateralmente los problemas o consultar los
+conjuntos de prueba durante el desarrollo.
