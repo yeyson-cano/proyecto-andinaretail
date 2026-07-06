@@ -425,6 +425,120 @@ predicciones_churn.csv
 metricas_predictivas.csv
 importancia_variables.csv
 
+### 6.8 Dataset derivado para la Parte 4
+
+La Parte 4 no añadirá columnas a los CSV fuente. El modelo prescriptivo construirá sus parámetros de forma reproducible a partir de los datos oficiales, la configuración y las salidas de la Parte 3.
+
+#### Unidad de optimización
+
+Cada observación del problema representa:
+
+periodo × id_tienda × categoria
+
+El periodo operativo será 2026-01. La recomendación será táctica por nodo y categoría; no se desagregará el pronóstico a producto en esta versión.
+
+#### Demanda por escenario
+
+La demanda se leerá desde resultados/predicciones_demanda.csv mediante los campos demanda_baja, demanda_predicha y demanda_alta.
+
+Para cada escenario:
+
+demanda_escenario = max(0, redondear al entero más cercano)
+
+Después del redondeo deberá cumplirse:
+
+demanda_baja <= demanda_predicha <= demanda_alta
+
+#### Inventario inicial
+
+stock_inicial_optimizacion[n,c] = SUM(inventario.stock_final)
+
+Se utilizará inventario.periodo = "2025-12" y se agregará desde producto-nodo hacia nodo-categoría mediante productos.categoria.
+
+#### Costo de adquisición unitario
+
+costo_adquisicion_unitario[n,c]
+
+Se calculará como el promedio ponderado de productos.costo_unitario, utilizando como peso las unidades vendidas durante 2025 en cada nodo-categoría.
+
+Si una combinación no tiene ventas suficientes, se aplicarán en orden:
+
+1. promedio ponderado de la categoría en todo el negocio;
+2. promedio simple del catálogo de la categoría.
+
+#### Costo unitario de demanda no atendida
+
+costo_faltante_unitario[n,c] = SUM(monto_total) / SUM(cantidad)
+
+Se utilizarán las ventas de 2025 del nodo y categoría. Si no existe información suficiente, se aplicarán en orden:
+
+1. promedio de la categoría en todo el negocio;
+2. promedio simple del precio neto estimado de la categoría.
+
+#### Costo de almacenamiento unitario
+
+costo_holding_unitario[n,c] = costo_adquisicion_unitario[n,c] × tasa_holding_mensual_nodo
+
+La tasa será:
+
+- 0.020 para los nodos no afectados;
+- 0.026 para las tiendas físicas de Trujillo, correspondiente a 0.020 × 1.30.
+
+#### Capacidad equivalente
+
+Como el esquema no registra volumen físico por producto, se utilizarán unidades equivalentes de espacio:
+
+- Abarrotes: 1.0
+- Bebidas: 1.2
+- Limpieza: 1.3
+- Cuidado Personal: 0.8
+- Electrohogar: 6.0
+- Hogar: 3.0
+Para cada nodo y mes:
+
+stock_equivalente[n,m] = SUM(factor_espacio[c] × stock_categoria[n,c,m])
+
+La capacidad base será:
+
+capacidad_base[n] = 1.10 × MAX(stock_equivalente_inicial, stock_equivalente_final)
+
+considerando todos los meses históricos disponibles.
+
+#### Presupuesto base
+
+necesidad_neta_central[n,c] = max(0, demanda_predicha[n,c] - stock_inicial_optimizacion[n,c])
+
+presupuesto_referencia = SUM(costo_adquisicion_unitario[n,c] × necesidad_neta_central[n,c])
+
+presupuesto_base = presupuesto_referencia
+
+El monto se deriva del dataset y no se fija arbitrariamente antes de generar los datos.
+
+#### Variables del modelo
+
+q[n,c] = unidades de la categoría c que deben reponerse en el nodo n
+u[n,c] = unidades de demanda no atendida
+e[n,c] = inventario final estimado
+
+Las tres variables serán enteras y no negativas.
+
+#### Balance de inventario
+
+e[n,c] = stock_inicial_optimizacion[n,c] + q[n,c] - demanda[n,c] + u[n,c]
+
+con:
+
+0 <= u[n,c] <= demanda[n,c]
+
+#### Salidas derivadas de la Parte 4
+
+Los resultados prescriptivos se producirán en resultados/:
+
+recomendaciones_reposicion.csv
+resumen_escenarios_optimizacion.csv
+uso_capacidad_optimizacion.csv
+
+
 ## 7. Reglas de integridad y calidad
 
 1. Las claves primarias deben ser únicas y no nulas.
@@ -456,6 +570,20 @@ importancia_variables.csv
 27. Todas las observaciones pertenecientes al mismo mes objetivo permanecerán juntas en las particiones temporales del modelo de demanda.
 28. Toda fecha de observación de churn deberá tener su ventana futura completa dentro del periodo disponible del dataset.
 29. Las combinaciones activas nodo-categoría sin ventas en un mes se conservarán con demanda_unidades = 0.
+30. El pronóstico utilizado por la Parte 4 deberá corresponder a 2026-01.
+31. Cada escenario deberá contener como máximo una observación por combinación id_tienda-categoria.
+32. Las demandas baja, central y alta deberán ser no negativas y cumplir demanda_baja <= demanda_predicha <= demanda_alta.
+33. El stock inicial de la optimización deberá conciliar con la suma del stock_final de diciembre de 2025 por nodo y categoría.
+34. Los costos unitarios, capacidades y presupuestos deberán ser positivos y derivarse mediante las reglas aprobadas.
+35. reposicion_optima, demanda_no_atendida y stock_final_estimado deberán ser enteros no negativos.
+36. Cada solución deberá satisfacer la ecuación de balance de inventario.
+37. El costo total de adquisición no podrá superar el presupuesto del escenario.
+38. El inventario más la reposición no podrá superar la capacidad equivalente del nodo.
+39. El nivel de servicio se calculará como fill rate en unidades y deberá cumplir el mínimo del escenario para cada nodo cuando la solución sea factible.
+40. El estado del solver deberá registrarse explícitamente.
+41. Los escenarios inviables no podrán convertirse en factibles relajando restricciones de forma silenciosa.
+42. Los totales del detalle deberán conciliar con los archivos de resumen y utilización de capacidad.
+43. Los resultados prescriptivos deberán generarse mediante código y no podrán editarse manualmente.
 
 ---
 
@@ -480,39 +608,37 @@ importancia_variables.csv
 | recencia, frecuencia, valor y comportamiento histórico | — | ✓ | ✓ (churn) | — | ✓ |
 | `demanda_predicha`, límites bajo y alto | — | — | ✓ | ✓ | ✓ |
 | `probabilidad_churn`, `prediccion_churn` | — | — | ✓ | — | ✓ |
+| stock de diciembre agregado por nodo y categoría | — | — | — | ✓ | ✓ |
+| costo de adquisición e ingreso neto unitario | — | — | — | ✓ | ✓ |
+| capacidad equivalente y presupuesto | — | — | — | ✓ | ✓ |
+| reposicion_optima, demanda_atendida, faltante_estimado | — | — | — | ✓ | ✓ |
+| stock_final_estimado, costo total y nivel de servicio | — | — | — | ✓ | ✓ |
+| escenarios y utilización de capacidad | — | — | — | ✓ | ✓ |
 ---
 
-## 9. Continuidad después de F0-06
+## 9. Continuidad después de F0-07
 
-F0-05 cerró las hipótesis, unidades de análisis, pruebas, supuestos, tamaños del efecto e intervalos de confianza
-de la Parte 1.
+F0-07 cerró los siguientes elementos de la Parte 4:
 
-F0-06 cerró los siguientes elementos de la Parte 3:
- - target de demanda en unidades;
- - granularidad mensual por nodo de venta y categoría;
- - horizonte de predicción de un mes;
- - pronóstico operativo para enero de 2026;
- - rezagos, ventanas móviles y variables históricas permitidas;
- - particiones temporales de entrenamiento, validación y prueba;
- - definición prospectiva de `churn_90d`;
- - fechas de observación, ventana histórica y ventana objetivo;
- - variables de perfil y comportamiento permitidas;
- - reglas de elegibilidad y prevención de fuga de información;
- - modelos base, modelos avanzados, métricas y reglas de selección;
- - archivos de salida predictiva y su relación con F0-07 y Power BI.
+- periodo de optimización enero de 2026;
+- granularidad nodo-categoría;
+- decisión de no desagregar el pronóstico a producto;
+- variable de decisión de reposición;
+- variables auxiliares de demanda no atendida y stock final;
+- función objetivo de costo total;
+- restricciones de balance, presupuesto, capacidad y nivel de servicio;
+- reglas para derivar demanda, stock, costos, presupuesto y capacidad;
+- nivel de servicio base del 95 % por nodo;
+- escenario base y escenarios de sensibilidad;
+- política simple de referencia;
+- archivos prescriptivos y salidas analíticas requeridas por fase;
+- resultados que consumirá Power BI.
 
-Las siguientes decisiones permanecen reservadas para fases posteriores:
- - reglas definitivas de segmentación RFM o clustering de la Parte 2;
- - variables de decisión, función objetivo y restricciones del modelo prescriptivo;
- - eventual desagregación del pronóstico de categoría a producto para F0-07;
- - estructura final del modelo de Power BI y sus medidas DAX;
- - archivos analíticos específicos de las Partes 2, 4 y 5.
+Las siguientes decisiones permanecen reservadas para tareas posteriores:
 
-Las tareas posteriores deberán utilizar conjuntamente:
+- reglas definitivas de segmentación RFM o clustering de la Parte 2;
+- estructura final del modelo de datos de Power BI;
+- medidas DAX;
+- páginas, interactividad y storytelling del tablero.
 
-1. este diccionario para conocer el esquema y las reglas de integridad;
-2. `config/escenarios.yaml` para conocer los parámetros numéricos;
-3. `docs/00_especificacion_datos_y_analitica.md` para conocer el alcance y la interpretación funcional.
-
-Ninguna fase deberá redefinir unilateralmente campos, granularidades, targets, ventanas temporales o fórmulas sin
-actualizar los artefactos afectados y documentar el impacto sobre las demás partes.
+Las fases posteriores deberán utilizar conjuntamente este diccionario, config/escenarios.yaml y docs/00_especificacion_datos_y_analitica.md. Ninguna fase deberá redefinir unilateralmente las granularidades, fórmulas, parámetros o salidas aprobadas.
