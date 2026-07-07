@@ -5,7 +5,7 @@
 # ============================================================
 
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   moneda: "PEN"
   zona_horaria: "America/Lima"
   locale_faker: "es_PE"
@@ -533,7 +533,175 @@ modelado_predictivo:
       - PR_AUC
       - matriz_confusion
 # ------------------------------------------------------------
-# 17. CALIDAD DE DATOS
+# 17. MODELADO PRESCRIPTIVO
+# Reposición mensual por nodo y categoría.
+# ------------------------------------------------------------
+modelado_prescriptivo:
+  semilla: 2026
+  libreria: PuLP
+  motor_solver: CBC
+  periodo_optimizacion: "2026-01"
+
+  granularidad:
+    - id_tienda
+    - categoria
+
+  desagregar_a_producto: false
+
+  demanda:
+    archivo: predicciones_demanda.csv
+    campo_bajo: demanda_baja
+    campo_central: demanda_predicha
+    campo_alto: demanda_alta
+    escenario_base: central
+    redondeo: entero_mas_cercano
+    truncar_en_cero: true
+    validar_orden_intervalo: true
+
+  inventario_inicial:
+    periodo_fuente: "2025-12"
+    campo_fuente: stock_final
+    agregacion: suma_producto_a_categoria
+
+  costos:
+    adquisicion:
+      metodo: promedio_ponderado_por_unidades_vendidas_2025
+      peso: ventas.cantidad
+      fallback_1: promedio_categoria_negocio
+      fallback_2: promedio_simple_catalogo_categoria
+
+    faltante:
+      metodo: ingreso_neto_unitario_ponderado_2025
+      formula: "SUM(monto_total) / SUM(cantidad)"
+      fallback_1: promedio_categoria_negocio
+      fallback_2: promedio_simple_categoria
+
+    almacenamiento:
+      tasa_base_mensual: 0.02
+      aplicar_incremento_trujillo: true
+      incremento_trujillo_pct: 0.30
+      condicion_trujillo:
+        tipo: Fisica
+        ciudad: Trujillo
+
+  presupuesto:
+    referencia: necesidad_neta_central
+    factor_base: 1.00
+
+  capacidad:
+    unidad: unidades_equivalentes
+    referencia: maximo_historico_stock_equivalente
+    considerar_stock_inicial_y_final: true
+    factor_holgura: 1.10
+
+    factores_espacio:
+      Abarrotes: 1.0
+      Bebidas: 1.2
+      Limpieza: 1.3
+      Cuidado Personal: 0.8
+      Electrohogar: 6.0
+      Hogar: 3.0
+
+  nivel_servicio:
+    metrica: fill_rate_unidades_por_nodo
+    objetivo_base: 0.95
+    variables:
+    reposicion:
+      simbolo: q
+      tipo: entero_no_negativo
+
+    demanda_no_atendida:
+      simbolo: u
+      tipo: entero_no_negativo
+
+    stock_final_estimado:
+      simbolo: e
+      tipo: entero_no_negativo
+
+  funcion_objetivo:
+    sentido: minimizar
+    componentes:
+      - costo_adquisicion
+      - costo_almacenamiento_stock_final
+      - costo_demanda_no_atendida
+
+  restricciones:
+    balance_inventario: true
+    presupuesto_global: true
+    capacidad_por_nodo: true
+    nivel_servicio_por_nodo: true
+    variables_enteras: true
+
+  politica_referencia:
+    nombre: reposicion_simple
+    formula: "max(0, demanda_central - stock_inicial)"
+
+  escenarios:
+    - id: base
+      demanda: central
+      factor_presupuesto: 1.00
+      factor_capacidad: 1.00
+      nivel_servicio: 0.95
+
+    - id: demanda_baja
+      demanda: baja
+      factor_presupuesto: 1.00
+      factor_capacidad: 1.00
+      nivel_servicio: 0.95
+
+    - id: demanda_alta
+      demanda: alta
+      factor_presupuesto: 1.00
+      factor_capacidad: 1.00
+      nivel_servicio: 0.95
+
+    - id: presupuesto_menos_10
+      demanda: central
+      factor_presupuesto: 0.90
+      factor_capacidad: 1.00
+      nivel_servicio: 0.95
+
+    - id: presupuesto_mas_10
+      demanda: central
+      factor_presupuesto: 1.10
+      factor_capacidad: 1.00
+      nivel_servicio: 0.95
+
+    - id: capacidad_menos_10
+      demanda: central
+      factor_presupuesto: 1.00
+      factor_capacidad: 0.90
+      nivel_servicio: 0.95
+
+    - id: capacidad_mas_10
+      demanda: central
+      factor_presupuesto: 1.00
+      factor_capacidad: 1.10
+      nivel_servicio: 0.95
+
+    - id: servicio_90
+      demanda: central
+      factor_presupuesto: 1.00
+      factor_capacidad: 1.00
+      nivel_servicio: 0.90
+
+    - id: servicio_98
+      demanda: central
+      factor_presupuesto: 1.00
+      factor_capacidad: 1.00
+      nivel_servicio: 0.98
+
+  configuracion_solver:
+    estados_registrados:
+      - Optimal
+      - Infeasible
+      - Unbounded
+      - Not Solved
+
+    no_relajar_restricciones_silenciosamente: true
+
+# ------------------------------------------------------------
+# 18. CALIDAD DE DATOS
 # Los faltantes solo se insertan en campos nulables.
 # Los outliers se introducen en cantidad y luego se recalculan
 # monto_total, costo_total y márgenes.
@@ -563,7 +731,7 @@ calidad_datos:
     recalcular_campos_derivados: true
 
 # ------------------------------------------------------------
-# 18. SALIDAS
+# 19. SALIDAS
 # ------------------------------------------------------------
 salidas:
   directorio: datos
@@ -590,8 +758,30 @@ salidas_predictivas:
     cuantil_superior_residuo: 0.90
     truncar_limite_inferior_en_cero: true
 
+salidas_estadisticas:
+  directorio: resultados
+
+  archivos:
+    resumen_estadistico: resumen_estadistico.csv
+    pruebas_hipotesis: pruebas_hipotesis.csv
+
+salidas_descriptivas:
+  directorio: resultados
+
+  archivos:
+    segmentacion_clientes: segmentacion_clientes.csv
+    diagnostico_trujillo: diagnostico_trujillo.csv
+
+salidas_prescriptivas:
+  directorio: resultados
+
+  archivos:
+    recomendaciones_reposicion: recomendaciones_reposicion.csv
+    resumen_escenarios: resumen_escenarios_optimizacion.csv
+    uso_capacidad: uso_capacidad_optimizacion.csv
+
 # ------------------------------------------------------------
-# 19. CRITERIOS DE ACEPTACIÓN DEL DATASET
+# 20. CRITERIOS DE ACEPTACIÓN DEL DATASET
 # Son resultados esperados; no deben usarse como parámetros causales.
 # ------------------------------------------------------------
 validacion:
@@ -664,3 +854,35 @@ aptitud_predictiva:
     fechas_coherentes: true
     continuidad_inventario: true
     conciliacion_ventas_inventario: true
+
+aptitud_predictiva:
+  demanda:
+    panel_mensual_completo: true
+    minimo_meses_objetivo: 24
+    series_con_variacion: true
+    conservar_meses_sin_ventas: true
+    todas_las_categorias_representadas: true
+    todos_los_nodos_representados: true
+
+  churn:
+    ambas_clases_por_corte: true
+    minimo_observaciones_por_clase_y_corte: 100
+    rango_tasa_positiva_por_corte_pct: [15, 60]
+    senal_rfm_aprendible_con_ruido: true
+
+  temporal:
+    ventanas_objetivo_dentro_del_periodo: true
+    impedir_variables_futuras: true
+    impedir_particion_aleatoria: true
+
+  metricas_modelos:
+    no_fijar_metrica_minima: true
+    no_predeterminar_modelo_ganador: true
+
+  integridad:
+    sin_claves_huerfanas: true
+    formulas_con_tolerancia_pen: 0.01
+    fechas_coherentes: true
+    continuidad_inventario: true
+    conciliacion_ventas_inventario: true
+

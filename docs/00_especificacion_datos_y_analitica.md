@@ -160,18 +160,24 @@ deberán utilizar exclusivamente información conocida antes del corte o del ini
 
 **Pregunta principal:**
 
-> ¿Cuánto inventario debería reponerse para atender la demanda esperada y controlar los costos operativos?
+> ¿Cuántas unidades de cada categoría debe reponer cada nodo para enero de 2026, minimizando el costo económico esperado y respetando presupuesto, capacidad y nivel de servicio?
 
-La optimización se concentrará en la reposición de inventario y considerará, como mínimo:
+La Parte 4 implementará un modelo de programación lineal entera con PuLP y CBC.
 
-- demanda pronosticada;
-- inventario disponible;
-- presupuesto;
-- capacidad de almacenamiento;
-- costos de adquisición y almacenamiento;
-- nivel de servicio.
+La decisión se realizará por nodo y categoría, utilizando:
 
-La función objetivo, las variables de decisión y las restricciones se definirán en F0-07.
+- pronóstico bajo, central y alto de enero de 2026;
+- stock final de diciembre de 2025;
+- costo de adquisición;
+- costo de almacenamiento;
+- penalización por demanda no atendida;
+- presupuesto global;
+- capacidad equivalente por nodo;
+- nivel de servicio mínimo.
+
+La recomendación principal utilizará la demanda central y un nivel de servicio del 95 %. También se ejecutarán escenarios de sensibilidad de demanda, presupuesto, capacidad y servicio.
+
+No se desagregará el pronóstico a producto en esta versión.
 
 ### 7.5 Parte 5 — Power BI
 
@@ -234,19 +240,34 @@ El tablero deberá permitir revisar:
 - Los conjuntos de prueba permanecerán aislados hasta la evaluación final.
 - No se decidirá anticipadamente qué modelo será el ganador.
 - Los resultados predictivos se generarán como archivos derivados en la carpeta `resultados/`.
+- La optimización se realizará para enero de 2026.
+- La granularidad prescriptiva será nodo-categoría.
+- No se desagregará el pronóstico a SKU en esta versión.
+- Se utilizará programación lineal entera con PuLP y CBC.
+- La variable de decisión será la reposición en unidades.
+- Se utilizarán variables auxiliares de demanda no atendida y stock final estimado.
+- La función objetivo minimizará costos de adquisición, almacenamiento y demanda no atendida.
+- El presupuesto se derivará de la necesidad neta central.
+- La capacidad se expresará en unidades equivalentes y se derivará del máximo histórico con 10 % de holgura.
+- El nivel de servicio base será 95 % por nodo.
+- Se ejecutarán nueve escenarios de optimización.
+- Los escenarios inviables se reportarán sin relajar restricciones de forma silenciosa.
+- Power BI utilizará el escenario base como recomendación principal.
 
 ---
 
 ## 10. Aspectos reservados para tareas posteriores
 
-F0-05 cerró la planificación estadística de la Parte 1 y F0-06 cierra la definición de los problemas predictivos
-de la Parte 3.
+F0-05 cerró la planificación estadística de la Parte 1, F0-06 cerró los problemas predictivos de la Parte 3 y F0-07 cerró el modelo prescriptivo y las salidas analíticas principales.
 
 Las siguientes decisiones permanecen reservadas para tareas posteriores:
- - reglas definitivas de construcción e interpretación de la segmentación RFM o clustering de la Parte 2; - variables de decisión, función objetivo y restricciones del modelo prescriptivo; - método de desagregación del pronóstico de categoría a producto, si F0-07 lo requiere; - estructura definitiva del modelo de datos, medidas DAX y páginas de Power BI; - archivos de salida analíticos específicos de las Partes 2, 4 y 5.
 
-Las tareas posteriores deberán respetar las granularidades, targets, ventanas temporales y reglas contra fuga de
-información aprobadas en esta especificación.
+- reglas definitivas de construcción e interpretación de la segmentación RFM o clustering de la Parte 2;
+- estructura definitiva del modelo de datos de Power BI;
+- medidas DAX;
+- páginas, interactividad y storytelling del tablero.
+
+Las tareas posteriores deberán respetar las granularidades, fórmulas, parámetros, interfaces y reglas de trazabilidad aprobadas en esta especificación.
 
 ---
 
@@ -329,14 +350,21 @@ El diagnóstico de Trujillo utilizará principalmente el margen operativo, porqu
 | Historial por cliente | — | ✓ | ✓ | — | ✓ |
 | Inventario y almacenamiento | — | ✓ | — | ✓ | ✓ |
 | Demanda agregada | — | ✓ | ✓ | ✓ | ✓ |
+| Costos de adquisición y almacenamiento | — | ✓ | — | ✓ | ✓ |
+| Stock de cierre de diciembre de 2025 | — | — | — | ✓ | ✓ |
+| Presupuesto y capacidad equivalente | — | — | — | ✓ | ✓ |
+| Reposición, faltantes y servicio | — | — | — | ✓ | ✓ |
+| Escenarios prescriptivos | — | — | — | ✓ | ✓ |
 
-### 11.7 Continuidad después de F0-04
+### 11.7 Continuidad después de F0-07
 
-F0-04 establece en `config/escenarios.yaml` los volúmenes, distribuciones, patrones controlados, tolerancias y criterios de aceptación del dataset.
+Las cinco tablas fuente se mantienen sin nuevas columnas. La capacidad, el presupuesto, los costos agregados y los parámetros del modelo prescriptivo se derivan mediante código o se declaran en config/escenarios.yaml.
 
-El diccionario de datos continúa siendo la fuente canónica del esquema físico, mientras que el archivo YAML es la fuente canónica de los valores numéricos de generación.
+F0-07 consume el pronóstico de enero de 2026 generado por la Parte 3 y el stock final de diciembre de 2025. La optimización utiliza la misma granularidad nodo-categoría y no realiza una desagregación a producto.
 
-Las tareas F0-05, F0-06 y F0-07 deberán utilizar ambos archivos sin redefinir unilateralmente sus campos, fórmulas o parámetros. Cualquier modificación posterior deberá evaluar su impacto sobre el generador, las validaciones, los notebooks y Power BI.
+La Parte 4 producirá archivos derivados en resultados/. Power BI deberá relacionarlos con tiendas mediante id_tienda y, cuando corresponda, con una dimensión de categoría y una tabla calendario.
+
+Cualquier modificación posterior deberá revisar su impacto en la generación, la predicción, la optimización y el modelo de Power BI.
 
 ---
 
@@ -713,6 +741,34 @@ Para churn deberá verificarse:
 
 Estas validaciones determinan que los problemas puedan construirse y evaluarse. No se fijará una métrica mínima,
 no se regenerarán datos únicamente para mejorar resultados y no se predeterminará qué modelo debe ganar.
+
+### 12.18 Aptitud prescriptiva del dataset
+
+El script de validación deberá comprobar que la Parte 4 pueda construirse sin alterar las tablas fuente ni forzar una solución determinada.
+
+Para las entradas deberá verificarse:
+
+- disponibilidad del stock final de diciembre de 2025;
+- pronóstico bajo, central y alto para enero de 2026;
+- demandas no negativas y ordenadas de menor a mayor;
+- ausencia de duplicados por nodo y categoría;
+- costos unitarios positivos y reproducibles;
+- presupuesto y capacidades derivables;
+- factores de espacio positivos;
+- nivel de servicio dentro del intervalo [0, 1].
+
+Para cada solución deberá verificarse:
+
+- ecuación de balance de inventario;
+- cumplimiento del presupuesto;
+- cumplimiento de la capacidad;
+- cumplimiento del nivel de servicio cuando el escenario sea factible;
+- variables enteras y no negativas;
+- registro explícito del estado del solver;
+- conciliación entre detalle, resumen y uso de capacidad;
+- generación reproducible mediante código.
+
+Los escenarios inviables se reportarán como tales. No se editarán manualmente los resultados ni se relajarán restricciones de forma silenciosa.
 
 ## 13. Hipotesis estadisticas y variables requeridas
 
@@ -1406,20 +1462,13 @@ periodo que se intenta predecir.
 No se utilizarán el descuento real, el precio real, el número de tickets real ni la cantidad real del mes
 objetivo.
 
-### 14.5 Partición y validación temporal de demanda
+### 14.15 Relación con F0-07
 
-Los targets se dividirán así:
+La salida principal hacia la Parte 4 será el pronóstico de enero de 2026 por nodo y categoría.
 
-| Conjunto | Periodos objetivo |
-|---|---|
-| Entrenamiento | 2024-01 a 2025-06 |
-| Validación final | 2025-07 a 2025-09 |
-| Prueba final | 2025-10 a 2025-12 |
+F0-07 utilizará exactamente esa granularidad. No se realizará una desagregación a producto en la versión actual.
 
-El año 2023 se utilizará como historia para construir rezagos, especialmente el rezago de 12 meses.
-
-La optimización interna utilizará cuatro folds de ventana expansiva. Todas las filas del mismo `periodo_objetivo`
-permanecerán juntas en un mismo fold.
+Los campos demanda_baja, demanda_predicha y demanda_alta definirán los escenarios de demanda bajo, central y alto.
 
 ### 14.6 Baselines, modelos y métricas de demanda
 
@@ -1682,3 +1731,354 @@ F0-06 deja definidos:
 
 La Parte 3 deberá implementar esta especificación sin redefinir unilateralmente los problemas o consultar los
 conjuntos de prueba durante el desarrollo.
+
+## 15. Modelo prescriptivo de reposición
+
+### 15.1 Objetivo y alcance
+
+La Parte 4 recomendará cuántas unidades de cada categoría debe reponer cada nodo para enero de 2026. El modelo minimizará el costo económico esperado y respetará restricciones de presupuesto, capacidad de almacenamiento y nivel de servicio.
+
+La solución tendrá carácter táctico por categoría y nodo. No representará una orden de compra detallada por SKU y no optimizará descuentos, proveedores, transferencias entre nodos ni múltiples periodos.
+
+### 15.2 Periodo, conjuntos y granularidad
+
+El periodo de decisión será 2026-01.
+
+Los conjuntos serán:
+- n ∈ N: 13 tiendas físicas y los nodos WEB y APP;
+- c ∈ C: Abarrotes, Bebidas, Limpieza, Cuidado Personal, Electrohogar y Hogar;
+- s ∈ S: escenarios de sensibilidad.
+
+La granularidad será:
+
+id_tienda × categoria
+
+El problema tendrá como máximo 90 combinaciones nodo-categoría.
+
+### 15.3 Inputs del modelo
+
+El modelo utilizará:
+
+- resultados/predicciones_demanda.csv;
+- inventario.csv;
+- productos.csv;
+- ventas.csv;
+- tiendas.csv;
+- config/escenarios.yaml.
+
+De la predicción se consumirán demanda_baja, demanda_predicha y demanda_alta para enero de 2026.
+
+El stock inicial se obtendrá agregando inventario.stock_final de diciembre de 2025 desde producto-nodo hacia nodo-categoría.
+
+### 15.4 Parámetros derivados
+
+#### Demanda
+
+Para cada escenario:
+
+demanda_escenario[n,c] = max(0, redondear la predicción al entero más cercano)
+
+Debe cumplirse:
+
+demanda_baja[n,c] <= demanda_predicha[n,c] <= demanda_alta[n,c]
+
+#### Costo de adquisición
+
+costo_adquisicion_unitario[n,c]
+
+Se calculará como el promedio ponderado de productos.costo_unitario utilizando como peso las unidades vendidas durante 2025 en el nodo y categoría.
+
+Si no existe información suficiente se utilizará, en orden, el promedio de la categoría en todo el negocio y el promedio simple del catálogo de la categoría.
+
+#### Costo de demanda no atendida
+
+costo_faltante_unitario[n,c] = SUM(monto_total) / SUM(cantidad)
+
+Se calculará con ventas de 2025. Representa el ingreso neto unitario que se dejaría de percibir por una unidad no atendida.
+
+#### Costo de almacenamiento
+
+costo_holding_unitario[n,c] = costo_adquisicion_unitario[n,c] × tasa_holding_mensual_nodo
+
+La tasa base será 0.020. Para tiendas físicas de Trujillo se utilizará 0.026, conservando el incremento de 30 % del escenario diagnóstico.
+
+#### Presupuesto
+
+necesidad_neta_central[n,c] = max(0, demanda_predicha[n,c] - stock_inicial[n,c])
+
+presupuesto_referencia = SUM(costo_adquisicion_unitario[n,c] × necesidad_neta_central[n,c])
+
+presupuesto_base = presupuesto_referencia
+
+#### Capacidad equivalente
+
+Los factores de espacio serán:
+
+- Abarrotes: 1.0;
+- Bebidas: 1.2;
+- Limpieza: 1.3;
+- Cuidado Personal: 0.8;
+- Electrohogar: 6.0;
+- Hogar: 3.0.
+
+stock_equivalente[n,m] = SUM(factor_espacio[c] × stock_categoria[n,c,m])
+
+capacidad_base[n] = 1.10 × MAX(stock_equivalente_inicial, stock_equivalente_final)
+
+considerando todos los meses históricos.
+
+### 15.5 Variables de decisión y auxiliares
+
+La variable de decisión será:
+
+q[n,c] = unidades de la categoría c que deben reponerse en el nodo n
+
+Las variables auxiliares serán:
+
+u[n,c] = unidades de demanda no atendida
+
+e[n,c] = inventario final estimado
+
+Todas serán enteras y no negativas.
+
+### 15.6 Función objetivo
+
+El modelo minimizará:
+
+Min Z =
+SUM(costo_adquisicion_unitario[n,c] × q[n,c])
++ SUM(costo_holding_unitario[n,c] × e[n,c])
++ SUM(costo_faltante_unitario[n,c] × u[n,c])
+
+Los tres componentes representan costo de adquisición, almacenamiento del inventario final y costo económico de demanda no atendida.
+
+### 15.7 Restricción de balance
+
+Para cada nodo y categoría:
+
+e[n,c] = stock_inicial[n,c] + q[n,c] - demanda[n,c] + u[n,c]
+
+con:
+
+0 <= u[n,c] <= demanda[n,c]
+
+La demanda atendida será:
+
+demanda_atendida[n,c] = demanda[n,c] - u[n,c]
+
+### 15.8 Restricción presupuestaria
+
+SUM(costo_adquisicion_unitario[n,c] × q[n,c]) <= presupuesto_escenario
+
+El presupuesto del escenario se obtendrá multiplicando presupuesto_base por su factor de sensibilidad.
+
+### 15.9 Restricción de capacidad
+
+Para cada nodo:
+
+SUM(factor_espacio[c] × (stock_inicial[n,c] + q[n,c])) <= capacidad_escenario[n]
+
+La capacidad se evalúa inmediatamente después de recibir la reposición y antes de consumir la demanda del mes.
+
+### 15.10 Restricción de nivel de servicio
+
+El nivel de servicio se medirá como fill rate en unidades por nodo:
+
+SUM(demanda[n,c] - u[n,c]) >= nivel_servicio_escenario × SUM(demanda[n,c])
+
+El escenario base exigirá 95 % por nodo. No se impondrá 95 % por cada categoría individual.
+
+### 15.11 Implementación con PuLP y CBC
+
+El modelo se implementará con PuLP y el solver CBC.
+
+El notebook deberá:
+
+- crear variables enteras no negativas;
+- construir la función objetivo y restricciones mediante código;
+- resolver cada escenario sin intervención manual;
+- registrar el estado del solver;
+- conservar resultados solo cuando sean coherentes con el estado obtenido;
+- reportar explícitamente escenarios inviables, no resueltos o no acotados.
+
+Los estados registrados serán Optimal, Infeasible, Unbounded y Not Solved.
+
+### 15.12 Política simple de referencia
+
+Se calculará una política ingenua:
+
+reposicion_simple[n,c] = max(0, demanda_predicha[n,c] - stock_inicial[n,c])
+
+La política no considera presupuesto, capacidad, costo de almacenamiento ni priorización. Su comparación con el modelo permitirá evidenciar el valor de la optimización.
+
+### 15.13 Escenario base
+
+El escenario oficial utilizará:
+
+- demanda central;
+- presupuesto igual al 100 % del presupuesto base;
+- capacidad igual al 100 % de la capacidad base;
+- nivel de servicio objetivo de 95 %.
+
+El escenario tendrá el identificador base y será la recomendación mostrada por defecto en Power BI.
+
+### 15.14 Análisis de sensibilidad
+
+Se ejecutarán nueve escenarios:
+
+1. base: demanda central, presupuesto 100 %, capacidad 100 %, servicio 95 %;
+2. demanda_baja: demanda baja, presupuesto 100 %, capacidad 100 %, servicio 95 %;
+3. demanda_alta: demanda alta, presupuesto 100 %, capacidad 100 %, servicio 95 %;
+4. presupuesto_menos_10: demanda central, presupuesto 90 %, capacidad 100 %, servicio 95 %;
+5. presupuesto_mas_10: demanda central, presupuesto 110 %, capacidad 100 %, servicio 95 %;
+6. capacidad_menos_10: demanda central, presupuesto 100 %, capacidad 90 %, servicio 95 %;
+7. capacidad_mas_10: demanda central, presupuesto 100 %, capacidad 110 %, servicio 95 %;
+8. servicio_90: demanda central, presupuesto 100 %, capacidad 100 %, servicio 90 %;
+9. servicio_98: demanda central, presupuesto 100 %, capacidad 100 %, servicio 98 %.
+
+Cada escenario modificará un único factor respecto del caso base. No se relajarán restricciones silenciosamente cuando un escenario resulte inviable.
+
+### 15.15 Archivos de salida
+
+#### Parte 1
+
+resultados/resumen_estadistico.csv
+resultados/pruebas_hipotesis.csv
+
+#### Parte 2
+
+resultados/segmentacion_clientes.csv
+resultados/diagnostico_trujillo.csv
+
+#### Parte 3
+
+resultados/predicciones_demanda.csv
+resultados/predicciones_churn.csv
+resultados/metricas_predictivas.csv
+resultados/importancia_variables.csv
+
+#### Parte 4
+
+resultados/recomendaciones_reposicion.csv
+resultados/resumen_escenarios_optimizacion.csv
+resultados/uso_capacidad_optimizacion.csv
+
+recomendaciones_reposicion.csv tendrá una fila por escenario, periodo, nodo y categoría con:
+
+- escenario;
+- periodo;
+- id_tienda;
+- categoria;
+- demanda_escenario;
+- stock_inicial;
+- reposicion_optima;
+- demanda_atendida;
+- faltante_estimado;
+- stock_final_estimado;
+- nivel_servicio_pct;
+- costo_adquisicion;
+- costo_almacenamiento;
+- costo_faltante;
+- costo_total;
+- estado_solver.
+
+resumen_escenarios_optimizacion.csv tendrá una fila por escenario con:
+
+- escenario;
+- tipo_demanda;
+- factor_presupuesto;
+- factor_capacidad;
+- nivel_servicio_objetivo;
+- estado_solver;
+- demanda_total;
+- reposicion_total;
+- demanda_atendida;
+- faltante_total;
+- nivel_servicio_alcanzado_pct;
+- presupuesto_disponible;
+- presupuesto_utilizado;
+- costo_adquisicion;
+- costo_almacenamiento;
+- costo_faltante;
+- costo_total.
+
+uso_capacidad_optimizacion.csv tendrá una fila por escenario y nodo con:
+
+- escenario;
+- id_tienda;
+- capacidad_disponible_equivalente;
+- inventario_mas_reposicion_equivalente;
+- utilizacion_capacidad_pct;
+- restriccion_activa.
+
+### 15.16 Integración con Power BI
+
+Power BI podrá consumir:
+
+- las cinco tablas fuente;
+- segmentacion_clientes.csv;
+- diagnostico_trujillo.csv;
+- predicciones_demanda.csv;
+- predicciones_churn.csv;
+- recomendaciones_reposicion.csv;
+- resumen_escenarios_optimizacion.csv;
+- uso_capacidad_optimizacion.csv.
+
+La Parte 4 permitirá visualizar reposición recomendada, presupuesto utilizado, costo total, demanda atendida, faltantes, inventario final, nivel de servicio, utilización de capacidad y comparación entre escenarios.
+
+Los resultados se relacionarán con tiendas mediante id_tienda y con una dimensión de categoría. El escenario base será la vista predeterminada.
+
+### 15.17 Validaciones y factibilidad
+
+Antes de resolver se verificará:
+
+1. periodo de pronóstico igual a 2026-01;
+2. ausencia de duplicados nodo-categoría;
+3. demandas no negativas y ordenadas;
+4. conciliación del stock de diciembre;
+5. costos, presupuesto y capacidades positivos;
+6. factores de espacio positivos;
+7. nivel de servicio entre cero y uno.
+
+Después de resolver se verificará:
+
+1. balance de inventario;
+2. cumplimiento presupuestario;
+3. cumplimiento de capacidad;
+4. nivel de servicio por nodo;
+5. integralidad y no negatividad de las variables;
+6. estado del solver;
+7. conciliación entre detalle y resúmenes;
+8. reproducibilidad del escenario base.
+
+### 15.18 Reproducibilidad
+
+El notebook de la Parte 4 deberá:
+
+- ejecutarse de principio a fin sin intervención manual;
+- cargar entradas y parámetros desde archivos versionados;
+- utilizar la semilla 2026 cuando exista aleatoriedad auxiliar;
+- construir y resolver todos los escenarios mediante funciones reutilizables;
+- exportar automáticamente los tres CSV oficiales;
+- mostrar formulación, estado, resultados e interpretación;
+- registrar prompts relevantes en la bitácora;
+- evitar cualquier edición manual de los resultados.
+
+### 15.19 Resultado esperado de F0-07
+
+F0-07 deja definidos:
+
+- problema y periodo de optimización;
+- conjuntos, granularidad y variables;
+- función objetivo y restricciones;
+- derivación de demanda, inventario, costos, presupuesto y capacidad;
+- nivel de servicio;
+- política de referencia;
+- escenario base y sensibilidad;
+- archivos requeridos por fase;
+- integración con Power BI;
+- reglas de validación, factibilidad y reproducibilidad.
+
+La Parte 4 deberá implementar esta especificación sin redefinir unilateralmente el modelo.
+
+
