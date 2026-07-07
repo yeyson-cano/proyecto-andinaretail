@@ -253,21 +253,40 @@ El tablero deberá permitir revisar:
 - Se ejecutarán nueve escenarios de optimización.
 - Los escenarios inviables se reportarán sin relajar restricciones de forma silenciosa.
 - Power BI utilizará el escenario base como recomendación principal.
+- F0-08 consolida las decisiones de F0-02 a F0-07.
+- El documento maestro será la referencia funcional integrada del proyecto.
+- El diccionario de datos seguirá siendo la fuente canónica del esquema físico.
+- `config/escenarios.yaml` seguirá siendo la fuente canónica de parámetros numéricos, escenarios y validaciones.
+- La matriz de trazabilidad integral quedará en la sección 16.
+- La estructura objetivo del repositorio queda aprobada.
+- La bitácora de prompts será obligatoria.
+- Power BI integrará los CSV base y los resultados analíticos derivados.
+- La especificación consolidada será considerada la versión candidata para aprobación en F0-09.
 
 ---
 
 ## 10. Aspectos reservados para tareas posteriores
 
-F0-05 cerró la planificación estadística de la Parte 1, F0-06 cerró los problemas predictivos de la Parte 3 y F0-07 cerró el modelo prescriptivo y las salidas analíticas principales.
+F0-05 cerró la planificación estadística de la Parte 1, F0-06 cerró los problemas predictivos de la Parte 3, F0-07 cerró el modelo prescriptivo y las salidas analíticas principales, y F0-08 consolida la especificación funcional, técnica y trazable del proyecto.
 
-Las siguientes decisiones permanecen reservadas para tareas posteriores:
+Después de F0-08, ya no quedan reservadas decisiones estructurales sobre hipótesis estadísticas, demanda, churn, optimización, salidas analíticas principales, parámetros de generación ni criterios principales de aceptación.
 
+Las siguientes actividades permanecen pendientes para las siguientes fases del proyecto:
+
+- aprobación formal de la especificación v1 en F0-09;
+- implementación del generador de datos sintéticos;
+- ejecución de los scripts de validación;
+- generación y congelamiento de los CSV oficiales;
+- ejecución de los notebooks de las Partes 1 a 4;
 - reglas definitivas de construcción e interpretación de la segmentación RFM o clustering de la Parte 2;
-- estructura definitiva del modelo de datos de Power BI;
-- medidas DAX;
-- páginas, interactividad y storytelling del tablero.
+- diseño detallado del modelo de datos de Power BI;
+- definición final de medidas DAX;
+- diseño final de páginas, navegación, interactividad y storytelling del tablero;
+- elaboración de la presentación final;
+- consolidación final de la bitácora de prompts;
+- autoevaluación y evidencias finales de participación.
 
-Las tareas posteriores deberán respetar las granularidades, fórmulas, parámetros, interfaces y reglas de trazabilidad aprobadas en esta especificación.
+Las tareas posteriores deberán respetar las granularidades, fórmulas, parámetros, interfaces, salidas y reglas de trazabilidad aprobadas en esta especificación. Cualquier cambio posterior deberá documentar su impacto sobre el generador, los notebooks, las validaciones, los resultados analíticos y Power BI.
 
 ---
 
@@ -2080,5 +2099,194 @@ F0-07 deja definidos:
 - reglas de validación, factibilidad y reproducibilidad.
 
 La Parte 4 deberá implementar esta especificación sin redefinir unilateralmente el modelo.
+
+## 16. Consolidación y trazabilidad integral del proyecto
+
+### 16.1 Objetivo de consolidación
+
+Esta sección consolida las decisiones definidas durante la Fase 0 y deja trazabilidad entre el caso de negocio, los datos sintéticos, los parámetros de generación, las partes analíticas, los archivos de salida y los entregables finales.
+
+F0-08 no redefine las decisiones técnicas aprobadas en F0-05, F0-06 o F0-07. Su propósito es integrar lo ya definido, detectar contradicciones y dejar la especificación lista para la revisión de F0-09.
+
+### 16.2 Fuentes canónicas del proyecto
+
+| Tema | Fuente canónica |
+|---|---|
+| Esquema físico, campos, tipos, fórmulas e integridad | `datos/data_dictionary.md` |
+| Parámetros numéricos, volúmenes, escenarios y validaciones | `config/escenarios.yaml` |
+| Alcance, preguntas, decisiones funcionales y trazabilidad | `docs/00_especificacion_datos_y_analitica.md` |
+| Evidencia de trabajo | Issues, PRs, commits y Project |
+| Uso de IA | `docs/bitacora_prompts.md` |
+| Resultados analíticos | `resultados/` |
+| Tablero final | `powerbi/` |
+
+Ante cualquier discrepancia, deberá identificarse cuál fuente es canónica para el tema afectado y sincronizar los documentos antes de implementar o ejecutar el generador.
+
+### 16.3 Estado consolidado de decisiones F0-02 a F0-07
+
+| Tarea | Decisión consolidada |
+|---|---|
+| F0-02 | Caso AndinaRetail, alcance, preguntas de negocio y roles |
+| F0-03 | Contrato de datos, tablas, claves, fórmulas y reglas |
+| F0-04 | Volúmenes, patrones, escenarios y criterios de aceptación |
+| F0-05 | Hipótesis estadísticas, pruebas, supuestos y variables requeridas |
+| F0-06 | Demanda, churn, ventanas temporales, particiones, métricas y salidas predictivas |
+| F0-07 | Optimización, función objetivo, restricciones, escenarios y salidas prescriptivas |
+| F0-08 | Consolidación, trazabilidad, fuentes canónicas y control de coherencia |
+| F0-09 | Revisión y aprobación final de la especificación v1 |
+
+### 16.4 Matriz patrón generado - finalidad analítica
+
+| Patrón o elemento generado | Finalidad analítica | Partes |
+|---|---|---|
+| Picos de julio y diciembre | Estacionalidad, tendencias y predicción | P1, P2, P3, P5 |
+| Crecimiento digital | Comparación de canales y evolución omnicanal | P1, P2, P3, P5 |
+| Caída de margen en Trujillo | Diagnóstico de negocio y decisiones de inventario | P1, P2, P4, P5 |
+| Mayor descuento en Trujillo | Explicar deterioro de margen | P1, P2, P5 |
+| Mayor costo de almacenamiento en Trujillo | Explicar margen operativo y alimentar optimización | P2, P4, P5 |
+| Relación descuento-demanda | Hipótesis estadística y señal predictiva | P1, P3 |
+| Churn 90 días | Clasificación de clientes e indicadores ejecutivos | P3, P5 |
+| Inventario mensual | Reposición, costos y Power BI | P4, P5 |
+| Faltantes controlados | Limpieza y robustez metodológica | P1, P3 |
+| Outliers controlados | Detección, sensibilidad y robustez | P1, P3 |
+| Nodos WEB y APP con inventario | Omnicanalidad y optimización por nodo | P2, P3, P4, P5 |
+
+### 16.5 Matriz parte - inputs - procesos - outputs
+
+| Parte | Inputs principales | Procesos principales | Outputs esperados |
+|---|---|---|---|
+| P1 Estadística | CSV base, fórmulas, variables derivadas | Descriptivos, intervalos de confianza, hipótesis | `resumen_estadistico.csv`, `pruebas_hipotesis.csv` |
+| P2 Descriptiva | Ventas, clientes, productos, inventario | Tendencias, Pareto, RFM/clustering, diagnóstico Trujillo | `segmentacion_clientes.csv`, `diagnostico_trujillo.csv` |
+| P3 Predictiva | Panel demanda, cliente-corte | Modelos de regresión y clasificación | `predicciones_demanda.csv`, `predicciones_churn.csv`, `metricas_predictivas.csv`, `importancia_variables.csv` |
+| P4 Prescriptiva | Demanda enero 2026, stock diciembre, costos | Optimización PuLP/CBC y escenarios | `recomendaciones_reposicion.csv`, `resumen_escenarios_optimizacion.csv`, `uso_capacidad_optimizacion.csv` |
+| P5 Power BI | CSV base y resultados analíticos | Modelo de datos, medidas, páginas y storytelling | `.pbix`, exportación PDF y presentación |
+
+### 16.6 Matriz archivo - consumidor
+
+| Archivo | Generado por | Consumido por |
+|---|---|---|
+| `tiendas.csv` | Generador | P1, P2, P3, P4, P5 |
+| `productos.csv` | Generador | P1, P2, P3, P4, P5 |
+| `clientes.csv` | Generador | P1, P2, P3, P5 |
+| `ventas.csv` | Generador | P1, P2, P3, P4, P5 |
+| `inventario.csv` | Generador | P2, P4, P5 |
+| `resumen_estadistico.csv` | P1 | P5 y presentación |
+| `pruebas_hipotesis.csv` | P1 | P5 y presentación |
+| `segmentacion_clientes.csv` | P2 | P3 y P5 |
+| `diagnostico_trujillo.csv` | P2 | P4 y P5 |
+| `predicciones_demanda.csv` | P3 | P4 y P5 |
+| `predicciones_churn.csv` | P3 | P5 |
+| `metricas_predictivas.csv` | P3 | P5 y presentación |
+| `importancia_variables.csv` | P3 | P5 y presentación |
+| `recomendaciones_reposicion.csv` | P4 | P5 |
+| `resumen_escenarios_optimizacion.csv` | P4 | P5 |
+| `uso_capacidad_optimizacion.csv` | P4 | P5 |
+
+### 16.7 Estructura objetivo del repositorio
+
+```text
+datos/
+config/
+notebooks/
+resultados/
+powerbi/
+docs/
+presentacion/
+README.md
+```
+
+| Carpeta | Uso |
+|---|---|
+| `datos/` | CSV fuente sintéticos |
+| `config/` | Parámetros reproducibles |
+| `notebooks/` | Partes 1 a 4 |
+| `resultados/` | CSV analíticos derivados |
+| `powerbi/` | Archivo `.pbix` y exportaciones |
+| `docs/` | Especificación, diccionario, bitácora y documentación |
+| `presentacion/` | Presentación final |
+
+### 16.8 Integración con Power BI
+
+Power BI integrará los CSV fuente y los resultados analíticos derivados. El tablero tendrá como mínimo cuatro páginas:
+
+1. Ejecutivo.
+2. Ventas y margen.
+3. Clientes, segmentación y churn.
+4. Predicción de demanda y reposición.
+
+La página de predicción y reposición integrará los resultados de la Parte 3 y Parte 4, incluyendo demanda pronosticada, riesgo de churn, recomendaciones de reposición, escenarios y uso de capacidad.
+
+### 16.9 Bitácora de prompts y uso de IA
+
+El proyecto deberá mantener una bitácora en:
+
+```text
+docs/bitacora_prompts.md
+```
+
+La bitácora registrará los prompts relevantes utilizados para generación de datos, diseño estadístico, modelos predictivos, optimización, Power BI y revisión crítica.
+
+Cada registro deberá indicar:
+
+- fecha;
+- responsable;
+- tarea;
+- herramienta usada;
+- propósito;
+- prompt o resumen del prompt;
+- resultado utilizado;
+- revisión humana;
+- cambios aceptados;
+- cambios descartados.
+
+La bitácora no reemplaza el criterio del equipo. Todas las respuestas de IA deberán ser revisadas, corregidas y adaptadas antes de incorporarse al proyecto.
+
+### 16.10 Evidencia de participación y trazabilidad de PRs
+
+Cada tarea deberá vincularse con su Issue y Pull Request correspondiente. Cuando sea posible, el PR deberá incluir `Closes #NUMERO_ISSUE`.
+
+| Rol | Evidencia esperada |
+|---|---|
+| Líder / Data PM | Coordinación, revisión, integración, F0-08, F0-09 |
+| Ingeniería de datos | Scripts de generación, validación y CSV sintéticos |
+| Estadística | Notebook de Parte 1, hipótesis y resultados |
+| Analítica descriptiva | Tendencias, segmentación, diagnóstico y outputs |
+| Ciencia de datos | Modelos de demanda y churn, métricas y predicciones |
+| Optimización / Power BI | Modelo prescriptivo, escenarios, recomendaciones y tablero |
+
+La evidencia se sustentará en Issues, commits, PRs, revisiones, bitácora y defensa oral.
+
+### 16.11 Pendientes controlados después de F0-08
+
+Después de F0-08 no deben quedar abiertas decisiones estructurales sobre esquema, volúmenes, hipótesis, demanda, churn, optimización o salidas analíticas principales.
+
+Permanecen pendientes de implementación o detalle final:
+
+- aprobación formal de F0-09;
+- implementación del generador;
+- ejecución de notebooks;
+- reglas finales de segmentación RFM o clustering;
+- diseño detallado del modelo de Power BI;
+- medidas DAX;
+- páginas finales, interactividad y storytelling;
+- presentación final;
+- autoevaluación;
+- consolidación final de la bitácora.
+
+### 16.12 Criterios de aprobación para F0-09
+
+F0-09 deberá revisar que:
+
+1. no existan contradicciones entre documento maestro, diccionario y YAML;
+2. todos los escenarios aparezcan en el documento y la configuración;
+3. cada patrón generado tenga una finalidad analítica;
+4. cada parte tenga inputs, procesos y outputs identificados;
+5. las decisiones pendientes sean visibles y controladas;
+6. la especificación pueda comprenderse sin consultar conversaciones externas;
+7. Power BI tenga identificados los archivos que consumirá;
+8. la bitácora de prompts esté reconocida como entregable obligatorio;
+9. las fuentes canónicas estén claramente definidas;
+10. la especificación esté lista para pasar a generación de datos.
+
 
 

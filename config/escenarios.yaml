@@ -5,7 +5,7 @@
 # ============================================================
 
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   moneda: "PEN"
   zona_horaria: "America/Lima"
   locale_faker: "es_PE"
@@ -886,3 +886,109 @@ aptitud_predictiva:
     continuidad_inventario: true
     conciliacion_ventas_inventario: true
 
+# ------------------------------------------------------------
+# 21. CONSOLIDACIÓN Y TRAZABILIDAD FASE 0
+# Registra fuentes canónicas, estructura del repositorio,
+# trazabilidad de patrones, salidas integradas y criterios
+# de revisión documental. No modifica parámetros causales
+# de generación, predicción u optimización.
+# ------------------------------------------------------------
+consolidacion_fase0:
+  estado: especificacion_consolidada_pre_aprobacion
+  tarea_origen: F0-08
+  siguiente_tarea: F0-09
+  documento_maestro: docs/00_especificacion_datos_y_analitica.md
+  diccionario_datos: datos/data_dictionary.md
+  configuracion: config/escenarios.yaml
+
+fuentes_canonicas:
+  esquema_fisico: datos/data_dictionary.md
+  parametros_numericos: config/escenarios.yaml
+  alcance_y_trazabilidad: docs/00_especificacion_datos_y_analitica.md
+  bitacora_prompts: docs/bitacora_prompts.md
+
+estructura_repositorio:
+  datos: datos/
+  configuracion: config/
+  notebooks: notebooks/
+  resultados: resultados/
+  powerbi: powerbi/
+  documentacion: docs/
+  presentacion: presentacion/
+
+trazabilidad_patrones:
+  estacionalidad_julio_diciembre:
+    finalidad:
+      - estadistica
+      - descriptiva
+      - predictiva
+      - power_bi
+
+  crecimiento_digital:
+    finalidad:
+      - comparacion_canales
+      - tendencia_omnicanal
+      - prediccion
+      - power_bi
+
+  deterioro_trujillo:
+    finalidad:
+      - diagnostico_margen
+      - hipotesis_estadistica
+      - optimizacion
+      - power_bi
+
+  descuento_demanda:
+    finalidad:
+      - hipotesis_estadistica
+      - modelo_demanda
+
+  churn_90_dias:
+    finalidad:
+      - clasificacion_clientes
+      - power_bi
+
+  faltantes_outliers:
+    finalidad:
+      - limpieza
+      - robustez
+      - validacion
+
+  inventario_mensual:
+    finalidad:
+      - reposicion
+      - optimizacion
+      - power_bi
+
+salidas_integradas:
+  datos_fuente:
+    - datos/tiendas.csv
+    - datos/productos.csv
+    - datos/clientes.csv
+    - datos/ventas.csv
+    - datos/inventario.csv
+
+  resultados_analiticos:
+    - resultados/resumen_estadistico.csv
+    - resultados/pruebas_hipotesis.csv
+    - resultados/segmentacion_clientes.csv
+    - resultados/diagnostico_trujillo.csv
+    - resultados/predicciones_demanda.csv
+    - resultados/predicciones_churn.csv
+    - resultados/metricas_predictivas.csv
+    - resultados/importancia_variables.csv
+    - resultados/recomendaciones_reposicion.csv
+    - resultados/resumen_escenarios_optimizacion.csv
+    - resultados/uso_capacidad_optimizacion.csv
+
+  power_bi:
+    - powerbi/andinaretail_dashboard.pbix
+
+validacion_consolidacion:
+  sin_contradicciones_documentales: true
+  patrones_con_finalidad_analitica: true
+  partes_con_inputs_y_outputs: true
+  salidas_identificadas_por_fase: true
+  pendientes_visibles: true
+  documento_comprensible_sin_chat: true
+  listo_para_aprobacion_f0_09: true
