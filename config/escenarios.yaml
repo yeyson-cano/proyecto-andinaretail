@@ -992,3 +992,19 @@ validacion_consolidacion:
   pendientes_visibles: true
   documento_comprensible_sin_chat: true
   listo_para_aprobacion_f0_09: true
+
+# ------------------------------------------------------------
+# 22. APROBACIÓN DE ESPECIFICACIÓN V1
+# Registra la aprobación final de Fase 0 y autoriza iniciar
+# el generador de datos sintéticos. No modifica parámetros
+# causales de generación, predicción u optimización.
+# ------------------------------------------------------------
+aprobacion_especificacion_v1:
+  tarea_origen: F0-09
+  estado: aprobada
+  version_aprobada: "1.0"
+  autoriza_generacion_datos: true
+  revision_lider_realizada: true
+  observaciones_criticas_resueltas: true
+  referencia_revision: "Issue #9"
+  requiere_integracion_en_main: true
