@@ -855,37 +855,6 @@ aptitud_predictiva:
     continuidad_inventario: true
     conciliacion_ventas_inventario: true
 
-aptitud_predictiva:
-  demanda:
-    panel_mensual_completo: true
-    minimo_meses_objetivo: 24
-    series_con_variacion: true
-    conservar_meses_sin_ventas: true
-    todas_las_categorias_representadas: true
-    todos_los_nodos_representados: true
-
-  churn:
-    ambas_clases_por_corte: true
-    minimo_observaciones_por_clase_y_corte: 100
-    rango_tasa_positiva_por_corte_pct: [15, 60]
-    senal_rfm_aprendible_con_ruido: true
-
-  temporal:
-    ventanas_objetivo_dentro_del_periodo: true
-    impedir_variables_futuras: true
-    impedir_particion_aleatoria: true
-
-  metricas_modelos:
-    no_fijar_metrica_minima: true
-    no_predeterminar_modelo_ganador: true
-
-  integridad:
-    sin_claves_huerfanas: true
-    formulas_con_tolerancia_pen: 0.01
-    fechas_coherentes: true
-    continuidad_inventario: true
-    conciliacion_ventas_inventario: true
-
 # ------------------------------------------------------------
 # 21. CONSOLIDACIÓN Y TRAZABILIDAD FASE 0
 # Registra fuentes canónicas, estructura del repositorio,

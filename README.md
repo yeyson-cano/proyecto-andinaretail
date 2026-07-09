@@ -34,6 +34,51 @@ El trabajo abarcará:
 - `docs/`: especificaciones, bitácora de prompts y autoevaluación.
 - `presentacion/`: presentación utilizada en la defensa final.
 
+## Entorno de trabajo
+ 
+El proyecto debe ejecutarse con Python 3.11.x. Se recomienda usar Python 3.11.9 si está disponible. Cada integrante debe crear su propio entorno virtual local; la carpeta `.venv/` no debe subirse al repositorio.
+ 
+### Crear entorno virtual
+ 
+En Windows con Git Bash:
+ 
+```bash
+py -3.11 -m venv .venv
+source .venv/Scripts/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+ 
+En Windows con PowerShell:
+ 
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+ 
+### Registrar kernel para notebooks
+ 
+```bash
+python -m ipykernel install --user --name andinaretail --display-name "Python 3.11 - AndinaRetail"
+```
+ 
+### Ejecutar generación de datos
+ 
+Desde la raíz del repositorio:
+ 
+```bash
+python datos/generar_datos.py
+```
+ 
+### Consideraciones
+ 
+- No subir `.venv/` al repositorio.
+- Instalar dependencias únicamente desde `requirements.txt`.
+- Ejecutar los comandos desde la raíz del repositorio.
+- Si se cambia el entorno del proyecto, actualizar primero `requirements.txt` y luego este README.
+
 ## Flujo previsto de ejecución
 
 1. Instalar las dependencias de `requirements.txt`.
