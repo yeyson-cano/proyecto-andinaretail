@@ -1,0 +1,141 @@
+Reporte de validacion de datos — AndinaRetail S.A.C.
+============================================================
+Estado general: APROBADO
+Version config: 1.3.0
+Semilla: 2026
+
+Validaciones correctas: 121
+Advertencias: 1
+Errores criticos: 0
+
+OK
+--
+[OK] Archivo cargado: datos\tiendas.csv (15 filas)
+[OK] Archivo cargado: datos\productos.csv (800 filas)
+[OK] Archivo cargado: datos\clientes.csv (15,000 filas)
+[OK] Archivo cargado: datos\ventas.csv (250,000 filas)
+[OK] Archivo cargado: datos\inventario.csv (432,000 filas)
+[OK] tiendas: columnas requeridas presentes.
+[OK] productos: columnas requeridas presentes.
+[OK] clientes: columnas requeridas presentes.
+[OK] ventas: columnas requeridas presentes.
+[OK] inventario: columnas requeridas presentes.
+[OK] tiendas: clave primaria sin nulos.
+[OK] tiendas: clave primaria unica.
+[OK] productos: clave primaria sin nulos.
+[OK] productos: clave primaria unica.
+[OK] clientes: clave primaria sin nulos.
+[OK] clientes: clave primaria unica.
+[OK] ventas: clave primaria sin nulos.
+[OK] ventas: clave primaria unica.
+[OK] inventario: clave primaria sin nulos.
+[OK] inventario: clave primaria unica.
+[OK] ventas.id_tienda: sin claves foraneas huerfanas.
+[OK] ventas.id_producto: sin claves foraneas huerfanas.
+[OK] ventas.id_cliente: sin claves foraneas huerfanas.
+[OK] inventario.id_tienda: sin claves foraneas huerfanas.
+[OK] inventario.id_producto: sin claves foraneas huerfanas.
+[OK] tiendas: sin nulos fuera de campos permitidos.
+[OK] productos: sin nulos fuera de campos permitidos.
+[OK] clientes: sin nulos fuera de campos permitidos.
+[OK] ventas: sin nulos fuera de campos permitidos.
+[OK] inventario: sin nulos fuera de campos permitidos.
+[OK] tiendas.tipo: dominio valido.
+[OK] tiendas.canal: dominio valido.
+[OK] tiendas fisicas: ciudad, region y area_m2 informados.
+[OK] tiendas fisicas: canal Tienda.
+[OK] tiendas fisicas: area_m2 mayor que cero.
+[OK] tiendas virtuales: nulos estructurales validos.
+[OK] tiendas virtuales: canales Web/App.
+[OK] tiendas: ciudad y region dentro de dominios.
+[OK] productos.categoria: dominio valido.
+[OK] productos.precio_lista: positivo.
+[OK] productos.costo_unitario: positivo.
+[OK] productos: costo_unitario menor que precio_lista.
+[OK] productos.fecha_alta: fechas validas.
+[OK] productos.subcategoria: dominio valido para Abarrotes.
+[OK] productos.subcategoria: dominio valido para Bebidas.
+[OK] productos.subcategoria: dominio valido para Limpieza.
+[OK] productos.subcategoria: dominio valido para Cuidado Personal.
+[OK] productos.subcategoria: dominio valido para Electrohogar.
+[OK] productos.subcategoria: dominio valido para Hogar.
+[OK] productos.marca: dominio valido para Abarrotes.
+[OK] productos.marca: dominio valido para Bebidas.
+[OK] productos.marca: dominio valido para Limpieza.
+[OK] productos.marca: dominio valido para Cuidado Personal.
+[OK] productos.marca: dominio valido para Electrohogar.
+[OK] productos.marca: dominio valido para Hogar.
+[OK] clientes.edad: valores no nulos dentro de rango.
+[OK] clientes.genero: dominio valido.
+[OK] clientes.ciudad: dominio valido.
+[OK] clientes.canal_preferido: dominio valido en valores no nulos.
+[OK] clientes.segmento: dominio valido.
+[OK] clientes.fecha_registro: fechas validas dentro del rango.
+[OK] ventas.fecha: fechas validas dentro del periodo.
+[OK] ventas.cantidad: mayor o igual que uno.
+[OK] ventas.precio_unitario: positivo.
+[OK] ventas.descuento_pct: dentro del rango permitido.
+[OK] ventas.monto_total: positivo.
+[OK] ventas.canal: dominio valido.
+[OK] ventas.metodo_pago: dominio valido.
+[OK] ventas.canal: coincide con tiendas.canal.
+[OK] ventas: campos de cabecera consistentes por ticket.
+[OK] coherencia temporal: cliente registrado antes o en la venta.
+[OK] coherencia temporal: producto disponible antes o en la venta.
+[OK] inventario.periodo: dentro del periodo esperado.
+[OK] inventario.stock_inicial: entero no negativo.
+[OK] inventario.unidades_vendidas: entero no negativo.
+[OK] inventario.reabastecimiento: entero no negativo.
+[OK] inventario.stock_final: entero no negativo.
+[OK] inventario.costo_almacenamiento: no negativo.
+[OK] Formula monto_total: diferencia maxima S/ 0.0000.
+[OK] inventario: stock_final cumple formula de balance.
+[OK] inventario: continuidad mensual stock_inicial = stock_final anterior.
+[OK] inventario: stock_final no negativo.
+[OK] inventario: unidades_vendidas concilia con ventas.
+[OK] Volumen tiendas: 15 filas.
+[OK] Volumen productos: 800 filas.
+[OK] Volumen clientes: 15,000 filas.
+[OK] Volumen ventas: 250,000 lineas dentro de rango.
+[OK] Pico julio: 23.36% sobre meses base.
+[OK] Pico diciembre: 43.58% sobre meses base.
+[OK] Participacion digital 2023: 23.06%.
+[OK] Participacion digital 2025: 34.90%.
+[OK] Crecimiento digital: 2025 mayor que 2023.
+[OK] Trujillo: caida de margen operativo 8.92 pp.
+[OK] Churn descriptivo: 30.00%.
+[OK] Faltantes controlados: 2.00% sobre celdas elegibles.
+[OK] Outliers de cantidad: 0.50%.
+[OK] Aptitud demanda: panel mensual completo (3,240 filas).
+[OK] Aptitud demanda: 24 meses objetivo evaluables.
+[OK] Aptitud demanda: variacion temporal distinta de cero.
+[OK] Aptitud demanda: todos los nodos tienen ventas representadas.
+[OK] Aptitud demanda: todas las categorias tienen ventas representadas.
+[OK] Aptitud churn 2023-12-31: ambas clases presentes (churn=2,913, no_churn=4,514).
+[OK] Aptitud churn 2023-12-31: tasa positiva 39.22%.
+[OK] Aptitud churn 2024-03-31: ambas clases presentes (churn=2,627, no_churn=4,877).
+[OK] Aptitud churn 2024-03-31: tasa positiva 35.01%.
+[OK] Aptitud churn 2024-06-30: ambas clases presentes (churn=2,430, no_churn=5,099).
+[OK] Aptitud churn 2024-06-30: tasa positiva 32.28%.
+[OK] Aptitud churn 2024-09-30: ambas clases presentes (churn=2,205, no_churn=5,339).
+[OK] Aptitud churn 2024-09-30: tasa positiva 29.23%.
+[OK] Aptitud churn 2024-12-31: ambas clases presentes (churn=2,711, no_churn=4,836).
+[OK] Aptitud churn 2024-12-31: tasa positiva 35.92%.
+[OK] Aptitud churn 2025-03-31: ambas clases presentes (churn=2,478, no_churn=5,071).
+[OK] Aptitud churn 2025-03-31: tasa positiva 32.83%.
+[OK] Aptitud churn 2025-06-30: ambas clases presentes (churn=2,270, no_churn=5,279).
+[OK] Aptitud churn 2025-06-30: tasa positiva 30.07%.
+[OK] Aptitud churn 2025-09-30: ambas clases presentes (churn=2,265, no_churn=5,284).
+[OK] Aptitud churn 2025-09-30: tasa positiva 30.00%.
+[OK] Aptitud prescriptiva: stock inicial derivable por nodo-categoria para diciembre 2025.
+[OK] Aptitud prescriptiva: costos unitarios positivos.
+[OK] Aptitud prescriptiva: factores de espacio positivos para todas las categorias.
+[OK] Aptitud prescriptiva: escenarios configurados completos y validos.
+
+ADVERTENCIAS
+------------
+[WARN] Aptitud prescriptiva: predicciones_demanda.csv aun no existe; se valido la aptitud de las tablas fuente.
+
+ERRORES CRITICOS
+----------------
+Sin errores criticos.

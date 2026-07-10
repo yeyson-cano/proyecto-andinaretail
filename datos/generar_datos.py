@@ -1027,15 +1027,36 @@ def generar_inventario_base(
                 stock_final = stock_inicial + reabastecimiento - unidades_vendidas
  
                 periodo_obj = pd.Period(periodo, freq="M")
-                tasa_holding = tasa_base
                 tienda = tiendas_lookup[id_tienda]
-                if (
+
+                es_trujillo_afectado = (
                     tienda.get("tipo") == "Fisica"
                     and tienda.get("ciudad") == "Trujillo"
                     and periodo_obj >= inicio_trujillo
-                ):
+                )
+                
+                # Calibracion del escenario Trujillo:
+                # se mantiene el incremento de la tasa de almacenamiento definido en YAML,
+                # pero se reduce la cobertura objetivo posterior al inicio del problema para
+                # evitar que el deterioro agregado exceda el rango aprobado.
+                factor_cobertura_trujillo_afectado = 0.45 if es_trujillo_afectado else 1.0
+
+                objetivo_cierre = int(
+                    np.ceil(
+                        max(
+                            promedio * cobertura * factor_cobertura_trujillo_afectado,
+                            unidades_vendidas * 0.25,
+                        )
+                    )
+                )
+
+                reabastecimiento = max(0, unidades_vendidas + objetivo_cierre - stock_inicial)
+                stock_final = stock_inicial + reabastecimiento - unidades_vendidas
+
+                tasa_holding = tasa_base
+                if es_trujillo_afectado:
                     tasa_holding *= 1 + float(config["trujillo"]["aumento_costo_almacenamiento_pct"]) / 100.0
- 
+
                 stock_promedio = (stock_inicial + stock_final) / 2
                 costo_almacenamiento = redondear_monto(stock_promedio * tasa_holding * costo_unitario)
  
