@@ -1,21 +1,24 @@
 """
 Generador reproducible de datos sinteticos para AndinaRetail S.A.C.
-Tarea: [Datos] Implementar generador reproducible de tablas base.
- 
+Tarea: [Datos] Incorporar patrones analiticos, faltantes y outliers.
+
 Entradas:
 - config/escenarios.yaml
- 
+
 Salidas:
 - datos/tiendas.csv
 - datos/productos.csv
 - datos/clientes.csv
 - datos/ventas.csv
 - datos/inventario.csv
- 
+
 Notas de alcance:
-- Esta version genera las tablas base reproducibles y coherentes.
-- No inserta faltantes ni outliers controlados; eso corresponde a una tarea posterior.
-- Incluye validaciones basicas de integridad para evitar errores evidentes antes del PR.
+- Genera las cinco tablas oficiales del proyecto de forma reproducible.
+- Incorpora estacionalidad, crecimiento digital, deterioro de margen en Trujillo,
+  relacion descuento-demanda, churn descriptivo inducido, faltantes controlados
+  y outliers controlados de cantidad.
+- No agrega columnas auxiliares al esquema fisico de los CSV.
+- Incluye validaciones basicas y de humo; la validacion integral corresponde a una tarea posterior.
 """
  
 from __future__ import annotations
@@ -117,12 +120,177 @@ def fecha_aleatoria(rng: np.random.Generator, inicio: str, fin: str) -> pd.Times
     fin_ts = pd.Timestamp(fin)
     dias = (fin_ts - inicio_ts).days
     return inicio_ts + pd.Timedelta(days=int(rng.integers(0, dias + 1)))
- 
- 
+
+
+def recalcular_monto_total(ventas: pd.DataFrame) -> pd.DataFrame:
+    """Recalcula monto_total despues de cualquier cambio en cantidad, precio o descuento."""
+    ventas = ventas.copy()
+    ventas["monto_total"] = (
+        ventas["cantidad"].astype(float)
+        * ventas["precio_unitario"].astype(float)
+        * (1 - ventas["descuento_pct"].astype(float))
+    ).round(2)
+    ventas["monto_total"] = ventas["monto_total"].apply(redondear_monto)
+    return ventas
+
+
+def obtener_inicio_ventana_churn(config: Dict[str, Any]) -> pd.Timestamp:
+    """Devuelve el inicio de la ventana final usada para medir churn descriptivo."""
+    cfg = config["churn"]
+    fecha_eval = pd.Timestamp(cfg["fecha_evaluacion_descriptiva"])
+    ventana = int(cfg["ventana_inactividad_dias"])
+    return fecha_eval - pd.Timedelta(days=ventana - 1)
+
+
+def preparar_clientes_activos_recientes(
+    config: Dict[str, Any],
+    clientes: pd.DataFrame,
+    fechas_tickets: pd.DatetimeIndex,
+    rng: np.random.Generator,
+) -> Tuple[pd.Timestamp, np.ndarray]:
+    """Selecciona clientes que deben aparecer en la ventana final para calibrar churn descriptivo."""
+    inicio_ventana = obtener_inicio_ventana_churn(config)
+    cfg_churn = config["churn"]
+    min_churn = float(cfg_churn["proporcion_objetivo"]["minima"])
+    max_churn = float(cfg_churn["proporcion_objetivo"]["maxima"])
+
+    clientes_tmp = clientes.copy()
+    clientes_tmp["fecha_registro_dt"] = pd.to_datetime(clientes_tmp["fecha_registro"])
+    elegibles = clientes_tmp.loc[
+        clientes_tmp["fecha_registro_dt"] < inicio_ventana,
+        "id_cliente",
+    ].to_numpy()
+
+    tickets_ventana = int((fechas_tickets >= inicio_ventana).sum())
+    if len(elegibles) == 0 or tickets_ventana == 0:
+        return inicio_ventana, np.array([], dtype=object)
+
+    # Se usa un objetivo dentro del rango documentado, con margen para que los tickets
+    # disponibles en los ultimos 90 dias puedan cubrir clientes activos distintos.
+    activos_max_por_churn_min = int(np.floor(len(elegibles) * (1 - min_churn - 0.01)))
+    activos_min_por_churn_max = int(np.ceil(len(elegibles) * (1 - max_churn + 0.01)))
+    activos_por_tickets = int(np.floor(tickets_ventana * 0.98))
+
+    n_activos = min(activos_max_por_churn_min, activos_por_tickets, len(elegibles))
+    n_activos = max(n_activos, min(activos_min_por_churn_max, len(elegibles), tickets_ventana))
+
+    activos = rng.choice(elegibles, size=n_activos, replace=False)
+    rng.shuffle(activos)
+    return inicio_ventana, activos
+
+
+def ajustar_probabilidades_mix_trujillo(
+    config: Dict[str, Any],
+    categorias: List[Any],
+    probabilidades: np.ndarray,
+) -> np.ndarray:
+    """Desplaza parte del mix hacia categorias de menor margen para Trujillo afectado."""
+    destino = set(config["trujillo"]["categorias_destino_mix"])
+    desplazamiento = float(config["trujillo"]["desplazamiento_mix_menor_margen_pct"]) / 100.0
+
+    probs = probabilidades.astype(float).copy()
+    mascara_destino = np.array([cat in destino for cat in categorias], dtype=bool)
+    if not mascara_destino.any() or mascara_destino.all():
+        return probs / probs.sum()
+
+    transferencia = probs[~mascara_destino].sum() * desplazamiento
+    probs[~mascara_destino] *= (1 - desplazamiento)
+    probs[mascara_destino] += transferencia * (probs[mascara_destino] / probs[mascara_destino].sum())
+    return probs / probs.sum()
+
+
+def ajustar_cantidad_por_descuento(
+    cantidad_base: int,
+    descuento_pct: float,
+    config: Dict[str, Any],
+    rng: np.random.Generator,
+) -> int:
+    """Aplica una relacion positiva, imperfecta y con ruido entre descuento y demanda."""
+    cfg = config["relacion_descuento_demanda"]
+    ref_descuento = float(cfg["aumento_descuento_pp_referencia"]) / 100.0
+    min_efecto = float(cfg["aumento_demanda_pct_esperado"]["minimo"]) / 100.0
+    max_efecto = float(cfg["aumento_demanda_pct_esperado"]["maximo"]) / 100.0
+    ruido_sd = float(cfg["ruido_relativo_desviacion_estandar"])
+    cantidad_max_normal = int(config["calidad_datos"]["outliers"]["cantidad_normal_maxima"])
+
+    efecto_ref = float(rng.uniform(min_efecto, max_efecto))
+    ruido = float(rng.normal(0, ruido_sd))
+    factor = 1 + (descuento_pct / max(ref_descuento, 0.0001)) * efecto_ref + ruido
+    cantidad = int(round(cantidad_base * max(0.2, factor)))
+    return int(np.clip(cantidad, 1, cantidad_max_normal))
+
+
 def redondear_monto(valor: float) -> float:
     """Redondea montos a dos decimales y evita -0.00 por efectos numericos."""
     valor = round(float(valor), 2)
     return 0.0 if abs(valor) < 0.005 else valor
+
+def recalcular_monto_total(ventas: pd.DataFrame) -> pd.DataFrame:
+    """Recalcula monto_total despues de cualquier cambio en cantidad, precio o descuento."""
+    ventas = ventas.copy()
+    ventas["monto_total"] = (
+        ventas["cantidad"].astype(float)
+        * ventas["precio_unitario"].astype(float)
+        * (1 - ventas["descuento_pct"].astype(float))
+    ).round(2)
+    ventas["monto_total"] = ventas["monto_total"].apply(redondear_monto)
+    return ventas
+
+
+def obtener_inicio_ventana_churn(config: Dict[str, Any]) -> pd.Timestamp:
+    """Devuelve el inicio de la ventana final usada para medir churn descriptivo."""
+    cfg = config["churn"]
+    fecha_eval = pd.Timestamp(cfg["fecha_evaluacion_descriptiva"])
+    ventana = int(cfg["ventana_inactividad_dias"])
+    return fecha_eval - pd.Timedelta(days=ventana - 1)
+
+
+def ajustar_probabilidades_mix_trujillo(
+    config: Dict[str, Any],
+    categorias: List[Any],
+    probabilidades: np.ndarray,
+) -> np.ndarray:
+    """Desplaza parte del mix hacia categorias de menor margen para Trujillo afectado."""
+    destino = set(config["trujillo"]["categorias_destino_mix"])
+    desplazamiento = float(config["trujillo"]["desplazamiento_mix_menor_margen_pct"]) / 100.0
+
+    probs = probabilidades.astype(float).copy()
+    mascara_destino = np.array([cat in destino for cat in categorias], dtype=bool)
+
+    if not mascara_destino.any() or mascara_destino.all():
+        return probs / probs.sum()
+
+    transferencia = probs[~mascara_destino].sum() * desplazamiento
+    probs[~mascara_destino] *= 1 - desplazamiento
+    probs[mascara_destino] += transferencia * (
+        probs[mascara_destino] / probs[mascara_destino].sum()
+    )
+
+    return probs / probs.sum()
+
+
+def ajustar_cantidad_por_descuento(
+    cantidad_base: int,
+    descuento_pct: float,
+    config: Dict[str, Any],
+    rng: np.random.Generator,
+) -> int:
+    """Aplica una relacion positiva, imperfecta y con ruido entre descuento y demanda."""
+    cfg = config["relacion_descuento_demanda"]
+
+    ref_descuento = float(cfg["aumento_descuento_pp_referencia"]) / 100.0
+    min_efecto = float(cfg["aumento_demanda_pct_esperado"]["minimo"]) / 100.0
+    max_efecto = float(cfg["aumento_demanda_pct_esperado"]["maximo"]) / 100.0
+    ruido_sd = float(cfg["ruido_relativo_desviacion_estandar"])
+    cantidad_max_normal = int(config["calidad_datos"]["outliers"]["cantidad_normal_maxima"])
+
+    efecto_ref = float(rng.uniform(min_efecto, max_efecto))
+    ruido = float(rng.normal(0, ruido_sd))
+
+    factor = 1 + (descuento_pct / max(ref_descuento, 0.0001)) * efecto_ref + ruido
+    cantidad = int(round(cantidad_base * max(0.2, factor)))
+
+    return int(np.clip(cantidad, 1, cantidad_max_normal))
  
  
 def generar_tiendas(config: Dict[str, Any], fake: Faker, rng: np.random.Generator) -> pd.DataFrame:
@@ -458,7 +626,9 @@ def generar_ventas_base(
     qty_keys, qty_probs = normalizar_pesos(config["distribucion_ventas"]["cantidad_normal"]["probabilidades"])
     qty_values = np.array([int(q) for q in qty_keys], dtype=int)
     city_keys, city_probs = normalizar_pesos(config["distribucion_ventas"]["pesos_ciudad"])
- 
+    
+    cat_probs_trujillo = ajustar_probabilidades_mix_trujillo(config, cat_keys, cat_probs)
+
     payment_options = {}
     for canal, pesos in config["metodos_pago_por_canal"].items():
         payment_options[canal] = normalizar_pesos(pesos)
@@ -508,19 +678,21 @@ def generar_ventas_base(
             and tienda.get("ciudad") == "Trujillo"
             and fecha >= inicio_trujillo
         )
- 
+        probs_categoria = cat_probs_trujillo if es_trujillo_afectado else cat_probs
+        
         for _ in range(int(lineas_por_ticket[i])):
-            categoria = cat_keys[int(rng.choice(len(cat_keys), p=cat_probs))]
+            categoria = cat_keys[int(rng.choice(len(cat_keys), p=probs_categoria))]
             productos_categoria = productos_por_categoria[categoria]
             idx_producto = int(rng.integers(0, len(productos_categoria["id_producto"])))
             id_producto = str(productos_categoria["id_producto"][idx_producto])
             precio_lista = float(productos_categoria["precio_lista"][idx_producto])
- 
-            cantidad = int(qty_values[int(rng.choice(len(qty_values), p=qty_probs))])
+
+            cantidad_base = int(qty_values[int(rng.choice(len(qty_values), p=qty_probs))])
             precio_unitario = redondear_monto(precio_lista * (1 + rng.uniform(var_min, var_max)))
             descuento_pct = generar_descuento(config, canal, rng, es_trujillo_afectado)
+            cantidad = ajustar_cantidad_por_descuento(cantidad_base, descuento_pct, config, rng)
             monto_total = redondear_monto(cantidad * precio_unitario * (1 - descuento_pct))
- 
+
             filas.append(
                 (
                     f"L{id_linea:07d}",
@@ -555,6 +727,243 @@ def generar_ventas_base(
     ]
     ventas = pd.DataFrame.from_records(filas, columns=columnas)
     return ventas
+
+def asignar_clientes_a_tickets(
+    ticket_ids: np.ndarray,
+    cliente_ids: np.ndarray,
+    rng: np.random.Generator,
+) -> Dict[str, str]:
+    """Asigna clientes a tickets garantizando que cada cliente objetivo aparezca al menos una vez."""
+    tickets = np.array(ticket_ids, dtype=object).copy()
+    clientes = np.array(cliente_ids, dtype=object).copy()
+
+    rng.shuffle(tickets)
+    rng.shuffle(clientes)
+
+    asignaciones: Dict[str, str] = {}
+
+    for i, ticket_id in enumerate(tickets):
+        if i < len(clientes):
+            cliente_id = clientes[i]
+        else:
+            cliente_id = clientes[int(rng.integers(0, len(clientes)))]
+
+        asignaciones[str(ticket_id)] = str(cliente_id)
+
+    return asignaciones
+
+
+def calibrar_churn_descriptivo(
+    config: Dict[str, Any],
+    clientes: pd.DataFrame,
+    ventas: pd.DataFrame,
+    rng: np.random.Generator,
+) -> pd.DataFrame:
+    """Calibra el churn descriptivo sin agregar columnas auxiliares."""
+    ventas = ventas.copy()
+
+    inicio_ventana = obtener_inicio_ventana_churn(config)
+    fecha_inicio_ventas = pd.Timestamp(config["periodo"]["inicio"])
+
+    min_churn = float(config["churn"]["proporcion_objetivo"]["minima"])
+    max_churn = float(config["churn"]["proporcion_objetivo"]["maxima"])
+    target_churn = (min_churn + max_churn) / 2
+
+    clientes_tmp = clientes.copy()
+    clientes_tmp["fecha_registro_dt"] = pd.to_datetime(clientes_tmp["fecha_registro"])
+
+    candidatos = (
+        clientes_tmp.loc[
+            clientes_tmp["fecha_registro_dt"] <= fecha_inicio_ventas,
+            "id_cliente",
+        ]
+        .astype(str)
+        .to_numpy()
+    )
+
+    tickets = ventas[["id_venta", "fecha"]].drop_duplicates("id_venta").copy()
+    tickets["fecha_dt"] = pd.to_datetime(tickets["fecha"])
+
+    tickets_historicos = tickets.loc[tickets["fecha_dt"] < inicio_ventana, "id_venta"].astype(str).to_numpy()
+    tickets_recientes = tickets.loc[tickets["fecha_dt"] >= inicio_ventana, "id_venta"].astype(str).to_numpy()
+
+    if len(candidatos) == 0 or len(tickets_historicos) == 0 or len(tickets_recientes) == 0:
+        return ventas
+
+    max_elegibles_por_recientes = int(
+        np.floor(len(tickets_recientes) / max(1 - target_churn, 0.0001))
+    )
+
+    n_elegibles = min(
+        len(candidatos),
+        len(tickets_historicos),
+        max_elegibles_por_recientes,
+    )
+
+    if n_elegibles <= 0:
+        return ventas
+
+    elegibles = rng.choice(candidatos, size=n_elegibles, replace=False)
+
+    n_activos = int(round(n_elegibles * (1 - target_churn)))
+    n_activos = min(max(1, n_activos), len(tickets_recientes), n_elegibles)
+
+    while n_activos < n_elegibles and (1 - n_activos / n_elegibles) > max_churn:
+        n_activos += 1
+
+    while n_activos > 1 and (1 - n_activos / n_elegibles) < min_churn:
+        n_activos -= 1
+
+    activos = rng.choice(elegibles, size=n_activos, replace=False)
+
+    asignaciones_historicas = asignar_clientes_a_tickets(tickets_historicos, elegibles, rng)
+    asignaciones_recientes = asignar_clientes_a_tickets(tickets_recientes, activos, rng)
+
+    asignaciones = {}
+    asignaciones.update(asignaciones_historicas)
+    asignaciones.update(asignaciones_recientes)
+
+    ventas["id_cliente"] = ventas["id_venta"].astype(str).map(asignaciones).fillna(ventas["id_cliente"])
+
+    return ventas
+
+def aplicar_outliers_cantidad(
+    config: Dict[str, Any],
+    ventas: pd.DataFrame,
+    rng: np.random.Generator,
+) -> pd.DataFrame:
+    """Inserta outliers controlados solo en ventas.cantidad y recalcula monto_total."""
+    ventas = ventas.copy()
+
+    cfg = config["calidad_datos"]["outliers"]
+    proporcion = float(cfg["proporcion_objetivo"])
+    cantidad_normal_max = int(cfg["cantidad_normal_maxima"])
+    out_min = int(cfg["cantidad_outlier_minima"])
+    out_max = int(cfg["cantidad_outlier_maxima"])
+
+    elegibles = ventas.index[ventas["cantidad"].astype(int) <= cantidad_normal_max].to_numpy()
+    n_outliers = int(round(len(ventas) * proporcion))
+    n_outliers = min(n_outliers, len(elegibles))
+
+    if n_outliers > 0:
+        indices = rng.choice(elegibles, size=n_outliers, replace=False)
+        ventas.loc[indices, "cantidad"] = rng.integers(out_min, out_max + 1, size=n_outliers)
+
+    ventas["cantidad"] = ventas["cantidad"].astype(int)
+    ventas = recalcular_monto_total(ventas)
+
+    return ventas
+
+
+def aplicar_faltantes_controlados(
+    config: Dict[str, Any],
+    clientes: pd.DataFrame,
+    productos: pd.DataFrame,
+    rng: np.random.Generator,
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Inserta faltantes solo en campos permitidos por la configuracion."""
+    clientes = clientes.copy()
+    productos = productos.copy()
+
+    cfg = config["calidad_datos"]["faltantes"]
+    proporcion = float(cfg["proporcion_objetivo"])
+    campos = cfg["campos_permitidos"]
+
+    tablas = {
+        "clientes": clientes,
+        "productos": productos,
+    }
+
+    celdas_elegibles = []
+
+    for tabla_nombre, columnas in campos.items():
+        if tabla_nombre not in tablas:
+            continue
+
+        df = tablas[tabla_nombre]
+
+        for columna in columnas:
+            if columna not in df.columns:
+                raise ValueError(f"Campo permitido no existe en {tabla_nombre}: {columna}")
+
+            for idx in df.index:
+                celdas_elegibles.append((tabla_nombre, idx, columna))
+
+    n_faltantes = int(round(len(celdas_elegibles) * proporcion))
+
+    if n_faltantes > 0:
+        seleccion = rng.choice(len(celdas_elegibles), size=n_faltantes, replace=False)
+
+        for pos in seleccion:
+            tabla_nombre, idx, columna = celdas_elegibles[int(pos)]
+            tablas[tabla_nombre].loc[idx, columna] = pd.NA
+
+    return tablas["clientes"], tablas["productos"]
+
+def aplicar_outliers_cantidad(
+    config: Dict[str, Any],
+    ventas: pd.DataFrame,
+    rng: np.random.Generator,
+) -> pd.DataFrame:
+    """Inserta outliers controlados solo en ventas.cantidad y recalcula monto_total."""
+    ventas = ventas.copy()
+    cfg = config["calidad_datos"]["outliers"]
+    proporcion = float(cfg["proporcion_objetivo"])
+    cantidad_normal_max = int(cfg["cantidad_normal_maxima"])
+    out_min = int(cfg["cantidad_outlier_minima"])
+    out_max = int(cfg["cantidad_outlier_maxima"])
+
+    elegibles = ventas.index[ventas["cantidad"].astype(int) <= cantidad_normal_max].to_numpy()
+    n_outliers = int(round(len(ventas) * proporcion))
+    n_outliers = min(n_outliers, len(elegibles))
+
+    if n_outliers > 0:
+        indices = rng.choice(elegibles, size=n_outliers, replace=False)
+        ventas.loc[indices, "cantidad"] = rng.integers(out_min, out_max + 1, size=n_outliers)
+
+    ventas["cantidad"] = ventas["cantidad"].astype(int)
+    ventas = recalcular_monto_total(ventas)
+    return ventas
+
+
+def aplicar_faltantes_controlados(
+    config: Dict[str, Any],
+    clientes: pd.DataFrame,
+    productos: pd.DataFrame,
+    rng: np.random.Generator,
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Inserta faltantes solo en campos permitidos por la configuracion."""
+    clientes = clientes.copy()
+    productos = productos.copy()
+    cfg = config["calidad_datos"]["faltantes"]
+    proporcion = float(cfg["proporcion_objetivo"])
+    campos = cfg["campos_permitidos"]
+
+    tablas = {
+        "clientes": clientes,
+        "productos": productos,
+    }
+
+    celdas_elegibles = []
+    for tabla_nombre, columnas in campos.items():
+        if tabla_nombre not in tablas:
+            continue
+        df = tablas[tabla_nombre]
+        for columna in columnas:
+            if columna not in df.columns:
+                raise ValueError(f"Campo permitido no existe en {tabla_nombre}: {columna}")
+            for idx in df.index:
+                celdas_elegibles.append((tabla_nombre, idx, columna))
+
+    n_faltantes = int(round(len(celdas_elegibles) * proporcion))
+    if n_faltantes > 0:
+        seleccion = rng.choice(len(celdas_elegibles), size=n_faltantes, replace=False)
+        for pos in seleccion:
+            tabla_nombre, idx, columna = celdas_elegibles[int(pos)]
+            tablas[tabla_nombre].loc[idx, columna] = pd.NA
+
+    return tablas["clientes"], tablas["productos"]
+
  
 def generar_inventario_base(
     config: Dict[str, Any],
@@ -566,19 +975,24 @@ def generar_inventario_base(
     """Genera snapshots mensuales de inventario por producto, nodo y periodo."""
     ventas_tmp = ventas.copy()
     ventas_tmp["periodo"] = pd.to_datetime(ventas_tmp["fecha"]).dt.to_period("M").astype(str)
- 
+
     unidades = (
-        ventas_tmp.groupby(["id_producto", "id_tienda", "periodo"], as_index=False)["cantidad"]
-        .sum()
-        .rename(columns={"cantidad": "unidades_vendidas"})
+        ventas_tmp
+        .groupby(["id_producto", "id_tienda", "periodo"], as_index=False)
+        .agg(unidades_vendidas=("cantidad", "sum"))
     )
-    unidades_lookup = {
-        (row.id_producto, row.id_tienda, row.periodo): int(row.unidades_vendidas)
-        for row in unidades.itertuples(index=False)
+
+    unidades_lookup: Dict[Tuple[str, str, str], int] = {
+        (
+            str(row["id_producto"]),
+            str(row["id_tienda"]),
+            str(row["periodo"]),
+        ): int(row["unidades_vendidas"])
+        for row in unidades.to_dict(orient="records")
     }
- 
+
     periodos = pd.period_range(config["periodo"]["inicio"][:7], config["periodo"]["fin"][:7], freq="M").astype(str)
-    ids_tienda = tiendas["id_tienda"].tolist()
+    ids_tienda = tiendas["id_tienda"].astype(str).tolist()
     productos_lookup = productos.set_index("id_producto")[["categoria", "costo_unitario"]].to_dict(orient="index")
     tiendas_lookup = tiendas.set_index("id_tienda").to_dict(orient="index")
  
@@ -607,7 +1021,7 @@ def generar_inventario_base(
             stock_inicial = int(np.ceil(promedio * cobertura + rng.integers(0, 5)))
  
             for periodo in periodos:
-                unidades_vendidas = int(unidades_lookup.get((id_producto, id_tienda, periodo), 0))
+                unidades_vendidas = unidades_lookup.get((str(id_producto), str(id_tienda), str(periodo)), 0)
                 objetivo_cierre = int(np.ceil(max(promedio * cobertura, unidades_vendidas * 0.25)))
                 reabastecimiento = max(0, unidades_vendidas + objetivo_cierre - stock_inicial)
                 stock_final = stock_inicial + reabastecimiento - unidades_vendidas
@@ -708,6 +1122,209 @@ def validar_integridad_basica(
     assert (inventario["stock_final"] >= 0).all(), "stock_final no puede ser negativo."
  
  
+def calcular_tasa_churn_descriptivo(
+    config: Dict[str, Any],
+    clientes: pd.DataFrame,
+    ventas: pd.DataFrame,
+) -> float:
+    """Calcula tasa de churn descriptivo segun inactividad en la ventana final."""
+    inicio_ventana = obtener_inicio_ventana_churn(config)
+
+    clientes_tmp = clientes.copy()
+    clientes_tmp["fecha_registro_dt"] = pd.to_datetime(clientes_tmp["fecha_registro"])
+
+    ventas_tmp = ventas.copy()
+    ventas_tmp["fecha_dt"] = pd.to_datetime(ventas_tmp["fecha"])
+
+    clientes_registrados = set(
+        clientes_tmp.loc[
+            clientes_tmp["fecha_registro_dt"] < inicio_ventana,
+            "id_cliente",
+        ].astype(str)
+    )
+
+    compra_historica = set(
+        ventas_tmp.loc[
+            ventas_tmp["fecha_dt"] < inicio_ventana,
+            "id_cliente",
+        ].astype(str)
+    )
+
+    compra_reciente = set(
+        ventas_tmp.loc[
+            ventas_tmp["fecha_dt"] >= inicio_ventana,
+            "id_cliente",
+        ].astype(str)
+    )
+
+    elegibles = clientes_registrados & compra_historica
+
+    if not elegibles:
+        return 0.0
+
+    churn = elegibles - compra_reciente
+    return len(churn) / len(elegibles)
+
+def validar_patrones_calidad(
+    config: Dict[str, Any],
+    tiendas: pd.DataFrame,
+    productos: pd.DataFrame,
+    clientes: pd.DataFrame,
+    ventas: pd.DataFrame,
+    inventario: pd.DataFrame,
+) -> None:
+    """Valida que los patrones principales existan sin exigir resultados exactos de modelos."""
+    ventas_tmp = ventas.copy()
+    ventas_tmp["fecha_dt"] = pd.to_datetime(ventas_tmp["fecha"])
+    ventas_tmp["anio"] = ventas_tmp["fecha_dt"].dt.year
+    ventas_tmp["mes"] = ventas_tmp["fecha_dt"].dt.month
+
+    tickets = ventas_tmp.drop_duplicates("id_venta").copy()
+
+    tickets_mes = tickets.groupby("mes").size().reindex(range(1, 13), fill_value=0)
+    meses_base = [m for m in range(1, 13) if m not in (7, 12)]
+    base = tickets_mes.loc[meses_base].mean()
+
+    assert tickets_mes.loc[7] > base, "No se observa pico de tickets en julio."
+    assert tickets_mes.loc[12] > base, "No se observa pico de tickets en diciembre."
+
+    digital_por_anio = (
+        tickets.assign(es_digital=tickets["canal"].isin(["Web", "App"]))
+        .groupby("anio")["es_digital"]
+        .mean()
+    )
+
+    assert digital_por_anio.loc[2025] > digital_por_anio.loc[2023], (
+        "La participacion digital no crece de 2023 a 2025."
+    )
+
+    ventas_prod = ventas_tmp.merge(
+        productos[["id_producto", "costo_unitario"]],
+        on="id_producto",
+        how="left",
+    )
+    ventas_prod = ventas_prod.merge(
+        tiendas[["id_tienda", "tipo", "ciudad"]],
+        on="id_tienda",
+        how="left",
+    )
+
+    ventas_prod["margen_bruto_proxy"] = (
+        ventas_prod["monto_total"]
+        - ventas_prod["cantidad"] * ventas_prod["costo_unitario"]
+    ) / ventas_prod["monto_total"].replace(0, np.nan)
+
+    trujillo = ventas_prod[
+        (ventas_prod["tipo"] == "Fisica")
+        & (ventas_prod["ciudad"] == "Trujillo")
+    ].copy()
+
+    base_trujillo = trujillo[
+        (trujillo["fecha_dt"] >= "2025-01-01")
+        & (trujillo["fecha_dt"] < "2025-04-01")
+    ]["margen_bruto_proxy"].mean()
+
+    afectado_trujillo = trujillo[
+        (trujillo["fecha_dt"] >= "2025-04-01")
+        & (trujillo["fecha_dt"] < "2025-07-01")
+    ]["margen_bruto_proxy"].mean()
+
+    assert not pd.isna(base_trujillo), "No hay datos base suficientes para Trujillo."
+    assert not pd.isna(afectado_trujillo), "No hay datos afectados suficientes para Trujillo."
+    assert afectado_trujillo < base_trujillo, (
+        "No se observa deterioro de margen proxy en Trujillo desde 2025-Q2."
+    )
+
+    corr_valor = ventas_tmp["descuento_pct"].astype(float).corr(
+        ventas_tmp["cantidad"].astype(float)
+    )
+    corr = 0.0 if pd.isna(corr_valor) else float(corr_valor)
+
+    assert corr > 0, "La relacion descuento-demanda no muestra asociacion positiva."
+
+    tasa_churn = calcular_tasa_churn_descriptivo(config, clientes, ventas)
+    min_churn = float(config["churn"]["proporcion_objetivo"]["minima"])
+    max_churn = float(config["churn"]["proporcion_objetivo"]["maxima"])
+
+    assert min_churn <= tasa_churn <= max_churn, (
+        f"Tasa churn fuera de rango: {tasa_churn:.2%}"
+    )
+
+    campos = config["calidad_datos"]["faltantes"]["campos_permitidos"]
+    tablas = {
+        "clientes": clientes,
+        "productos": productos,
+        "tiendas": tiendas,
+        "ventas": ventas,
+        "inventario": inventario,
+    }
+
+    faltantes = 0
+    elegibles = 0
+
+    for tabla_nombre, columnas in campos.items():
+        df = tablas[tabla_nombre]
+
+        for columna in columnas:
+            elegibles += len(df)
+            faltantes += int(df[columna].isna().sum())
+
+    pct_faltantes = (faltantes / max(elegibles, 1)) * 100
+    rango_faltantes = config["validacion"]["faltantes"]["rango_pct"]
+
+    assert rango_faltantes[0] <= pct_faltantes <= rango_faltantes[1], (
+        f"Faltantes fuera de rango: {pct_faltantes:.2f}%"
+    )
+
+    nulos_estructurales_por_tabla = {
+        "tiendas": {"ciudad", "region", "area_m2"},
+        "productos": set(),
+        "clientes": set(),
+        "ventas": set(),
+        "inventario": set(),
+    }
+
+    for tabla_nombre, df in tablas.items():
+        permitidos = (
+            set(campos.get(tabla_nombre, []))
+            | nulos_estructurales_por_tabla.get(tabla_nombre, set())
+        )
+        columnas_no_permitidas = [c for c in df.columns if c not in permitidos]
+
+        assert not df[columnas_no_permitidas].isna().any().any(), (
+            f"Nulos no permitidos en {tabla_nombre}."
+        )
+
+    tiendas_virtuales = tiendas["tipo"].eq("Virtual")
+    tiendas_fisicas = tiendas["tipo"].eq("Fisica")
+
+    assert tiendas.loc[tiendas_virtuales, ["ciudad", "region", "area_m2"]].isna().all().all(), (
+        "Los nodos virtuales deben tener ciudad, region y area_m2 nulos."
+    )
+
+    assert tiendas.loc[tiendas_fisicas, ["ciudad", "region", "area_m2"]].notna().all().all(), (
+        "Las tiendas fisicas deben tener ciudad, region y area_m2 informados."
+    )
+
+    assert (tiendas.loc[tiendas_fisicas, "area_m2"].astype(float) > 0).all(), (
+        "Las tiendas fisicas deben tener area_m2 mayor que cero."
+    )
+
+    out_cfg = config["calidad_datos"]["outliers"]
+    pct_outliers = (
+        ventas["cantidad"].astype(int) > int(out_cfg["cantidad_normal_maxima"])
+    ).mean() * 100
+
+    rango_outliers = config["validacion"]["outliers"]["rango_pct"]
+
+    assert rango_outliers[0] <= pct_outliers <= rango_outliers[1], (
+        f"Outliers fuera de rango: {pct_outliers:.2f}%"
+    )
+
+    assert not ventas.isna().any().any(), "ventas.csv no debe contener nulos."
+    assert not inventario.isna().any().any(), "inventario.csv no debe contener nulos."
+
+ 
 def guardar_csv(tablas: Dict[str, pd.DataFrame], config: Dict[str, Any]) -> None:
     """Guarda los CSV configurados sin tocar data_dictionary.md."""
     directorio = ROOT / config["salidas"]["directorio"]
@@ -735,13 +1352,19 @@ def imprimir_resumen(seed: int, tablas: Dict[str, pd.DataFrame]) -> None:
 def main() -> None:
     config = cargar_config()
     seed, rng, fake = configurar_semillas(config)
- 
+
     tiendas = generar_tiendas(config, fake, rng)
     productos = generar_productos(config, fake, rng)
     clientes = generar_clientes(config, fake, rng)
+
     ventas = generar_ventas_base(config, tiendas, productos, clientes, rng)
+    ventas = calibrar_churn_descriptivo(config, clientes, ventas, rng)
+    ventas = aplicar_outliers_cantidad(config, ventas, rng)
+
+    clientes, productos = aplicar_faltantes_controlados(config, clientes, productos, rng)
+
     inventario = generar_inventario_base(config, ventas, productos, tiendas, rng)
- 
+
     tablas = {
         "tiendas": tiendas,
         "productos": productos,
@@ -749,11 +1372,13 @@ def main() -> None:
         "ventas": ventas,
         "inventario": inventario,
     }
- 
+
     validar_integridad_basica(config, tiendas, productos, clientes, ventas, inventario)
+    validar_patrones_calidad(config, tiendas, productos, clientes, ventas, inventario)
+
     guardar_csv(tablas, config)
     imprimir_resumen(seed, tablas)
- 
+
  
 if __name__ == "__main__":
     main()
