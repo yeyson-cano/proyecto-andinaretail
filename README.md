@@ -71,7 +71,20 @@ Desde la raíz del repositorio:
 ```bash
 python datos/generar_datos.py
 ```
- 
+### Validar dataset
+
+Después de generar los CSV, ejecutar:
+
+```bash
+python datos/validar_datos.py
+```
+
+El validador revisa integridad, fórmulas, volúmenes, patrones, calidad de datos y aptitud analítica. El reporte se genera en:
+
+```text
+resultados/reporte_validacion_datos.txt
+```
+
 ### Consideraciones
  
 - No subir `.venv/` al repositorio.
