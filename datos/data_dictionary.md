@@ -585,6 +585,28 @@ uso_capacidad_optimizacion.csv
 42. Los totales del detalle deberán conciliar con los archivos de resumen y utilización de capacidad.
 43. Los resultados prescriptivos deberán generarse mediante código y no podrán editarse manualmente.
 
+### 7.1 Patrones implementados por el generador
+
+El generador `datos/generar_datos.py` incorpora patrones analíticos y reglas de calidad sin modificar el esquema físico definido en este diccionario. Los parámetros numéricos, rangos de aceptación y tolerancias se mantienen en `config/escenarios.yaml`.
+
+Los patrones implementados no crean columnas auxiliares en los CSV fuente. Las variables derivadas para análisis estadístico, segmentación, predicción, optimización o Power BI deberán construirse posteriormente mediante código reproducible.
+
+**Estacionalidad y crecimiento digital.** Las fechas de ticket se generan con ponderaciones temporales para reflejar picos estacionales y crecimiento interanual. La participación de los canales `Web` y `App` aumenta progresivamente durante el periodo y se materializa mediante la selección del nodo de venta (`WEB` o `APP`) y el campo `canal`.
+
+**Deterioro de Trujillo.** El escenario diagnóstico afecta únicamente a tiendas físicas ubicadas en Trujillo desde el inicio aprobado del problema. La señal se implementa mediante mayor presión de descuentos, desplazamiento controlado del mix hacia categorías de menor margen y mayor costo de almacenamiento. No se fuerza directamente el margen final ni se crea una columna explicativa del problema.
+
+**Relación descuento-demanda.** La cantidad vendida se ajusta parcialmente en función del descuento aplicado, con ruido aleatorio controlado. La relación esperada es positiva, pero no determinística ni perfectamente lineal.
+
+**Churn descriptivo.** El indicador descriptivo final no se almacena como columna en `clientes.csv` ni en `ventas.csv`. En la implementación actual, el generador calibra la inactividad mediante el historial de compras: garantiza clientes elegibles con compra histórica antes de la ventana final y asigna compras recientes solo a un subconjunto activo. El cálculo del indicador debe reconstruirse desde `clientes.fecha_registro` y `ventas.fecha`.
+
+**Valores faltantes controlados.** Los faltantes inducidos por calidad de datos solo pueden aparecer en los campos elegibles definidos para `clientes` y `productos`. No se permiten nulos inducidos en claves, `ventas.csv` ni `inventario.csv`.
+
+**Nulos estructurales.** Los nodos virtuales `WEB` y `APP` pueden tener nulos estructurales en `ciudad`, `region` y `area_m2`, de acuerdo con la definición de `tiendas.csv`. Estos nulos no forman parte de los faltantes controlados de calidad.
+
+**Outliers controlados.** Los outliers inducidos solo modifican `ventas.cantidad`. Después de alterar cantidades, el generador recalcula `monto_total` y reconstruye `inventario.csv` desde las ventas finales para conservar fórmulas e integridad.
+
+**Validaciones internas.** Las validaciones incluidas en el generador son controles de integridad y pruebas de humo sobre los patrones principales. No reemplazan la validación integral posterior del dataset oficial.
+
 ---
 
 ## 8. Trazabilidad hacia las partes del proyecto
