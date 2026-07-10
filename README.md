@@ -88,6 +88,8 @@ python datos/generar_datos.py
 5. Actualizar y abrir el tablero de Power BI.
 
 > La guía de ejecución se completará conforme se implementen los componentes.
+> Los patrones analíticos y las reglas de calidad implementadas por el generador se documentan en `datos/data_dictionary.md` y `docs/00_especificacion_datos_y_analitica.md`. Los valores numéricos de generación y validación se mantienen en `config/escenarios.yaml`.
+> En algunas instalaciones, Faker puede no reconocer el locale `es_PE`. En ese caso, el generador usa `es_ES` como respaldo local y continúa la ejecución sin modificar los parámetros del proyecto.
 
 ## Estado
 

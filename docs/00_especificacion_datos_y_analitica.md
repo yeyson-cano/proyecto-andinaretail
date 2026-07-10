@@ -789,6 +789,25 @@ Para cada solución deberá verificarse:
 
 Los escenarios inviables se reportarán como tales. No se editarán manualmente los resultados ni se relajarán restricciones de forma silenciosa.
 
+### 12.19 Notas de implementación del generador
+
+La implementación actual en `datos/generar_datos.py` mantiene las cinco tablas fuente aprobadas y no agrega columnas auxiliares al esquema físico. El detalle de campos, nulabilidad, claves, fórmulas y reglas de integridad se mantiene en `datos/data_dictionary.md`; los valores numéricos, proporciones, rangos y tolerancias se mantienen en `config/escenarios.yaml`.
+
+Los patrones se incorporan como señales reproducibles dentro del proceso de generación, no como etiquetas manuales ni como resultados editados después de generar los CSV. En particular:
+
+- la estacionalidad se induce mediante la ponderación de fechas de tickets;
+- el crecimiento digital se induce mediante la selección progresiva de nodos `WEB` y `APP`;
+- el deterioro de Trujillo se limita a tiendas físicas y combina descuentos, mezcla de categorías y almacenamiento;
+- la relación descuento-demanda modifica `cantidad` con ruido controlado;
+- el churn descriptivo se calibra desde el historial de compras, sin almacenar una columna de churn ni un score fuente;
+- los faltantes se introducen solo en campos elegibles de `clientes` y `productos`;
+- los outliers se introducen solo en `ventas.cantidad`, tras lo cual se recalcula `monto_total` y se genera inventario desde las ventas finales.
+
+Las validaciones internas del generador comprueban integridad básica y presencia de patrones principales. Estas validaciones son pruebas de humo para evitar errores evidentes antes del PR; la validación integral del dataset oficial se desarrollará como tarea posterior.
+
+La advertencia local de Faker sobre la ausencia del locale `es_PE` en algunas instalaciones no modifica el contrato del proyecto. El generador puede usar `es_ES` como respaldo local para no bloquear la ejecución, manteniendo la semilla y el resto de parámetros definidos por configuración.
+
+
 ## 13. Hipotesis estadisticas y variables requeridas
 
 ### 13.1 Objetivo y alcance
