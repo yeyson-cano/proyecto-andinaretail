@@ -1,0 +1,32 @@
+tipo,nivel,variable,descripcion,n,n_validos,n_nulos,media,mediana,moda,desviacion_estandar,min,q1,q3,iqr,p95,max,asimetria,curtosis,conteo,porcentaje
+numerica,linea,monto_total,Venta neta por línea,250000,250000,0,429.4519484399999,94.0,16.1,1234.726354383707,1.81,42.36,263.86,221.5,2006.606499999996,52471.6,9.079962263835219,156.0780892826105,,
+numerica,ticket,ticket_total,Total por ticket,100000,100000,0,1073.6298711000002,373.815,28.75,2010.133864014724,1.92,146.37,1073.9475,927.5775,4527.24899999999,52867.92,5.541485461774828,57.659056779558675,,
+numerica,linea,cantidad,Cantidad vendida por línea,250000,250000,0,2.068888,2.0,1.0,1.731695827372046,1.0,1.0,2.0,1.0,6.0,20.0,3.4685681901030456,20.609697856421636,,
+numerica,cliente,edad,Edad del cliente,15000,14718,282,38.327354260089685,38.0,18.0,11.5557292508838,18.0,30.0,46.0,16.0,58.0,80.0,0.2242861086775088,-0.332674635398194,,
+numerica,linea,descuento_pct,Porcentaje de descuento,250000,250000,0,0.0459167648,0.0327,0.0,0.050897631097889875,0.0,0.0,0.082,0.082,0.1422,0.3161,0.8601696291301335,-0.12271094909295988,,
+numerica,linea,margen_bruto_pct,Margen bruto porcentual por línea,250000,250000,0,0.2351332498099923,0.23471014303991783,0.2,0.08091567478232069,-0.18559635639054928,0.17861121425919044,0.29999999999999993,0.1213887857408095,0.3588883079243969,0.3981767387148949,-0.26615168682882645,-0.3893455417525913,,
+numerica,ciudad_mes,margen_operativo_pct,Margen operativo porcentual ciudad-mes,180,180,0,0.16032721616692902,0.16987694083020421,0.03496108244985109,0.03912017755970016,0.03496108244985109,0.13543523568595023,0.19047835318517592,0.05504311749922569,0.21172142491714796,0.23717195885749143,-0.6844284836048233,-0.045551398827508915,,
+categorica,ticket,canal,Canal del ticket: Tienda,100000,100000,0,,,,,,,,,,,,,70781.0,70.781
+categorica,ticket,canal,Canal del ticket: Web,100000,100000,0,,,,,,,,,,,,,14999.0,14.999
+categorica,ticket,canal,Canal del ticket: App,100000,100000,0,,,,,,,,,,,,,14220.0,14.219999999999999
+categorica,ticket,grupo_canal,Grupo de canal: Fisico,100000,100000,0,,,,,,,,,,,,,70781.0,70.781
+categorica,ticket,grupo_canal,Grupo de canal: Digital,100000,100000,0,,,,,,,,,,,,,29219.0,29.219
+categorica,linea,categoria,Categoría del producto: Abarrotes,250000,250000,0,,,,,,,,,,,,,70561.0,28.2244
+categorica,linea,categoria,Categoría del producto: Bebidas,250000,250000,0,,,,,,,,,,,,,55143.0,22.057199999999998
+categorica,linea,categoria,Categoría del producto: Limpieza,250000,250000,0,,,,,,,,,,,,,35014.0,14.005600000000001
+categorica,linea,categoria,Categoría del producto: Cuidado Personal,250000,250000,0,,,,,,,,,,,,,34631.0,13.852400000000001
+categorica,linea,categoria,Categoría del producto: Electrohogar,250000,250000,0,,,,,,,,,,,,,29963.0,11.9852
+categorica,linea,categoria,Categoría del producto: Hogar,250000,250000,0,,,,,,,,,,,,,24688.0,9.875200000000001
+categorica,ticket,metodo_pago,Método de pago: Tarjeta credito,100000,100000,0,,,,,,,,,,,,,28796.0,28.796
+categorica,ticket,metodo_pago,Método de pago: Tarjeta debito,100000,100000,0,,,,,,,,,,,,,26947.0,26.947
+categorica,ticket,metodo_pago,Método de pago: Efectivo,100000,100000,0,,,,,,,,,,,,,21124.0,21.124000000000002
+categorica,ticket,metodo_pago,Método de pago: Billetera digital,100000,100000,0,,,,,,,,,,,,,19428.0,19.428
+categorica,ticket,metodo_pago,Método de pago: Transferencia,100000,100000,0,,,,,,,,,,,,,3705.0,3.705
+categorica,cliente,ciudad,Ciudad del cliente: Lima,15000,15000,0,,,,,,,,,,,,,6800.0,45.33333333333333
+categorica,cliente,ciudad,Ciudad del cliente: Arequipa,15000,15000,0,,,,,,,,,,,,,2697.0,17.98
+categorica,cliente,ciudad,Ciudad del cliente: Trujillo,15000,15000,0,,,,,,,,,,,,,2411.0,16.073333333333334
+categorica,cliente,ciudad,Ciudad del cliente: Cusco,15000,15000,0,,,,,,,,,,,,,1623.0,10.82
+categorica,cliente,ciudad,Ciudad del cliente: Piura,15000,15000,0,,,,,,,,,,,,,1469.0,9.793333333333333
+categorica,cliente,segmento,Segmento comercial: Masivo,15000,15000,0,,,,,,,,,,,,,10498.0,69.98666666666666
+categorica,cliente,segmento,Segmento comercial: Preferente,15000,15000,0,,,,,,,,,,,,,3246.0,21.64
+categorica,cliente,segmento,Segmento comercial: Premium,15000,15000,0,,,,,,,,,,,,,1256.0,8.373333333333335
