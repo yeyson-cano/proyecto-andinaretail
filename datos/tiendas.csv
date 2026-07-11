@@ -1,0 +1,16 @@
+id_tienda,nombre,tipo,canal,ciudad,region,area_m2,fecha_apertura
+T001,Tienda Lima 001,Fisica,Tienda,Lima,Costa,1049.0,2018-11-23
+T002,Tienda Lima 002,Fisica,Tienda,Lima,Costa,206.0,2021-03-14
+T003,Tienda Lima 003,Fisica,Tienda,Lima,Costa,553.0,2020-05-03
+T004,Tienda Lima 004,Fisica,Tienda,Lima,Costa,261.0,2019-11-08
+T005,Tienda Lima 005,Fisica,Tienda,Lima,Costa,836.0,2019-10-11
+T006,Tienda Arequipa 006,Fisica,Tienda,Arequipa,Sierra,1028.0,2021-12-14
+T007,Tienda Arequipa 007,Fisica,Tienda,Arequipa,Sierra,899.0,2022-07-11
+T008,Tienda Trujillo 008,Fisica,Tienda,Trujillo,Costa,916.0,2018-11-20
+T009,Tienda Trujillo 009,Fisica,Tienda,Trujillo,Costa,1056.0,2021-04-06
+T010,Tienda Cusco 010,Fisica,Tienda,Cusco,Sierra,280.0,2019-06-29
+T011,Tienda Cusco 011,Fisica,Tienda,Cusco,Sierra,349.0,2022-11-01
+T012,Tienda Piura 012,Fisica,Tienda,Piura,Costa,923.0,2022-08-07
+T013,Tienda Piura 013,Fisica,Tienda,Piura,Costa,468.0,2021-03-07
+WEB,Nodo Web Nacional,Virtual,Web,,,,2021-10-24
+APP,Nodo App Nacional,Virtual,App,,,,2022-04-04

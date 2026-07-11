@@ -1,0 +1,801 @@
+id_producto,nombre,categoria,subcategoria,marca,precio_lista,costo_unitario,fecha_alta
+P0001,Abarrotes Arroz y cereales Buen Grano GP-158,Abarrotes,Arroz y cereales,Buen Grano,66.42,54.46,2021-12-20
+P0002,Abarrotes Menestras Valle Real NJ-139,Abarrotes,Menestras,Valle Real,23.68,19.42,2021-01-06
+P0003,Abarrotes Arroz y cereales Andes Selecto UX-698,Abarrotes,Arroz y cereales,Andes Selecto,43.01,35.27,2020-04-10
+P0004,Abarrotes Menestras Valle Real PA-797,Abarrotes,Menestras,,3.0,2.46,2021-12-27
+P0005,Abarrotes Menestras Valle Real SG-911,Abarrotes,Menestras,Valle Real,30.48,24.99,2020-06-30
+P0006,Abarrotes Arroz y cereales Valle Real RU-707,Abarrotes,Arroz y cereales,Valle Real,35.95,29.48,2021-10-13
+P0007,Abarrotes Snacks Valle Real WW-364,Abarrotes,Snacks,Valle Real,18.33,15.03,2022-10-22
+P0008,Abarrotes Desayuno Casa Norte UV-681,Abarrotes,Desayuno,Casa Norte,49.32,40.44,2022-05-24
+P0009,Abarrotes Conservas Valle Real SS-188,Abarrotes,Conservas,Valle Real,75.85,62.2,2022-05-21
+P0010,Abarrotes Menestras Buen Grano TB-729,Abarrotes,Menestras,Buen Grano,72.24,59.24,2021-04-19
+P0011,Abarrotes Arroz y cereales Valle Real BF-557,Abarrotes,Arroz y cereales,Valle Real,56.29,46.16,2021-03-27
+P0012,Abarrotes Conservas Andes Selecto FH-698,Abarrotes,Conservas,Andes Selecto,56.67,46.47,2020-10-13
+P0013,Abarrotes Menestras Andes Selecto FZ-689,Abarrotes,Menestras,Andes Selecto,40.46,33.18,2021-06-02
+P0014,Abarrotes Menestras Buen Grano KE-846,Abarrotes,Menestras,Buen Grano,59.04,48.41,2020-07-26
+P0015,Abarrotes Desayuno Buen Grano KO-880,Abarrotes,Desayuno,Buen Grano,50.48,41.39,2020-02-07
+P0016,Abarrotes Conservas Valle Real QG-208,Abarrotes,Conservas,Valle Real,40.6,33.29,2021-04-05
+P0017,Abarrotes Desayuno Valle Real JE-967,Abarrotes,Desayuno,Valle Real,54.7,44.85,2022-05-24
+P0018,Abarrotes Menestras Casa Norte RE-317,Abarrotes,Menestras,Casa Norte,2.14,1.75,2021-04-01
+P0019,Abarrotes Arroz y cereales Casa Norte ZQ-848,Abarrotes,Arroz y cereales,Casa Norte,42.51,34.86,2022-04-04
+P0020,Abarrotes Conservas Buen Grano SE-488,Abarrotes,Conservas,Buen Grano,9.29,7.62,2021-07-01
+P0021,Abarrotes Arroz y cereales Casa Norte SR-663,Abarrotes,Arroz y cereales,Casa Norte,79.2,64.94,2021-01-21
+P0022,Abarrotes Arroz y cereales Valle Real PM-002,Abarrotes,Arroz y cereales,Valle Real,58.95,48.34,2021-01-27
+P0023,Abarrotes Snacks Valle Real XM-787,Abarrotes,Snacks,Valle Real,46.23,37.91,2021-10-26
+P0024,Abarrotes Menestras Andes Selecto GX-477,Abarrotes,Menestras,Andes Selecto,76.76,62.94,2022-04-28
+P0025,Abarrotes Desayuno Casa Norte QC-768,Abarrotes,Desayuno,Casa Norte,50.43,41.35,2020-11-22
+P0026,Abarrotes Arroz y cereales Andes Selecto ZG-457,Abarrotes,Arroz y cereales,Andes Selecto,3.84,3.15,2022-11-03
+P0027,Abarrotes Arroz y cereales Valle Real CL-784,Abarrotes,Arroz y cereales,Valle Real,23.97,19.66,2020-04-21
+P0028,Abarrotes Snacks Andes Selecto PR-671,Abarrotes,Snacks,Andes Selecto,9.25,7.59,2021-06-18
+P0029,Abarrotes Conservas Andes Selecto MV-751,Abarrotes,Conservas,Andes Selecto,49.14,40.29,2022-10-19
+P0030,Abarrotes Menestras Buen Grano AF-627,Abarrotes,Menestras,Buen Grano,45.99,37.71,2021-10-21
+P0031,Abarrotes Menestras Casa Norte IF-079,Abarrotes,Menestras,Casa Norte,73.63,60.38,2020-07-08
+P0032,Abarrotes Arroz y cereales Valle Real HN-933,Abarrotes,Arroz y cereales,Valle Real,63.44,52.02,2022-10-29
+P0033,Abarrotes Menestras Buen Grano QW-084,Abarrotes,Menestras,Buen Grano,53.45,43.83,2020-03-17
+P0034,Abarrotes Menestras Casa Norte UQ-520,Abarrotes,Menestras,Casa Norte,20.19,16.56,2022-10-02
+P0035,Abarrotes Snacks Buen Grano SU-997,Abarrotes,Snacks,Buen Grano,65.51,53.72,2021-06-03
+P0036,Abarrotes Arroz y cereales Casa Norte EL-283,Abarrotes,Arroz y cereales,Casa Norte,33.42,27.4,2021-11-05
+P0037,Abarrotes Arroz y cereales Casa Norte SF-298,Abarrotes,Arroz y cereales,Casa Norte,7.28,5.97,2020-11-07
+P0038,Abarrotes Snacks Buen Grano YY-622,Abarrotes,Snacks,Buen Grano,51.01,41.83,2022-07-28
+P0039,Abarrotes Desayuno Valle Real AY-948,Abarrotes,Desayuno,Valle Real,53.15,43.58,2021-10-20
+P0040,Abarrotes Conservas Buen Grano YA-283,Abarrotes,Conservas,Buen Grano,12.01,9.85,2022-01-02
+P0041,Abarrotes Menestras Valle Real DW-161,Abarrotes,Menestras,Valle Real,4.55,3.73,2021-04-07
+P0042,Abarrotes Arroz y cereales Casa Norte GE-500,Abarrotes,Arroz y cereales,Casa Norte,20.07,16.46,2021-08-31
+P0043,Abarrotes Desayuno Buen Grano UH-547,Abarrotes,Desayuno,Buen Grano,53.45,43.83,2022-12-24
+P0044,Abarrotes Desayuno Buen Grano NZ-779,Abarrotes,Desayuno,Buen Grano,26.86,22.03,2021-01-24
+P0045,Abarrotes Desayuno Valle Real HN-229,Abarrotes,Desayuno,Valle Real,11.19,9.18,2021-05-12
+P0046,Abarrotes Snacks Valle Real DM-695,Abarrotes,Snacks,Valle Real,38.89,31.89,2022-06-17
+P0047,Abarrotes Conservas Buen Grano ZC-318,Abarrotes,Conservas,Buen Grano,76.76,62.94,2022-10-11
+P0048,Abarrotes Snacks Buen Grano PI-320,Abarrotes,Snacks,Buen Grano,71.38,58.53,2022-03-27
+P0049,Abarrotes Arroz y cereales Andes Selecto ET-073,Abarrotes,Arroz y cereales,Andes Selecto,52.71,43.22,2022-02-13
+P0050,Abarrotes Snacks Casa Norte NY-028,Abarrotes,Snacks,Casa Norte,28.82,23.63,2022-07-12
+P0051,Abarrotes Snacks Buen Grano QL-822,Abarrotes,Snacks,Buen Grano,49.14,40.29,2021-07-29
+P0052,Abarrotes Menestras Andes Selecto IA-646,Abarrotes,Menestras,Andes Selecto,29.54,24.22,2020-04-21
+P0053,Abarrotes Conservas Casa Norte LW-164,Abarrotes,Conservas,Casa Norte,18.89,15.49,2020-02-18
+P0054,Abarrotes Arroz y cereales Buen Grano FX-247,Abarrotes,Arroz y cereales,Buen Grano,9.88,8.1,2021-02-06
+P0055,Abarrotes Snacks Valle Real LU-647,Abarrotes,Snacks,Valle Real,73.33,60.13,2021-01-29
+P0056,Abarrotes Conservas Andes Selecto HH-877,Abarrotes,,Andes Selecto,20.62,16.91,2021-10-04
+P0057,Abarrotes Snacks Buen Grano NO-841,Abarrotes,Snacks,Buen Grano,11.96,9.81,2020-09-22
+P0058,Abarrotes Snacks Valle Real PV-017,Abarrotes,Snacks,Valle Real,16.33,13.39,2021-04-08
+P0059,Abarrotes Snacks Casa Norte BW-682,Abarrotes,Snacks,Casa Norte,45.23,37.09,2020-10-30
+P0060,Abarrotes Menestras Andes Selecto RK-258,Abarrotes,Menestras,Andes Selecto,62.95,51.62,2020-09-20
+P0061,Abarrotes Conservas Valle Real NT-831,Abarrotes,Conservas,Valle Real,5.36,4.4,2021-08-21
+P0062,Abarrotes Desayuno Buen Grano UN-489,Abarrotes,Desayuno,Buen Grano,11.4,9.35,2020-02-03
+P0063,Abarrotes Snacks Valle Real RQ-949,Abarrotes,Snacks,Valle Real,18.21,14.93,2020-07-11
+P0064,Abarrotes Conservas Valle Real YQ-821,Abarrotes,Conservas,Valle Real,76.71,62.9,2021-09-14
+P0065,Abarrotes Arroz y cereales Casa Norte GR-162,Abarrotes,Arroz y cereales,Casa Norte,7.76,6.36,2022-08-08
+P0066,Abarrotes Desayuno Valle Real PO-052,Abarrotes,Desayuno,Valle Real,65.29,53.54,2020-07-02
+P0067,Abarrotes Desayuno Valle Real RL-185,Abarrotes,Desayuno,Valle Real,57.99,47.55,2020-07-16
+P0068,Abarrotes Snacks Andes Selecto KQ-145,Abarrotes,Snacks,Andes Selecto,78.41,64.3,2022-07-21
+P0069,Abarrotes Snacks Valle Real AX-410,Abarrotes,Snacks,Valle Real,51.01,41.83,2021-06-05
+P0070,Abarrotes Snacks Buen Grano DG-460,Abarrotes,Snacks,Buen Grano,53.71,44.04,2020-03-28
+P0071,Abarrotes Menestras Valle Real HG-304,Abarrotes,Menestras,Valle Real,14.59,11.96,2022-12-12
+P0072,Abarrotes Menestras Andes Selecto UX-895,Abarrotes,Menestras,Andes Selecto,47.01,38.55,2021-05-21
+P0073,Abarrotes Menestras Buen Grano CZ-799,Abarrotes,Menestras,Buen Grano,40.9,33.54,2021-03-16
+P0074,Abarrotes Desayuno Buen Grano MD-593,Abarrotes,Desayuno,Buen Grano,24.53,20.11,2020-07-13
+P0075,Abarrotes Desayuno Valle Real GR-615,Abarrotes,Desayuno,Valle Real,62.4,51.17,2022-03-02
+P0076,Abarrotes Snacks Andes Selecto WD-464,Abarrotes,Snacks,Andes Selecto,60.07,49.26,2020-08-14
+P0077,Abarrotes Menestras Casa Norte SV-604,Abarrotes,Menestras,Casa Norte,62.08,50.91,2021-08-07
+P0078,Abarrotes Arroz y cereales Valle Real XA-414,Abarrotes,Arroz y cereales,Valle Real,71.84,58.91,2020-08-20
+P0079,Abarrotes Conservas Casa Norte IV-590,Abarrotes,Conservas,Casa Norte,18.03,14.78,2020-10-25
+P0080,Abarrotes Menestras Andes Selecto UH-380,Abarrotes,Menestras,Andes Selecto,34.47,28.27,2020-10-14
+P0081,Abarrotes Snacks Andes Selecto HC-291,Abarrotes,Snacks,Andes Selecto,23.98,19.66,2021-01-31
+P0082,Abarrotes Conservas Valle Real MP-285,Abarrotes,Conservas,Valle Real,47.86,39.25,2022-10-04
+P0083,Abarrotes Snacks Andes Selecto LI-406,Abarrotes,Snacks,Andes Selecto,35.35,28.99,2021-11-12
+P0084,Abarrotes Menestras Andes Selecto YP-566,Abarrotes,Menestras,Andes Selecto,43.53,35.69,2021-11-29
+P0085,Abarrotes Desayuno Valle Real LI-632,Abarrotes,Desayuno,Valle Real,26.24,21.52,2021-07-24
+P0086,Abarrotes Menestras Andes Selecto ZQ-088,Abarrotes,Menestras,Andes Selecto,45.13,37.01,2022-12-05
+P0087,Abarrotes Conservas Casa Norte BR-230,Abarrotes,Conservas,Casa Norte,3.19,2.62,2020-01-30
+P0088,Abarrotes Conservas Casa Norte QU-876,Abarrotes,Conservas,Casa Norte,46.42,38.06,2022-08-05
+P0089,Abarrotes Snacks Valle Real LJ-291,Abarrotes,Snacks,Valle Real,30.77,25.23,2021-06-21
+P0090,Abarrotes Conservas Buen Grano VO-084,Abarrotes,Conservas,Buen Grano,30.53,25.03,2022-01-13
+P0091,Abarrotes Conservas Valle Real QA-850,Abarrotes,Conservas,Valle Real,62.59,51.32,2020-01-10
+P0092,Abarrotes Desayuno Casa Norte OR-370,Abarrotes,Desayuno,Casa Norte,39.82,32.65,2022-12-25
+P0093,Abarrotes Menestras Andes Selecto TX-826,Abarrotes,Menestras,Andes Selecto,3.94,3.23,2020-05-10
+P0094,Abarrotes Menestras Valle Real VM-384,Abarrotes,Menestras,Valle Real,11.18,9.17,2020-03-24
+P0095,Abarrotes Conservas Andes Selecto OD-557,Abarrotes,Conservas,Andes Selecto,79.38,65.09,2020-01-31
+P0096,Abarrotes Arroz y cereales Valle Real TM-879,Abarrotes,Arroz y cereales,Valle Real,73.44,60.22,2020-04-30
+P0097,Abarrotes Conservas Buen Grano FA-262,Abarrotes,Conservas,Buen Grano,59.71,48.96,2020-02-16
+P0098,Abarrotes Conservas Andes Selecto YC-586,Abarrotes,Conservas,Andes Selecto,78.14,64.07,2022-10-20
+P0099,Abarrotes Menestras Buen Grano XI-214,Abarrotes,Menestras,Buen Grano,78.97,64.76,2022-07-29
+P0100,Abarrotes Menestras Andes Selecto BI-421,Abarrotes,Menestras,Andes Selecto,63.26,51.87,2021-04-26
+P0101,Abarrotes Conservas Buen Grano KC-394,Abarrotes,Conservas,Buen Grano,17.64,14.46,2022-05-01
+P0102,Abarrotes Menestras Andes Selecto HZ-668,Abarrotes,Menestras,Andes Selecto,70.3,57.65,2020-01-19
+P0103,Abarrotes Arroz y cereales Buen Grano FJ-281,Abarrotes,Arroz y cereales,Buen Grano,5.6,4.59,2020-03-04
+P0104,Abarrotes Desayuno Buen Grano QT-658,Abarrotes,Desayuno,Buen Grano,59.51,48.8,2022-12-31
+P0105,Abarrotes Arroz y cereales Valle Real KS-093,Abarrotes,Arroz y cereales,Valle Real,48.13,39.47,2020-06-01
+P0106,Abarrotes Arroz y cereales Buen Grano WI-484,Abarrotes,Arroz y cereales,Buen Grano,27.82,22.81,2020-04-28
+P0107,Abarrotes Desayuno Valle Real MP-630,Abarrotes,Desayuno,Valle Real,60.96,49.99,2022-09-13
+P0108,Abarrotes Arroz y cereales Valle Real ZX-765,Abarrotes,Arroz y cereales,Valle Real,56.4,46.25,2020-05-07
+P0109,Abarrotes Arroz y cereales Casa Norte BL-828,Abarrotes,Arroz y cereales,Casa Norte,70.61,57.9,2022-05-29
+P0110,Abarrotes Snacks Valle Real KB-582,Abarrotes,Snacks,Valle Real,42.72,35.03,2022-12-13
+P0111,Abarrotes Snacks Casa Norte XE-180,Abarrotes,Snacks,Casa Norte,34.54,28.32,2021-06-04
+P0112,Abarrotes Conservas Valle Real IJ-543,Abarrotes,Conservas,Valle Real,35.6,29.19,2022-09-25
+P0113,Abarrotes Arroz y cereales Buen Grano IG-993,Abarrotes,Arroz y cereales,Buen Grano,40.77,33.43,2020-03-08
+P0114,Abarrotes Arroz y cereales Valle Real UE-571,Abarrotes,Arroz y cereales,Valle Real,41.79,34.27,2020-05-19
+P0115,Abarrotes Menestras Buen Grano TP-649,Abarrotes,Menestras,Buen Grano,59.91,49.13,2021-06-03
+P0116,Abarrotes Conservas Casa Norte FH-157,Abarrotes,Conservas,Casa Norte,43.6,35.75,2020-01-11
+P0117,Abarrotes Menestras Andes Selecto WR-883,Abarrotes,Menestras,Andes Selecto,26.97,22.12,2020-02-15
+P0118,Abarrotes Menestras Buen Grano FE-795,Abarrotes,Menestras,Buen Grano,37.8,31.0,2021-03-05
+P0119,Abarrotes Arroz y cereales Andes Selecto QW-174,Abarrotes,Arroz y cereales,Andes Selecto,16.28,13.35,2022-08-02
+P0120,Abarrotes Desayuno Casa Norte BG-325,Abarrotes,Desayuno,Casa Norte,71.04,58.25,2021-07-15
+P0121,Abarrotes Snacks Casa Norte UQ-855,Abarrotes,Snacks,Casa Norte,17.07,14.0,2020-03-02
+P0122,Abarrotes Conservas Casa Norte LM-765,Abarrotes,Conservas,Casa Norte,9.61,7.88,2021-07-30
+P0123,Abarrotes Arroz y cereales Andes Selecto WY-735,Abarrotes,Arroz y cereales,Andes Selecto,67.64,55.46,2022-03-21
+P0124,Abarrotes Desayuno Valle Real YN-569,Abarrotes,Desayuno,Valle Real,57.11,46.83,2021-02-24
+P0125,Abarrotes Snacks Buen Grano QV-279,Abarrotes,Snacks,Buen Grano,60.32,49.46,2021-02-09
+P0126,Abarrotes Conservas Buen Grano VH-264,Abarrotes,Conservas,Buen Grano,71.65,58.75,2021-06-03
+P0127,Abarrotes Conservas Casa Norte QJ-547,Abarrotes,Conservas,Casa Norte,26.18,21.47,2022-05-29
+P0128,Abarrotes Desayuno Valle Real VJ-843,Abarrotes,Desayuno,Valle Real,55.23,45.29,2021-03-12
+P0129,Abarrotes Menestras Buen Grano SK-814,Abarrotes,Menestras,Buen Grano,33.33,27.33,2022-07-16
+P0130,Abarrotes Desayuno Casa Norte BJ-766,Abarrotes,Desayuno,Casa Norte,76.93,63.08,2021-05-25
+P0131,Abarrotes Desayuno Casa Norte GR-565,Abarrotes,Desayuno,Casa Norte,72.22,59.22,2021-04-23
+P0132,Abarrotes Desayuno Casa Norte NB-788,Abarrotes,Desayuno,Casa Norte,52.57,43.11,2020-06-10
+P0133,Abarrotes Conservas Buen Grano ZU-550,Abarrotes,Conservas,Buen Grano,43.24,35.46,2022-05-03
+P0134,Abarrotes Menestras Buen Grano JS-204,Abarrotes,Menestras,Buen Grano,14.54,11.92,2020-08-08
+P0135,Abarrotes Snacks Casa Norte LP-425,Abarrotes,Snacks,Casa Norte,13.67,11.21,2022-05-14
+P0136,Abarrotes Snacks Andes Selecto EV-967,Abarrotes,Snacks,Andes Selecto,34.16,28.01,2020-03-25
+P0137,Abarrotes Menestras Andes Selecto OH-003,Abarrotes,Menestras,Andes Selecto,53.51,43.88,2021-11-24
+P0138,Abarrotes Conservas Valle Real XN-450,Abarrotes,Conservas,Valle Real,24.34,19.96,2021-05-27
+P0139,Abarrotes Conservas Buen Grano NO-784,Abarrotes,Conservas,Buen Grano,53.3,43.71,2020-09-30
+P0140,Abarrotes Arroz y cereales Valle Real SM-518,Abarrotes,Arroz y cereales,Valle Real,63.04,51.69,2022-05-01
+P0141,Abarrotes Conservas Casa Norte JV-801,Abarrotes,Conservas,Casa Norte,31.69,25.99,2021-10-01
+P0142,Abarrotes Desayuno Valle Real MR-373,Abarrotes,Desayuno,Valle Real,79.52,65.21,2020-04-12
+P0143,Abarrotes Menestras Andes Selecto KA-241,Abarrotes,Menestras,Andes Selecto,31.16,25.55,2020-12-16
+P0144,Abarrotes Arroz y cereales Casa Norte IG-898,Abarrotes,Arroz y cereales,Casa Norte,39.9,32.72,2022-07-04
+P0145,Abarrotes Conservas Casa Norte CL-046,Abarrotes,Conservas,Casa Norte,13.28,10.89,2020-09-23
+P0146,Abarrotes Desayuno Andes Selecto EQ-883,Abarrotes,Desayuno,Andes Selecto,20.43,16.75,2021-01-29
+P0147,Abarrotes Desayuno Buen Grano UM-555,Abarrotes,Desayuno,Buen Grano,4.35,3.57,2020-07-07
+P0148,Abarrotes Menestras Casa Norte UQ-747,Abarrotes,Menestras,Casa Norte,5.78,4.74,2021-06-03
+P0149,Abarrotes Arroz y cereales Valle Real BE-072,Abarrotes,Arroz y cereales,Valle Real,25.78,21.14,2021-11-12
+P0150,Abarrotes Conservas Valle Real MX-547,Abarrotes,Conservas,Valle Real,48.67,39.91,2022-10-16
+P0151,Abarrotes Menestras Andes Selecto TN-486,Abarrotes,Menestras,Andes Selecto,61.06,50.07,2020-02-16
+P0152,Abarrotes Conservas Valle Real EU-906,Abarrotes,Conservas,Valle Real,31.63,25.94,2021-10-18
+P0153,Abarrotes Arroz y cereales Buen Grano EN-884,Abarrotes,Arroz y cereales,Buen Grano,55.19,45.26,2020-06-02
+P0154,Abarrotes Conservas Valle Real MU-188,Abarrotes,Conservas,Valle Real,50.21,41.17,2022-06-29
+P0155,Abarrotes Snacks Buen Grano XL-755,Abarrotes,Snacks,Buen Grano,19.0,15.58,2021-11-30
+P0156,Abarrotes Conservas Buen Grano WQ-182,Abarrotes,Conservas,Buen Grano,4.64,3.8,2021-03-09
+P0157,Abarrotes Menestras Andes Selecto OG-886,Abarrotes,Menestras,Andes Selecto,53.69,44.03,2020-09-18
+P0158,Abarrotes Conservas Buen Grano DP-930,Abarrotes,Conservas,Buen Grano,7.84,6.43,2022-02-28
+P0159,Abarrotes Conservas Buen Grano HI-368,Abarrotes,Conservas,Buen Grano,18.71,15.34,2021-03-08
+P0160,Abarrotes Desayuno Andes Selecto XT-834,Abarrotes,Desayuno,Andes Selecto,55.77,45.73,2022-09-20
+P0161,Abarrotes Menestras Valle Real RU-728,Abarrotes,Menestras,Valle Real,4.0,3.28,2022-09-24
+P0162,Abarrotes Snacks Casa Norte NU-568,Abarrotes,Snacks,Casa Norte,8.42,6.9,2021-09-08
+P0163,Abarrotes Conservas Buen Grano MJ-832,Abarrotes,Conservas,Buen Grano,2.48,2.03,2020-04-21
+P0164,Abarrotes Menestras Casa Norte ZZ-222,Abarrotes,Menestras,Casa Norte,64.61,52.98,2021-11-03
+P0165,Abarrotes Desayuno Valle Real RY-900,Abarrotes,Desayuno,Valle Real,20.1,16.48,2021-09-23
+P0166,Abarrotes Conservas Buen Grano RI-422,Abarrotes,Conservas,Buen Grano,74.66,61.22,2020-03-05
+P0167,Abarrotes Arroz y cereales Casa Norte KL-527,Abarrotes,Arroz y cereales,Casa Norte,48.97,40.16,2022-03-06
+P0168,Abarrotes Arroz y cereales Andes Selecto AP-022,Abarrotes,Arroz y cereales,Andes Selecto,74.7,61.25,2020-04-01
+P0169,Abarrotes Menestras Andes Selecto BT-978,Abarrotes,Menestras,Andes Selecto,13.36,10.96,2022-09-18
+P0170,Abarrotes Snacks Andes Selecto IF-385,Abarrotes,Snacks,Andes Selecto,34.1,27.96,2020-11-26
+P0171,Abarrotes Conservas Valle Real UJ-762,Abarrotes,Conservas,Valle Real,56.61,46.42,2021-08-30
+P0172,Abarrotes Menestras Buen Grano AD-807,Abarrotes,Menestras,Buen Grano,40.68,33.36,2022-06-09
+P0173,Abarrotes Snacks Valle Real TS-159,Abarrotes,Snacks,Valle Real,17.18,14.09,2020-02-07
+P0174,Abarrotes Snacks Casa Norte KG-450,Abarrotes,Snacks,Casa Norte,49.49,40.58,2020-08-28
+P0175,Abarrotes Arroz y cereales Buen Grano QB-316,Abarrotes,Arroz y cereales,Buen Grano,77.13,63.25,2020-10-28
+P0176,Abarrotes Arroz y cereales Casa Norte OQ-323,Abarrotes,Arroz y cereales,Casa Norte,53.6,43.95,2020-08-15
+P0177,Abarrotes Conservas Valle Real KI-735,Abarrotes,Conservas,Valle Real,12.03,9.86,2021-08-17
+P0178,Abarrotes Desayuno Casa Norte XT-667,Abarrotes,Desayuno,Casa Norte,19.36,15.88,2022-03-12
+P0179,Abarrotes Desayuno Andes Selecto JM-347,Abarrotes,Desayuno,Andes Selecto,67.71,55.52,2021-05-23
+P0180,Abarrotes Menestras Casa Norte VM-713,Abarrotes,Menestras,Casa Norte,42.34,34.72,2022-10-15
+P0181,Abarrotes Menestras Andes Selecto TR-115,Abarrotes,Menestras,Andes Selecto,12.42,10.18,2021-01-03
+P0182,Abarrotes Menestras Andes Selecto LN-921,Abarrotes,Menestras,Andes Selecto,2.34,1.92,2022-01-19
+P0183,Abarrotes Arroz y cereales Valle Real BJ-636,Abarrotes,Arroz y cereales,Valle Real,33.5,27.47,2021-04-11
+P0184,Abarrotes Snacks Casa Norte VX-244,Abarrotes,Snacks,Casa Norte,70.33,57.67,2020-08-01
+P0185,Abarrotes Desayuno Valle Real HD-607,Abarrotes,Desayuno,Valle Real,66.49,54.52,2020-06-16
+P0186,Abarrotes Desayuno Casa Norte IG-457,Abarrotes,Desayuno,Casa Norte,22.19,18.2,2022-08-27
+P0187,Abarrotes Menestras Casa Norte WD-283,Abarrotes,Menestras,Casa Norte,19.98,16.38,2020-08-15
+P0188,Abarrotes Conservas Andes Selecto DS-699,Abarrotes,Conservas,Andes Selecto,39.76,32.6,2020-07-13
+P0189,Abarrotes Desayuno Andes Selecto RF-854,Abarrotes,Desayuno,Andes Selecto,76.63,62.84,2022-11-19
+P0190,Abarrotes Arroz y cereales Andes Selecto IY-775,Abarrotes,Arroz y cereales,Andes Selecto,67.37,55.24,2021-06-28
+P0191,Abarrotes Arroz y cereales Andes Selecto RS-881,Abarrotes,Arroz y cereales,Andes Selecto,48.57,39.83,2021-08-15
+P0192,Abarrotes Menestras Andes Selecto CE-019,Abarrotes,Menestras,Andes Selecto,56.49,46.32,2022-04-10
+P0193,Abarrotes Desayuno Casa Norte GY-879,Abarrotes,Desayuno,Casa Norte,63.88,52.38,2021-11-08
+P0194,Abarrotes Menestras Andes Selecto EI-979,Abarrotes,Menestras,Andes Selecto,10.38,8.51,2021-01-18
+P0195,Abarrotes Conservas Andes Selecto IB-025,Abarrotes,Conservas,Andes Selecto,69.95,57.36,2022-03-25
+P0196,Abarrotes Conservas Buen Grano KI-161,Abarrotes,,Buen Grano,25.87,21.21,2022-09-06
+P0197,Abarrotes Conservas Andes Selecto VE-400,Abarrotes,Conservas,Andes Selecto,24.62,20.19,2021-01-25
+P0198,Abarrotes Conservas Andes Selecto UV-981,Abarrotes,Conservas,Andes Selecto,35.52,29.13,2020-04-23
+P0199,Abarrotes Conservas Casa Norte PU-247,Abarrotes,Conservas,Casa Norte,34.28,28.11,2020-12-11
+P0200,Abarrotes Menestras Andes Selecto PG-736,Abarrotes,Menestras,Andes Selecto,18.79,15.41,2022-12-30
+P0201,Bebidas Energizantes Brisa Andina FP-560,Bebidas,Energizantes,Brisa Andina,59.3,46.25,2022-02-02
+P0202,Bebidas Jugos Qori MX-927,Bebidas,Jugos,Qori,34.16,26.64,2021-10-10
+P0203,Bebidas Jugos Inti Fresh LY-197,Bebidas,Jugos,Inti Fresh,43.82,34.18,2022-06-19
+P0204,Bebidas Infusiones Brisa Andina FN-780,Bebidas,Infusiones,Brisa Andina,36.44,28.42,2022-10-12
+P0205,Bebidas Gaseosas Qori DY-608,Bebidas,Gaseosas,Qori,41.5,32.37,2021-05-01
+P0206,Bebidas Infusiones Qori HU-243,Bebidas,Infusiones,Qori,19.13,14.92,2022-12-08
+P0207,Bebidas Energizantes Pukara BW-469,Bebidas,,Pukara,44.63,34.81,2021-03-29
+P0208,Bebidas Infusiones Pukara HH-982,Bebidas,Infusiones,Pukara,58.65,45.75,2020-07-02
+P0209,Bebidas Agua Pukara LE-953,Bebidas,Agua,Pukara,12.49,9.74,2020-10-12
+P0210,Bebidas Jugos Pukara ZZ-827,Bebidas,Jugos,Pukara,44.3,34.55,2020-05-02
+P0211,Bebidas Gaseosas Brisa Andina ZA-116,Bebidas,Gaseosas,Brisa Andina,35.96,28.05,2020-12-28
+P0212,Bebidas Infusiones Inti Fresh QW-330,Bebidas,Infusiones,Inti Fresh,8.23,6.42,2022-04-23
+P0213,Bebidas Infusiones Pukara XF-284,Bebidas,Infusiones,Pukara,33.86,26.41,2020-06-20
+P0214,Bebidas Agua Qori NT-420,Bebidas,Agua,Qori,32.02,24.98,2021-01-15
+P0215,Bebidas Jugos Pukara JQ-817,Bebidas,Jugos,Pukara,53.27,41.55,2020-02-10
+P0216,Bebidas Agua Inti Fresh GO-057,Bebidas,Agua,Inti Fresh,51.08,39.84,2021-04-29
+P0217,Bebidas Agua Brisa Andina DS-037,Bebidas,Agua,Brisa Andina,51.74,40.36,2020-11-04
+P0218,Bebidas Jugos Qori RN-121,Bebidas,Jugos,Qori,31.66,24.69,2020-09-01
+P0219,Bebidas Jugos Brisa Andina PC-049,Bebidas,Jugos,Brisa Andina,53.96,42.09,2021-10-16
+P0220,Bebidas Gaseosas Brisa Andina SU-741,Bebidas,Gaseosas,Brisa Andina,45.68,35.63,2020-09-14
+P0221,Bebidas Infusiones Qori OH-828,Bebidas,Infusiones,Qori,30.61,23.88,2020-03-26
+P0222,Bebidas Infusiones Pukara FD-983,Bebidas,Infusiones,Pukara,41.3,32.21,2022-01-09
+P0223,Bebidas Gaseosas Pukara IZ-853,Bebidas,Gaseosas,Pukara,43.83,34.19,2021-03-04
+P0224,Bebidas Infusiones Pukara CA-713,Bebidas,Infusiones,Pukara,36.48,28.45,2021-11-25
+P0225,Bebidas Energizantes Qori FC-668,Bebidas,Energizantes,Qori,16.16,12.6,2020-10-28
+P0226,Bebidas Jugos Brisa Andina PK-922,Bebidas,Jugos,Brisa Andina,12.59,9.82,2020-03-05
+P0227,Bebidas Jugos Brisa Andina WV-838,Bebidas,Jugos,Brisa Andina,41.7,32.53,2021-07-09
+P0228,Bebidas Agua Pukara DF-642,Bebidas,Agua,Pukara,38.22,29.81,2020-06-27
+P0229,Bebidas Agua Qori VW-051,Bebidas,Agua,Qori,36.57,28.52,2022-08-17
+P0230,Bebidas Agua Brisa Andina XP-298,Bebidas,Agua,Brisa Andina,17.76,13.85,2022-08-03
+P0231,Bebidas Jugos Qori LF-725,Bebidas,Jugos,Qori,28.61,22.32,2022-09-30
+P0232,Bebidas Jugos Qori AY-812,Bebidas,Jugos,Qori,14.94,11.65,2022-12-10
+P0233,Bebidas Infusiones Inti Fresh QK-176,Bebidas,Infusiones,Inti Fresh,11.28,8.8,2020-09-01
+P0234,Bebidas Energizantes Brisa Andina FV-585,Bebidas,Energizantes,Brisa Andina,55.84,43.56,2021-02-23
+P0235,Bebidas Jugos Inti Fresh PH-904,Bebidas,Jugos,Inti Fresh,33.3,25.97,2020-07-03
+P0236,Bebidas Energizantes Brisa Andina MR-634,Bebidas,,Brisa Andina,26.18,20.42,2021-07-09
+P0237,Bebidas Agua Pukara TV-992,Bebidas,Agua,Pukara,32.02,24.98,2021-04-17
+P0238,Bebidas Infusiones Inti Fresh VV-800,Bebidas,Infusiones,Inti Fresh,37.11,28.95,2020-09-18
+P0239,Bebidas Gaseosas Brisa Andina GP-279,Bebidas,Gaseosas,Brisa Andina,54.71,42.67,2022-10-22
+P0240,Bebidas Agua Brisa Andina GQ-729,Bebidas,Agua,Brisa Andina,41.96,32.73,2022-06-02
+P0241,Bebidas Infusiones Pukara IA-711,Bebidas,Infusiones,Pukara,37.7,29.41,2020-06-05
+P0242,Bebidas Jugos Brisa Andina JA-984,Bebidas,Jugos,Brisa Andina,19.2,14.98,2022-05-22
+P0243,Bebidas Energizantes Inti Fresh MS-407,Bebidas,Energizantes,Inti Fresh,45.75,35.69,2022-01-09
+P0244,Bebidas Infusiones Pukara CL-260,Bebidas,Infusiones,Pukara,28.52,22.25,2022-06-27
+P0245,Bebidas Energizantes Brisa Andina UC-113,Bebidas,Energizantes,Brisa Andina,43.68,34.07,2020-07-15
+P0246,Bebidas Gaseosas Brisa Andina CX-164,Bebidas,Gaseosas,,57.96,45.21,2022-04-19
+P0247,Bebidas Energizantes Qori CV-744,Bebidas,Energizantes,Qori,18.59,14.5,2020-05-04
+P0248,Bebidas Jugos Pukara SU-967,Bebidas,Jugos,Pukara,37.67,29.38,2022-08-20
+P0249,Bebidas Agua Pukara JB-219,Bebidas,Agua,Pukara,55.59,43.36,2021-07-13
+P0250,Bebidas Energizantes Inti Fresh TW-334,Bebidas,Energizantes,Inti Fresh,13.15,10.26,2022-02-13
+P0251,Bebidas Jugos Qori KZ-635,Bebidas,Jugos,Qori,49.18,38.36,2022-01-10
+P0252,Bebidas Jugos Qori IM-136,Bebidas,Jugos,Qori,6.6,5.15,2020-09-06
+P0253,Bebidas Jugos Inti Fresh NN-586,Bebidas,Jugos,Inti Fresh,35.9,28.0,2020-11-01
+P0254,Bebidas Infusiones Brisa Andina IY-848,Bebidas,Infusiones,Brisa Andina,48.0,37.44,2021-03-05
+P0255,Bebidas Jugos Inti Fresh PL-457,Bebidas,Jugos,Inti Fresh,49.9,38.92,2021-05-30
+P0256,Bebidas Infusiones Qori VN-840,Bebidas,Infusiones,Qori,28.92,22.56,2021-07-04
+P0257,Bebidas Jugos Pukara BQ-342,Bebidas,Jugos,Pukara,15.99,12.47,2022-10-15
+P0258,Bebidas Infusiones Pukara YO-927,Bebidas,Infusiones,Pukara,57.58,44.91,2022-10-02
+P0259,Bebidas Agua Pukara TV-709,Bebidas,Agua,Pukara,32.97,25.72,2021-05-12
+P0260,Bebidas Energizantes Brisa Andina VJ-098,Bebidas,Energizantes,Brisa Andina,20.2,15.76,2021-08-07
+P0261,Bebidas Agua Pukara SO-463,Bebidas,Agua,Pukara,4.42,3.45,2021-11-14
+P0262,Bebidas Gaseosas Brisa Andina ZQ-884,Bebidas,Gaseosas,Brisa Andina,57.28,44.68,2022-10-14
+P0263,Bebidas Gaseosas Qori WW-985,Bebidas,Gaseosas,Qori,59.99,46.79,2021-12-18
+P0264,Bebidas Infusiones Qori AA-683,Bebidas,Infusiones,Qori,35.6,27.77,2022-05-01
+P0265,Bebidas Energizantes Qori NX-866,Bebidas,Energizantes,Qori,3.53,2.75,2021-05-19
+P0266,Bebidas Gaseosas Brisa Andina YW-389,Bebidas,Gaseosas,Brisa Andina,7.64,5.96,2021-02-14
+P0267,Bebidas Infusiones Inti Fresh NL-013,Bebidas,Infusiones,Inti Fresh,18.01,14.05,2022-05-24
+P0268,Bebidas Jugos Pukara EK-796,Bebidas,Jugos,Pukara,36.57,28.52,2022-04-28
+P0269,Bebidas Jugos Brisa Andina XB-683,Bebidas,Jugos,Brisa Andina,48.41,37.76,2021-05-14
+P0270,Bebidas Infusiones Inti Fresh HN-811,Bebidas,Infusiones,Inti Fresh,37.61,29.34,2021-04-27
+P0271,Bebidas Jugos Pukara MW-617,Bebidas,Jugos,Pukara,7.55,5.89,2021-05-26
+P0272,Bebidas Energizantes Qori PU-816,Bebidas,Energizantes,Qori,27.36,21.34,2022-05-01
+P0273,Bebidas Gaseosas Brisa Andina EW-401,Bebidas,Gaseosas,Brisa Andina,50.88,39.69,2020-08-12
+P0274,Bebidas Energizantes Brisa Andina OA-527,Bebidas,Energizantes,Brisa Andina,44.29,34.55,2021-08-11
+P0275,Bebidas Infusiones Brisa Andina ZJ-113,Bebidas,Infusiones,Brisa Andina,24.85,19.38,2022-08-28
+P0276,Bebidas Agua Pukara LH-759,Bebidas,Agua,Pukara,29.66,23.13,2022-11-06
+P0277,Bebidas Energizantes Qori JC-153,Bebidas,Energizantes,Qori,17.28,13.48,2022-09-07
+P0278,Bebidas Gaseosas Brisa Andina YB-718,Bebidas,Gaseosas,Brisa Andina,32.51,25.36,2021-09-25
+P0279,Bebidas Jugos Qori RD-210,Bebidas,Jugos,Qori,7.43,5.8,2022-11-23
+P0280,Bebidas Infusiones Inti Fresh FD-617,Bebidas,Infusiones,Inti Fresh,55.43,43.24,2020-01-18
+P0281,Bebidas Jugos Inti Fresh VG-775,Bebidas,Jugos,Inti Fresh,31.81,24.81,2022-11-02
+P0282,Bebidas Energizantes Inti Fresh BO-062,Bebidas,Energizantes,Inti Fresh,43.23,33.72,2021-12-28
+P0283,Bebidas Jugos Inti Fresh HP-148,Bebidas,Jugos,Inti Fresh,52.25,40.76,2021-08-21
+P0284,Bebidas Energizantes Inti Fresh KA-615,Bebidas,Energizantes,Inti Fresh,59.73,46.59,2022-10-29
+P0285,Bebidas Agua Pukara YT-299,Bebidas,Agua,Pukara,48.89,38.13,2020-10-22
+P0286,Bebidas Infusiones Qori SO-461,Bebidas,Infusiones,Qori,37.87,29.54,2022-02-27
+P0287,Bebidas Gaseosas Brisa Andina OF-516,Bebidas,Gaseosas,Brisa Andina,32.8,25.58,2020-03-18
+P0288,Bebidas Energizantes Qori UB-994,Bebidas,Energizantes,Qori,3.08,2.4,2021-11-15
+P0289,Bebidas Gaseosas Inti Fresh OV-994,Bebidas,,Inti Fresh,26.76,20.87,2020-04-19
+P0290,Bebidas Gaseosas Pukara HA-982,Bebidas,Gaseosas,Pukara,59.47,46.39,2022-01-09
+P0291,Bebidas Energizantes Qori NQ-408,Bebidas,Energizantes,Qori,49.21,38.38,2020-12-05
+P0292,Bebidas Gaseosas Qori AV-874,Bebidas,Gaseosas,Qori,8.06,6.29,2022-03-04
+P0293,Bebidas Jugos Brisa Andina CK-439,Bebidas,Jugos,Brisa Andina,32.67,25.48,2020-09-28
+P0294,Bebidas Infusiones Pukara QT-584,Bebidas,Infusiones,Pukara,32.74,25.54,2020-05-09
+P0295,Bebidas Jugos Pukara AM-193,Bebidas,Jugos,Pukara,42.6,33.23,2021-03-12
+P0296,Bebidas Agua Brisa Andina SU-995,Bebidas,Agua,Brisa Andina,16.17,12.61,2022-07-24
+P0297,Bebidas Energizantes Inti Fresh PB-156,Bebidas,Energizantes,Inti Fresh,7.84,6.12,2022-05-15
+P0298,Bebidas Energizantes Qori YR-979,Bebidas,Energizantes,Qori,53.2,41.5,2022-07-10
+P0299,Bebidas Gaseosas Pukara WR-156,Bebidas,Gaseosas,Pukara,53.96,42.09,2020-06-17
+P0300,Bebidas Infusiones Qori KY-795,Bebidas,Infusiones,Qori,39.04,30.45,2021-08-11
+P0301,Bebidas Jugos Pukara YV-505,Bebidas,Jugos,Pukara,32.31,25.2,2020-03-21
+P0302,Bebidas Gaseosas Qori AX-547,Bebidas,Gaseosas,Qori,5.89,4.59,2022-10-25
+P0303,Bebidas Gaseosas Brisa Andina MB-670,Bebidas,Gaseosas,Brisa Andina,55.98,43.66,2020-08-11
+P0304,Bebidas Energizantes Pukara YD-488,Bebidas,Energizantes,Pukara,30.73,23.97,2021-10-25
+P0305,Bebidas Agua Qori QY-156,Bebidas,Agua,Qori,35.11,27.39,2022-08-03
+P0306,Bebidas Energizantes Pukara NN-440,Bebidas,Energizantes,Pukara,46.68,36.41,2021-09-07
+P0307,Bebidas Jugos Pukara LD-013,Bebidas,Jugos,Pukara,39.45,30.77,2022-10-22
+P0308,Bebidas Energizantes Qori DG-598,Bebidas,Energizantes,Qori,34.53,26.93,2022-07-19
+P0309,Bebidas Infusiones Qori ON-988,Bebidas,Infusiones,Qori,48.23,37.62,2020-07-27
+P0310,Bebidas Infusiones Pukara GA-042,Bebidas,Infusiones,Pukara,4.21,3.28,2022-12-09
+P0311,Bebidas Gaseosas Brisa Andina GY-311,Bebidas,Gaseosas,Brisa Andina,6.49,5.06,2021-12-27
+P0312,Bebidas Jugos Qori CI-196,Bebidas,Jugos,Qori,15.53,12.11,2021-06-07
+P0313,Bebidas Energizantes Pukara WX-780,Bebidas,Energizantes,Pukara,45.34,35.37,2020-03-08
+P0314,Bebidas Gaseosas Brisa Andina JR-465,Bebidas,Gaseosas,Brisa Andina,17.07,13.31,2022-05-21
+P0315,Bebidas Infusiones Qori AT-730,Bebidas,Infusiones,Qori,47.25,36.86,2020-04-07
+P0316,Bebidas Energizantes Qori KM-248,Bebidas,Energizantes,Qori,25.19,19.65,2022-05-10
+P0317,Bebidas Gaseosas Inti Fresh DK-601,Bebidas,Gaseosas,Inti Fresh,27.77,21.66,2022-05-30
+P0318,Bebidas Energizantes Pukara OO-677,Bebidas,Energizantes,Pukara,54.43,42.46,2022-07-16
+P0319,Bebidas Infusiones Pukara XX-204,Bebidas,Infusiones,Pukara,20.85,16.26,2021-10-15
+P0320,Bebidas Infusiones Inti Fresh MR-126,Bebidas,Infusiones,Inti Fresh,18.94,14.77,2022-12-30
+P0321,Bebidas Gaseosas Inti Fresh JN-789,Bebidas,Gaseosas,Inti Fresh,11.12,8.67,2022-05-28
+P0322,Bebidas Energizantes Brisa Andina BG-524,Bebidas,Energizantes,Brisa Andina,17.81,13.89,2022-05-31
+P0323,Bebidas Infusiones Pukara EX-376,Bebidas,Infusiones,Pukara,16.48,12.85,2020-05-06
+P0324,Bebidas Energizantes Brisa Andina XK-610,Bebidas,Energizantes,Brisa Andina,46.16,36.0,2020-07-21
+P0325,Bebidas Gaseosas Inti Fresh OM-148,Bebidas,Gaseosas,Inti Fresh,36.64,28.58,2021-07-20
+P0326,Bebidas Gaseosas Brisa Andina TI-541,Bebidas,Gaseosas,Brisa Andina,53.55,41.77,2021-12-23
+P0327,Bebidas Energizantes Qori ES-818,Bebidas,Energizantes,Qori,57.21,44.62,2020-12-28
+P0328,Bebidas Jugos Pukara WY-378,Bebidas,Jugos,Pukara,14.66,11.43,2021-03-14
+P0329,Bebidas Gaseosas Inti Fresh MJ-222,Bebidas,Gaseosas,Inti Fresh,6.48,5.05,2022-06-22
+P0330,Bebidas Infusiones Inti Fresh QL-416,Bebidas,Infusiones,Inti Fresh,39.95,31.16,2020-01-09
+P0331,Bebidas Jugos Brisa Andina MW-753,Bebidas,Jugos,Brisa Andina,36.47,28.45,2022-04-12
+P0332,Bebidas Jugos Inti Fresh EO-257,Bebidas,Jugos,Inti Fresh,13.97,10.9,2020-03-11
+P0333,Bebidas Agua Brisa Andina SZ-929,Bebidas,Agua,Brisa Andina,53.79,41.96,2020-12-07
+P0334,Bebidas Jugos Qori WO-808,Bebidas,Jugos,Qori,50.5,39.39,2021-03-03
+P0335,Bebidas Gaseosas Inti Fresh TJ-470,Bebidas,Gaseosas,Inti Fresh,37.12,28.95,2021-05-07
+P0336,Bebidas Infusiones Qori YT-476,Bebidas,Infusiones,Qori,20.21,15.76,2021-04-16
+P0337,Bebidas Infusiones Qori HQ-134,Bebidas,Infusiones,Qori,35.75,27.89,2022-05-02
+P0338,Bebidas Infusiones Inti Fresh US-617,Bebidas,Infusiones,Inti Fresh,22.52,17.57,2022-03-10
+P0339,Bebidas Energizantes Qori ES-420,Bebidas,Energizantes,Qori,39.2,30.58,2022-11-04
+P0340,Bebidas Energizantes Qori PM-613,Bebidas,Energizantes,Qori,35.88,27.99,2020-05-04
+P0341,Bebidas Gaseosas Brisa Andina UM-800,Bebidas,Gaseosas,Brisa Andina,10.25,8.0,2021-12-10
+P0342,Bebidas Energizantes Pukara QF-051,Bebidas,Energizantes,Pukara,7.93,6.19,2020-06-11
+P0343,Bebidas Infusiones Brisa Andina IV-865,Bebidas,Infusiones,Brisa Andina,47.52,37.07,2022-06-06
+P0344,Bebidas Energizantes Qori WR-930,Bebidas,Energizantes,Qori,8.26,6.44,2021-10-26
+P0345,Bebidas Agua Brisa Andina SB-977,Bebidas,Agua,Brisa Andina,32.35,25.23,2020-01-22
+P0346,Bebidas Agua Brisa Andina MI-055,Bebidas,Agua,Brisa Andina,15.52,12.11,2022-04-19
+P0347,Bebidas Gaseosas Qori WZ-488,Bebidas,Gaseosas,Qori,29.05,22.66,2020-06-21
+P0348,Bebidas Energizantes Brisa Andina OP-681,Bebidas,Energizantes,Brisa Andina,47.46,37.02,2022-08-02
+P0349,Bebidas Infusiones Inti Fresh RD-067,Bebidas,Infusiones,Inti Fresh,16.04,12.51,2020-11-08
+P0350,Bebidas Jugos Pukara JQ-907,Bebidas,Jugos,Pukara,43.97,34.3,2021-02-04
+P0351,Bebidas Jugos Brisa Andina TP-761,Bebidas,Jugos,Brisa Andina,28.67,22.36,2020-12-01
+P0352,Bebidas Energizantes Inti Fresh HP-514,Bebidas,,Inti Fresh,51.91,40.49,2021-02-21
+P0353,Bebidas Infusiones Brisa Andina RN-633,Bebidas,Infusiones,Brisa Andina,48.37,37.73,2022-05-14
+P0354,Bebidas Infusiones Brisa Andina CV-701,Bebidas,Infusiones,Brisa Andina,40.17,31.33,2022-01-23
+P0355,Bebidas Jugos Pukara LZ-875,Bebidas,,Pukara,39.07,30.47,2021-10-07
+P0356,Bebidas Infusiones Pukara TL-239,Bebidas,Infusiones,Pukara,24.05,18.76,2021-03-21
+P0357,Bebidas Agua Inti Fresh BB-464,Bebidas,Agua,Inti Fresh,56.74,44.26,2021-03-29
+P0358,Bebidas Agua Qori FZ-863,Bebidas,Agua,Qori,23.21,18.1,2022-09-24
+P0359,Bebidas Gaseosas Pukara MI-653,Bebidas,Gaseosas,Pukara,10.49,8.18,2022-01-06
+P0360,Bebidas Gaseosas Brisa Andina QX-997,Bebidas,Gaseosas,Brisa Andina,25.18,19.64,2022-05-16
+P0361,Limpieza Papel Sumaq Clean JF-535,Limpieza,Papel,Sumaq Clean,28.11,19.68,2022-04-14
+P0362,Limpieza Detergentes Sumaq Clean FD-342,Limpieza,Detergentes,Sumaq Clean,73.06,51.14,2022-07-30
+P0363,Limpieza Papel Brillo Sur TN-233,Limpieza,Papel,Brillo Sur,47.16,33.01,2022-03-16
+P0364,Limpieza Lavavajillas Sumaq Clean CR-677,Limpieza,Lavavajillas,Sumaq Clean,109.1,76.37,2022-09-30
+P0365,Limpieza Detergentes Killa RX-410,Limpieza,Detergentes,Killa,83.36,58.35,2020-09-29
+P0366,Limpieza Detergentes Killa WY-751,Limpieza,Detergentes,Killa,70.24,49.17,2021-01-12
+P0367,Limpieza Detergentes Sumaq Clean VU-886,Limpieza,Detergentes,Sumaq Clean,40.36,28.25,2022-01-03
+P0368,Limpieza Papel Sumaq Clean SR-611,Limpieza,,Sumaq Clean,109.66,76.76,2020-09-15
+P0369,Limpieza Lavavajillas LimpiaMax HI-410,Limpieza,Lavavajillas,LimpiaMax,87.56,61.29,2021-10-14
+P0370,Limpieza Lavavajillas LimpiaMax UO-359,Limpieza,Lavavajillas,LimpiaMax,51.64,36.15,2022-03-14
+P0371,Limpieza Papel Sumaq Clean AR-494,Limpieza,Papel,Sumaq Clean,79.1,55.37,2020-10-23
+P0372,Limpieza Accesorios de limpieza Sumaq Clean RX-429,Limpieza,Accesorios de limpieza,Sumaq Clean,6.85,4.79,2022-01-24
+P0373,Limpieza Accesorios de limpieza LimpiaMax HW-747,Limpieza,Accesorios de limpieza,LimpiaMax,29.53,20.67,2020-03-27
+P0374,Limpieza Desinfectantes Brillo Sur RZ-182,Limpieza,Desinfectantes,Brillo Sur,114.65,80.25,2020-06-23
+P0375,Limpieza Desinfectantes Sumaq Clean LZ-460,Limpieza,Desinfectantes,Sumaq Clean,57.75,40.42,2021-09-08
+P0376,Limpieza Detergentes Brillo Sur ZW-195,Limpieza,Detergentes,Brillo Sur,67.77,47.44,2020-11-30
+P0377,Limpieza Papel Sumaq Clean AE-808,Limpieza,Papel,Sumaq Clean,15.22,10.65,2021-12-10
+P0378,Limpieza Papel Brillo Sur OU-000,Limpieza,Papel,Brillo Sur,32.09,22.46,2022-11-28
+P0379,Limpieza Desinfectantes LimpiaMax FD-200,Limpieza,Desinfectantes,LimpiaMax,91.85,64.29,2022-10-07
+P0380,Limpieza Lavavajillas Brillo Sur CX-091,Limpieza,Lavavajillas,Brillo Sur,10.54,7.38,2020-02-14
+P0381,Limpieza Papel Brillo Sur JF-039,Limpieza,Papel,Brillo Sur,88.18,61.73,2022-05-05
+P0382,Limpieza Lavavajillas Sumaq Clean XC-330,Limpieza,Lavavajillas,Sumaq Clean,109.69,76.78,2020-06-22
+P0383,Limpieza Desinfectantes Sumaq Clean TH-030,Limpieza,Desinfectantes,Sumaq Clean,42.74,29.92,2021-11-17
+P0384,Limpieza Papel Brillo Sur SH-877,Limpieza,Papel,Brillo Sur,7.21,5.05,2022-06-15
+P0385,Limpieza Detergentes Killa EG-166,Limpieza,Detergentes,,45.37,31.76,2021-10-01
+P0386,Limpieza Accesorios de limpieza Killa WF-463,Limpieza,,Killa,39.58,27.71,2020-12-10
+P0387,Limpieza Detergentes Killa BP-102,Limpieza,Detergentes,Killa,108.93,76.25,2020-04-08
+P0388,Limpieza Papel Brillo Sur DT-830,Limpieza,Papel,Brillo Sur,18.89,13.22,2021-09-05
+P0389,Limpieza Detergentes Sumaq Clean AT-030,Limpieza,Detergentes,Sumaq Clean,96.87,67.81,2022-03-15
+P0390,Limpieza Detergentes Brillo Sur WC-263,Limpieza,Detergentes,Brillo Sur,113.94,79.76,2022-10-27
+P0391,Limpieza Desinfectantes Killa GV-167,Limpieza,Desinfectantes,Killa,39.76,27.83,2020-08-10
+P0392,Limpieza Accesorios de limpieza Brillo Sur PC-529,Limpieza,Accesorios de limpieza,Brillo Sur,89.75,62.82,2022-05-24
+P0393,Limpieza Accesorios de limpieza LimpiaMax CC-126,Limpieza,Accesorios de limpieza,LimpiaMax,75.2,52.64,2021-06-08
+P0394,Limpieza Accesorios de limpieza Killa XM-812,Limpieza,Accesorios de limpieza,Killa,34.73,24.31,2020-09-11
+P0395,Limpieza Desinfectantes Sumaq Clean VY-770,Limpieza,Desinfectantes,Sumaq Clean,97.4,68.18,2020-10-01
+P0396,Limpieza Detergentes Killa LT-792,Limpieza,Detergentes,Killa,71.31,49.92,2022-02-08
+P0397,Limpieza Lavavajillas Killa MG-923,Limpieza,Lavavajillas,Killa,22.73,15.91,2020-04-21
+P0398,Limpieza Accesorios de limpieza Killa FD-133,Limpieza,Accesorios de limpieza,Killa,99.8,69.86,2020-06-19
+P0399,Limpieza Lavavajillas LimpiaMax GA-271,Limpieza,Lavavajillas,LimpiaMax,87.74,61.42,2021-03-23
+P0400,Limpieza Desinfectantes LimpiaMax HI-158,Limpieza,Desinfectantes,LimpiaMax,106.16,74.31,2021-02-18
+P0401,Limpieza Desinfectantes Sumaq Clean GS-999,Limpieza,Desinfectantes,Sumaq Clean,66.4,46.48,2021-03-09
+P0402,Limpieza Papel Killa EV-706,Limpieza,Papel,Killa,84.52,59.16,2020-01-13
+P0403,Limpieza Accesorios de limpieza Brillo Sur UD-548,Limpieza,Accesorios de limpieza,Brillo Sur,51.2,35.84,2020-07-24
+P0404,Limpieza Accesorios de limpieza LimpiaMax VG-663,Limpieza,Accesorios de limpieza,LimpiaMax,67.79,47.45,2020-09-08
+P0405,Limpieza Lavavajillas LimpiaMax YH-676,Limpieza,Lavavajillas,LimpiaMax,28.9,20.23,2020-12-03
+P0406,Limpieza Papel LimpiaMax DM-259,Limpieza,Papel,LimpiaMax,118.83,83.18,2020-02-01
+P0407,Limpieza Papel Killa IR-481,Limpieza,Papel,Killa,35.94,25.16,2021-12-18
+P0408,Limpieza Papel Brillo Sur YQ-172,Limpieza,Papel,Brillo Sur,81.45,57.02,2020-03-01
+P0409,Limpieza Accesorios de limpieza Brillo Sur ZJ-366,Limpieza,Accesorios de limpieza,Brillo Sur,97.9,68.53,2022-10-22
+P0410,Limpieza Detergentes Brillo Sur BQ-829,Limpieza,Detergentes,Brillo Sur,80.69,56.48,2020-06-11
+P0411,Limpieza Desinfectantes Sumaq Clean HU-920,Limpieza,Desinfectantes,Sumaq Clean,111.92,78.34,2020-02-02
+P0412,Limpieza Lavavajillas LimpiaMax OJ-242,Limpieza,Lavavajillas,LimpiaMax,92.34,64.64,2021-09-09
+P0413,Limpieza Detergentes Brillo Sur ZK-042,Limpieza,Detergentes,Brillo Sur,58.12,40.68,2022-09-21
+P0414,Limpieza Lavavajillas Brillo Sur SB-837,Limpieza,Lavavajillas,Brillo Sur,111.31,77.92,2020-03-26
+P0415,Limpieza Detergentes Brillo Sur YD-950,Limpieza,Detergentes,Brillo Sur,11.3,7.91,2022-03-06
+P0416,Limpieza Desinfectantes LimpiaMax LQ-188,Limpieza,Desinfectantes,LimpiaMax,72.46,50.72,2022-09-05
+P0417,Limpieza Desinfectantes Sumaq Clean TH-870,Limpieza,Desinfectantes,Sumaq Clean,45.62,31.93,2021-07-17
+P0418,Limpieza Papel Killa ID-517,Limpieza,Papel,Killa,22.01,15.41,2022-01-25
+P0419,Limpieza Detergentes Sumaq Clean VO-133,Limpieza,Detergentes,Sumaq Clean,101.0,70.7,2021-05-09
+P0420,Limpieza Accesorios de limpieza LimpiaMax YL-252,Limpieza,Accesorios de limpieza,LimpiaMax,97.97,68.58,2022-02-04
+P0421,Limpieza Detergentes Killa PE-563,Limpieza,Detergentes,Killa,101.18,70.83,2022-07-04
+P0422,Limpieza Desinfectantes Killa ZS-827,Limpieza,Desinfectantes,Killa,15.94,11.16,2020-03-18
+P0423,Limpieza Papel Killa GS-082,Limpieza,Papel,Killa,6.44,4.51,2022-07-10
+P0424,Limpieza Accesorios de limpieza LimpiaMax LG-961,Limpieza,Accesorios de limpieza,LimpiaMax,98.94,69.26,2020-07-27
+P0425,Limpieza Accesorios de limpieza Sumaq Clean ZD-385,Limpieza,Accesorios de limpieza,Sumaq Clean,17.26,12.08,2022-12-31
+P0426,Limpieza Desinfectantes LimpiaMax KI-700,Limpieza,Desinfectantes,LimpiaMax,28.1,19.67,2020-01-10
+P0427,Limpieza Detergentes LimpiaMax WS-386,Limpieza,Detergentes,LimpiaMax,117.2,82.04,2021-10-06
+P0428,Limpieza Lavavajillas Killa VN-969,Limpieza,Lavavajillas,Killa,11.44,8.01,2021-08-24
+P0429,Limpieza Detergentes LimpiaMax FS-432,Limpieza,Detergentes,LimpiaMax,74.17,51.92,2022-03-20
+P0430,Limpieza Desinfectantes Killa CE-655,Limpieza,Desinfectantes,Killa,23.77,16.64,2020-11-21
+P0431,Limpieza Detergentes Brillo Sur DU-351,Limpieza,Detergentes,Brillo Sur,113.34,79.34,2020-11-07
+P0432,Limpieza Desinfectantes Brillo Sur UF-063,Limpieza,Desinfectantes,Brillo Sur,38.6,27.02,2021-02-16
+P0433,Limpieza Papel LimpiaMax PH-171,Limpieza,Papel,LimpiaMax,41.17,28.82,2021-03-13
+P0434,Limpieza Accesorios de limpieza Killa PO-243,Limpieza,Accesorios de limpieza,Killa,99.27,69.49,2020-04-01
+P0435,Limpieza Papel LimpiaMax VJ-516,Limpieza,Papel,LimpiaMax,66.84,46.79,2020-02-02
+P0436,Limpieza Papel LimpiaMax JP-509,Limpieza,Papel,LimpiaMax,105.77,74.04,2021-01-06
+P0437,Limpieza Accesorios de limpieza Brillo Sur XG-680,Limpieza,Accesorios de limpieza,Brillo Sur,78.73,55.11,2021-12-13
+P0438,Limpieza Desinfectantes Sumaq Clean GY-543,Limpieza,Desinfectantes,Sumaq Clean,73.45,51.41,2020-05-29
+P0439,Limpieza Papel LimpiaMax OB-103,Limpieza,Papel,LimpiaMax,106.11,74.28,2022-04-24
+P0440,Limpieza Accesorios de limpieza Brillo Sur AK-225,Limpieza,Accesorios de limpieza,Brillo Sur,84.34,59.04,2021-06-26
+P0441,Limpieza Lavavajillas Killa AX-152,Limpieza,Lavavajillas,Killa,44.46,31.12,2020-01-14
+P0442,Limpieza Detergentes Killa II-114,Limpieza,Detergentes,Killa,62.89,44.02,2021-04-14
+P0443,Limpieza Accesorios de limpieza Killa ZG-941,Limpieza,Accesorios de limpieza,Killa,83.68,58.58,2020-03-11
+P0444,Limpieza Detergentes Brillo Sur KB-341,Limpieza,Detergentes,Brillo Sur,28.59,20.01,2022-10-07
+P0445,Limpieza Accesorios de limpieza LimpiaMax GZ-823,Limpieza,Accesorios de limpieza,LimpiaMax,15.25,10.67,2021-04-30
+P0446,Limpieza Lavavajillas Killa ZI-135,Limpieza,Lavavajillas,Killa,81.21,56.85,2022-10-10
+P0447,Limpieza Accesorios de limpieza Sumaq Clean LN-122,Limpieza,Accesorios de limpieza,Sumaq Clean,103.82,72.67,2020-01-27
+P0448,Limpieza Accesorios de limpieza Brillo Sur FY-863,Limpieza,Accesorios de limpieza,Brillo Sur,96.19,67.33,2021-09-06
+P0449,Limpieza Papel Brillo Sur ZC-877,Limpieza,Papel,Brillo Sur,8.38,5.87,2020-11-10
+P0450,Limpieza Lavavajillas Killa TK-405,Limpieza,Lavavajillas,Killa,67.61,47.33,2022-01-24
+P0451,Limpieza Detergentes Sumaq Clean SU-468,Limpieza,Detergentes,Sumaq Clean,35.73,25.01,2021-06-09
+P0452,Limpieza Accesorios de limpieza Sumaq Clean IW-424,Limpieza,Accesorios de limpieza,Sumaq Clean,20.83,14.58,2022-08-23
+P0453,Limpieza Accesorios de limpieza Killa EO-764,Limpieza,Accesorios de limpieza,Killa,85.4,59.78,2020-05-11
+P0454,Limpieza Lavavajillas Sumaq Clean TQ-297,Limpieza,Lavavajillas,Sumaq Clean,42.27,29.59,2021-03-11
+P0455,Limpieza Lavavajillas Killa CR-766,Limpieza,Lavavajillas,Killa,57.03,39.92,2022-05-06
+P0456,Limpieza Papel LimpiaMax NO-713,Limpieza,Papel,LimpiaMax,117.84,82.49,2022-02-05
+P0457,Limpieza Accesorios de limpieza Killa VB-605,Limpieza,Accesorios de limpieza,Killa,14.07,9.85,2022-06-17
+P0458,Limpieza Desinfectantes Brillo Sur XD-496,Limpieza,Desinfectantes,Brillo Sur,7.86,5.5,2021-10-07
+P0459,Limpieza Papel Sumaq Clean DV-096,Limpieza,Papel,Sumaq Clean,40.19,28.13,2022-01-16
+P0460,Limpieza Detergentes LimpiaMax ON-643,Limpieza,Detergentes,LimpiaMax,6.93,4.85,2020-02-19
+P0461,Limpieza Desinfectantes LimpiaMax KY-879,Limpieza,Desinfectantes,LimpiaMax,112.92,79.04,2022-12-13
+P0462,Limpieza Desinfectantes Brillo Sur GA-877,Limpieza,Desinfectantes,Brillo Sur,16.29,11.4,2022-10-24
+P0463,Limpieza Detergentes Killa SQ-996,Limpieza,Detergentes,Killa,65.83,46.08,2021-10-02
+P0464,Limpieza Papel Sumaq Clean TZ-469,Limpieza,Papel,Sumaq Clean,49.84,34.89,2022-07-17
+P0465,Limpieza Papel Killa LB-037,Limpieza,Papel,Killa,29.3,20.51,2020-11-18
+P0466,Limpieza Papel LimpiaMax PI-568,Limpieza,Papel,LimpiaMax,14.24,9.97,2021-08-08
+P0467,Limpieza Lavavajillas Sumaq Clean EV-660,Limpieza,Lavavajillas,Sumaq Clean,20.5,14.35,2021-10-16
+P0468,Limpieza Papel LimpiaMax YW-689,Limpieza,Papel,LimpiaMax,65.19,45.63,2021-03-18
+P0469,Limpieza Detergentes Killa ID-164,Limpieza,Detergentes,Killa,47.87,33.51,2022-05-14
+P0470,Limpieza Accesorios de limpieza Sumaq Clean LC-788,Limpieza,Accesorios de limpieza,Sumaq Clean,79.58,55.71,2022-04-05
+P0471,Limpieza Desinfectantes LimpiaMax KZ-396,Limpieza,Desinfectantes,LimpiaMax,47.66,33.36,2021-01-27
+P0472,Limpieza Desinfectantes Brillo Sur OI-209,Limpieza,Desinfectantes,Brillo Sur,14.36,10.05,2022-02-10
+P0473,Limpieza Papel LimpiaMax VP-769,Limpieza,Papel,LimpiaMax,96.32,67.42,2022-03-06
+P0474,Limpieza Desinfectantes Killa HA-971,Limpieza,Desinfectantes,Killa,17.08,11.96,2020-11-24
+P0475,Limpieza Accesorios de limpieza LimpiaMax MY-098,Limpieza,Accesorios de limpieza,LimpiaMax,53.18,37.23,2020-11-21
+P0476,Limpieza Lavavajillas Killa BL-760,Limpieza,Lavavajillas,Killa,81.41,56.99,2022-11-29
+P0477,Limpieza Accesorios de limpieza LimpiaMax AF-822,Limpieza,Accesorios de limpieza,LimpiaMax,83.57,58.5,2022-11-02
+P0478,Limpieza Detergentes Brillo Sur NJ-016,Limpieza,Detergentes,Brillo Sur,40.96,28.67,2022-03-27
+P0479,Limpieza Accesorios de limpieza Killa TL-984,Limpieza,Accesorios de limpieza,Killa,114.87,80.41,2021-07-24
+P0480,Limpieza Accesorios de limpieza Sumaq Clean DS-782,Limpieza,Accesorios de limpieza,Sumaq Clean,13.03,9.12,2021-08-31
+P0481,Cuidado Personal Cuidado capilar Ayni Care RN-624,Cuidado Personal,Cuidado capilar,Ayni Care,60.08,39.05,2020-06-25
+P0482,Cuidado Personal Higiene oral Nuna RB-177,Cuidado Personal,Higiene oral,Nuna,178.04,115.73,2020-11-11
+P0483,Cuidado Personal Cuidado capilar Kantu KO-643,Cuidado Personal,Cuidado capilar,Kantu,71.24,46.31,2021-09-28
+P0484,Cuidado Personal Higiene femenina Vitalia SE-316,Cuidado Personal,Higiene femenina,Vitalia,69.95,45.47,2022-04-13
+P0485,Cuidado Personal Cuidado capilar Nuna KF-779,Cuidado Personal,Cuidado capilar,Nuna,115.54,75.1,2021-03-13
+P0486,Cuidado Personal Afeitado Ayni Care NW-415,Cuidado Personal,Afeitado,Ayni Care,152.67,99.24,2020-05-26
+P0487,Cuidado Personal Higiene femenina Ayni Care PY-447,Cuidado Personal,Higiene femenina,Ayni Care,120.73,78.47,2022-03-21
+P0488,Cuidado Personal Higiene femenina Kantu IP-967,Cuidado Personal,Higiene femenina,Kantu,156.72,101.87,2020-07-06
+P0489,Cuidado Personal Afeitado Kantu IL-521,Cuidado Personal,Afeitado,Kantu,52.74,34.28,2021-09-10
+P0490,Cuidado Personal Cuidado corporal Ayni Care NK-903,Cuidado Personal,Cuidado corporal,Ayni Care,93.48,60.76,2020-07-27
+P0491,Cuidado Personal Higiene oral Nuna TZ-126,Cuidado Personal,Higiene oral,,155.99,101.39,2020-06-14
+P0492,Cuidado Personal Higiene femenina Vitalia KK-869,Cuidado Personal,Higiene femenina,Vitalia,101.34,65.87,2022-08-31
+P0493,Cuidado Personal Cuidado capilar Vitalia HM-713,Cuidado Personal,Cuidado capilar,Vitalia,180.06,117.04,2022-08-05
+P0494,Cuidado Personal Cuidado corporal Ayni Care RV-129,Cuidado Personal,Cuidado corporal,Ayni Care,78.02,50.71,2020-04-30
+P0495,Cuidado Personal Cuidado corporal Nuna QB-715,Cuidado Personal,Cuidado corporal,Nuna,115.6,75.14,2021-06-11
+P0496,Cuidado Personal Higiene oral Ayni Care JN-295,Cuidado Personal,Higiene oral,Ayni Care,132.02,85.81,2022-08-01
+P0497,Cuidado Personal Cuidado capilar Ayni Care SK-207,Cuidado Personal,Cuidado capilar,Ayni Care,165.46,107.55,2022-08-20
+P0498,Cuidado Personal Cuidado corporal Nuna FK-565,Cuidado Personal,Cuidado corporal,Nuna,108.54,70.55,2021-01-26
+P0499,Cuidado Personal Afeitado Nuna GF-837,Cuidado Personal,Afeitado,Nuna,195.79,127.26,2021-07-27
+P0500,Cuidado Personal Afeitado Kantu UJ-634,Cuidado Personal,Afeitado,Kantu,88.07,57.25,2020-10-26
+P0501,Cuidado Personal Cuidado corporal Ayni Care UQ-606,Cuidado Personal,Cuidado corporal,Ayni Care,76.15,49.5,2022-11-04
+P0502,Cuidado Personal Higiene femenina Ayni Care ES-501,Cuidado Personal,Higiene femenina,Ayni Care,163.45,106.24,2021-03-19
+P0503,Cuidado Personal Cuidado capilar Kantu AC-594,Cuidado Personal,Cuidado capilar,Kantu,127.62,82.95,2020-01-13
+P0504,Cuidado Personal Higiene oral Ayni Care OI-965,Cuidado Personal,Higiene oral,Ayni Care,86.49,56.22,2020-05-26
+P0505,Cuidado Personal Cuidado capilar Vitalia BD-450,Cuidado Personal,Cuidado capilar,Vitalia,144.7,94.05,2020-07-10
+P0506,Cuidado Personal Cuidado capilar Kantu HS-485,Cuidado Personal,Cuidado capilar,Kantu,16.61,10.8,2020-11-22
+P0507,Cuidado Personal Higiene oral Nuna HN-810,Cuidado Personal,Higiene oral,Nuna,189.87,123.42,2020-01-30
+P0508,Cuidado Personal Afeitado Kantu BC-315,Cuidado Personal,Afeitado,Kantu,80.92,52.6,2022-04-07
+P0509,Cuidado Personal Afeitado Vitalia TM-408,Cuidado Personal,Afeitado,Vitalia,102.02,66.31,2021-02-18
+P0510,Cuidado Personal Afeitado Vitalia MV-781,Cuidado Personal,Afeitado,Vitalia,143.31,93.15,2020-10-10
+P0511,Cuidado Personal Cuidado capilar Ayni Care AE-961,Cuidado Personal,Cuidado capilar,Ayni Care,72.47,47.11,2021-07-06
+P0512,Cuidado Personal Cuidado capilar Nuna TV-019,Cuidado Personal,Cuidado capilar,Nuna,49.37,32.09,2021-04-24
+P0513,Cuidado Personal Cuidado corporal Nuna YE-444,Cuidado Personal,Cuidado corporal,Nuna,131.96,85.77,2021-02-19
+P0514,Cuidado Personal Cuidado capilar Vitalia FW-515,Cuidado Personal,Cuidado capilar,Vitalia,135.51,88.08,2022-04-25
+P0515,Cuidado Personal Higiene femenina Vitalia WE-392,Cuidado Personal,Higiene femenina,Vitalia,174.2,113.23,2021-09-26
+P0516,Cuidado Personal Higiene femenina Vitalia SK-025,Cuidado Personal,Higiene femenina,Vitalia,181.97,118.28,2022-10-07
+P0517,Cuidado Personal Afeitado Vitalia PE-092,Cuidado Personal,Afeitado,Vitalia,191.44,124.44,2021-07-19
+P0518,Cuidado Personal Cuidado capilar Ayni Care VD-889,Cuidado Personal,Cuidado capilar,Ayni Care,186.6,121.29,2020-05-25
+P0519,Cuidado Personal Afeitado Kantu VP-499,Cuidado Personal,Afeitado,Kantu,174.17,113.21,2020-02-15
+P0520,Cuidado Personal Higiene femenina Ayni Care OF-142,Cuidado Personal,Higiene femenina,Ayni Care,63.01,40.96,2021-11-11
+P0521,Cuidado Personal Higiene oral Nuna PK-336,Cuidado Personal,Higiene oral,Nuna,170.23,110.65,2021-04-09
+P0522,Cuidado Personal Higiene oral Ayni Care GA-795,Cuidado Personal,Higiene oral,Ayni Care,146.0,94.9,2022-08-19
+P0523,Cuidado Personal Higiene femenina Vitalia JR-854,Cuidado Personal,Higiene femenina,Vitalia,74.4,48.36,2021-10-19
+P0524,Cuidado Personal Higiene femenina Vitalia UG-744,Cuidado Personal,Higiene femenina,Vitalia,147.42,95.82,2020-07-20
+P0525,Cuidado Personal Higiene femenina Vitalia RM-059,Cuidado Personal,Higiene femenina,Vitalia,114.03,74.12,2020-02-04
+P0526,Cuidado Personal Higiene oral Kantu XX-806,Cuidado Personal,Higiene oral,Kantu,120.75,78.49,2022-11-19
+P0527,Cuidado Personal Higiene oral Kantu VZ-856,Cuidado Personal,Higiene oral,Kantu,184.57,119.97,2021-03-20
+P0528,Cuidado Personal Higiene femenina Ayni Care IR-252,Cuidado Personal,Higiene femenina,Ayni Care,132.24,85.96,2022-10-25
+P0529,Cuidado Personal Afeitado Ayni Care HZ-561,Cuidado Personal,Afeitado,Ayni Care,122.87,79.87,2022-05-18
+P0530,Cuidado Personal Cuidado corporal Nuna BP-634,Cuidado Personal,Cuidado corporal,Nuna,10.76,6.99,2021-07-10
+P0531,Cuidado Personal Higiene femenina Kantu NX-561,Cuidado Personal,Higiene femenina,Kantu,59.71,38.81,2022-02-01
+P0532,Cuidado Personal Higiene oral Kantu AL-750,Cuidado Personal,Higiene oral,Kantu,94.16,61.2,2021-02-19
+P0533,Cuidado Personal Cuidado capilar Nuna PY-426,Cuidado Personal,Cuidado capilar,Nuna,107.77,70.05,2022-02-18
+P0534,Cuidado Personal Cuidado corporal Nuna PT-981,Cuidado Personal,Cuidado corporal,Nuna,53.32,34.66,2020-06-09
+P0535,Cuidado Personal Higiene femenina Kantu DN-331,Cuidado Personal,Higiene femenina,Kantu,36.51,23.73,2020-01-16
+P0536,Cuidado Personal Cuidado capilar Ayni Care SB-143,Cuidado Personal,Cuidado capilar,Ayni Care,52.28,33.98,2021-03-18
+P0537,Cuidado Personal Higiene femenina Kantu CC-747,Cuidado Personal,Higiene femenina,Kantu,158.47,103.01,2020-03-29
+P0538,Cuidado Personal Cuidado capilar Ayni Care HP-638,Cuidado Personal,Cuidado capilar,Ayni Care,158.17,102.81,2021-02-23
+P0539,Cuidado Personal Cuidado capilar Vitalia IA-691,Cuidado Personal,Cuidado capilar,Vitalia,145.55,94.61,2020-12-26
+P0540,Cuidado Personal Cuidado corporal Ayni Care HB-441,Cuidado Personal,Cuidado corporal,Ayni Care,173.12,112.53,2020-03-10
+P0541,Cuidado Personal Higiene oral Nuna CB-134,Cuidado Personal,Higiene oral,Nuna,188.54,122.55,2020-03-13
+P0542,Cuidado Personal Higiene oral Vitalia OG-956,Cuidado Personal,Higiene oral,Vitalia,181.21,117.79,2020-05-08
+P0543,Cuidado Personal Higiene oral Kantu RX-439,Cuidado Personal,Higiene oral,Kantu,192.28,124.98,2020-05-19
+P0544,Cuidado Personal Afeitado Vitalia GD-461,Cuidado Personal,Afeitado,Vitalia,128.3,83.4,2020-09-03
+P0545,Cuidado Personal Cuidado capilar Kantu CI-756,Cuidado Personal,Cuidado capilar,Kantu,165.51,107.58,2020-01-29
+P0546,Cuidado Personal Afeitado Nuna SR-172,Cuidado Personal,Afeitado,Nuna,62.97,40.93,2022-03-10
+P0547,Cuidado Personal Cuidado corporal Ayni Care EK-664,Cuidado Personal,Cuidado corporal,Ayni Care,87.32,56.76,2022-06-09
+P0548,Cuidado Personal Afeitado Kantu GR-202,Cuidado Personal,Afeitado,Kantu,67.14,43.64,2022-09-26
+P0549,Cuidado Personal Afeitado Kantu QV-852,Cuidado Personal,Afeitado,Kantu,177.27,115.23,2020-01-11
+P0550,Cuidado Personal Cuidado capilar Kantu RX-802,Cuidado Personal,Cuidado capilar,Kantu,177.61,115.45,2022-01-16
+P0551,Cuidado Personal Higiene oral Nuna IE-797,Cuidado Personal,Higiene oral,Nuna,30.21,19.64,2022-01-07
+P0552,Cuidado Personal Afeitado Ayni Care GF-768,Cuidado Personal,Afeitado,Ayni Care,62.1,40.37,2020-02-15
+P0553,Cuidado Personal Afeitado Vitalia KL-849,Cuidado Personal,Afeitado,Vitalia,145.14,94.34,2021-03-12
+P0554,Cuidado Personal Cuidado capilar Nuna MD-617,Cuidado Personal,Cuidado capilar,Nuna,118.13,76.78,2022-01-28
+P0555,Cuidado Personal Higiene femenina Vitalia FV-855,Cuidado Personal,Higiene femenina,Vitalia,137.05,89.08,2020-09-16
+P0556,Cuidado Personal Higiene femenina Nuna VX-660,Cuidado Personal,Higiene femenina,Nuna,23.87,15.52,2022-03-10
+P0557,Cuidado Personal Higiene femenina Kantu MU-548,Cuidado Personal,Higiene femenina,Kantu,19.75,12.84,2022-08-09
+P0558,Cuidado Personal Cuidado capilar Ayni Care II-670,Cuidado Personal,Cuidado capilar,Ayni Care,97.89,63.63,2020-11-03
+P0559,Cuidado Personal Afeitado Kantu ME-785,Cuidado Personal,Afeitado,Kantu,52.6,34.19,2020-06-20
+P0560,Cuidado Personal Higiene femenina Nuna XT-624,Cuidado Personal,Higiene femenina,Nuna,96.88,62.97,2020-02-29
+P0561,Cuidado Personal Afeitado Nuna FC-871,Cuidado Personal,Afeitado,Nuna,44.57,28.97,2020-01-19
+P0562,Cuidado Personal Cuidado corporal Kantu AO-483,Cuidado Personal,Cuidado corporal,Kantu,173.58,112.83,2021-01-09
+P0563,Cuidado Personal Afeitado Ayni Care IA-403,Cuidado Personal,Afeitado,Ayni Care,19.67,12.79,2020-10-26
+P0564,Cuidado Personal Cuidado corporal Kantu CK-191,Cuidado Personal,Cuidado corporal,Kantu,175.67,114.19,2022-02-14
+P0565,Cuidado Personal Higiene oral Nuna NX-290,Cuidado Personal,Higiene oral,Nuna,193.24,125.61,2020-01-20
+P0566,Cuidado Personal Afeitado Vitalia CU-575,Cuidado Personal,Afeitado,Vitalia,172.19,111.92,2022-11-10
+P0567,Cuidado Personal Higiene oral Vitalia FD-807,Cuidado Personal,Higiene oral,Vitalia,13.9,9.04,2020-01-03
+P0568,Cuidado Personal Higiene femenina Kantu WE-854,Cuidado Personal,Higiene femenina,Kantu,35.4,23.01,2021-12-21
+P0569,Cuidado Personal Higiene femenina Ayni Care HY-910,Cuidado Personal,Higiene femenina,Ayni Care,30.62,19.9,2021-04-26
+P0570,Cuidado Personal Cuidado corporal Vitalia NN-992,Cuidado Personal,Cuidado corporal,Vitalia,88.04,57.23,2020-03-15
+P0571,Cuidado Personal Higiene femenina Ayni Care CF-832,Cuidado Personal,Higiene femenina,Ayni Care,16.48,10.71,2021-05-18
+P0572,Cuidado Personal Higiene oral Kantu XH-745,Cuidado Personal,Higiene oral,Kantu,180.91,117.59,2020-04-06
+P0573,Cuidado Personal Higiene oral Nuna HH-435,Cuidado Personal,Higiene oral,Nuna,130.61,84.9,2020-05-22
+P0574,Cuidado Personal Higiene femenina Nuna FO-593,Cuidado Personal,Higiene femenina,Nuna,187.19,121.67,2021-09-04
+P0575,Cuidado Personal Cuidado capilar Nuna ZZ-873,Cuidado Personal,,Nuna,93.9,61.04,2020-01-28
+P0576,Cuidado Personal Afeitado Vitalia ET-747,Cuidado Personal,Afeitado,Vitalia,44.95,29.22,2021-04-18
+P0577,Cuidado Personal Higiene oral Ayni Care OF-732,Cuidado Personal,Higiene oral,Ayni Care,185.38,120.5,2021-08-20
+P0578,Cuidado Personal Cuidado capilar Ayni Care IX-245,Cuidado Personal,Cuidado capilar,Ayni Care,91.33,59.36,2022-07-07
+P0579,Cuidado Personal Cuidado capilar Ayni Care HO-877,Cuidado Personal,Cuidado capilar,Ayni Care,114.83,74.64,2022-06-16
+P0580,Cuidado Personal Higiene oral Vitalia QY-274,Cuidado Personal,Higiene oral,Vitalia,83.22,54.09,2022-03-06
+P0581,Cuidado Personal Cuidado corporal Vitalia CK-043,Cuidado Personal,Cuidado corporal,Vitalia,27.88,18.12,2020-12-30
+P0582,Cuidado Personal Higiene oral Ayni Care HK-642,Cuidado Personal,Higiene oral,Ayni Care,188.86,122.76,2020-05-14
+P0583,Cuidado Personal Cuidado capilar Kantu TN-431,Cuidado Personal,Cuidado capilar,Kantu,121.06,78.69,2021-01-29
+P0584,Cuidado Personal Cuidado capilar Vitalia FY-359,Cuidado Personal,Cuidado capilar,Vitalia,38.54,25.05,2020-08-24
+P0585,Cuidado Personal Afeitado Nuna GO-838,Cuidado Personal,Afeitado,Nuna,97.09,63.11,2020-04-04
+P0586,Cuidado Personal Higiene femenina Vitalia ZE-495,Cuidado Personal,Higiene femenina,Vitalia,165.41,107.52,2022-06-28
+P0587,Cuidado Personal Cuidado capilar Ayni Care YY-441,Cuidado Personal,Cuidado capilar,Ayni Care,94.7,61.56,2021-07-21
+P0588,Cuidado Personal Higiene oral Vitalia ZK-586,Cuidado Personal,Higiene oral,Vitalia,57.17,37.16,2022-07-19
+P0589,Cuidado Personal Afeitado Kantu XS-712,Cuidado Personal,Afeitado,Kantu,53.34,34.67,2020-10-18
+P0590,Cuidado Personal Higiene oral Nuna OJ-204,Cuidado Personal,Higiene oral,Nuna,116.77,75.9,2022-11-16
+P0591,Cuidado Personal Higiene oral Kantu FR-651,Cuidado Personal,Higiene oral,Kantu,157.03,102.07,2020-10-31
+P0592,Cuidado Personal Cuidado corporal Kantu NV-626,Cuidado Personal,Cuidado corporal,Kantu,163.58,106.33,2022-07-17
+P0593,Cuidado Personal Cuidado capilar Ayni Care VN-835,Cuidado Personal,Cuidado capilar,Ayni Care,101.95,66.27,2022-10-22
+P0594,Cuidado Personal Higiene oral Nuna ZE-027,Cuidado Personal,Higiene oral,Nuna,79.03,51.37,2021-02-28
+P0595,Cuidado Personal Higiene oral Vitalia IX-052,Cuidado Personal,Higiene oral,Vitalia,52.01,33.81,2022-02-10
+P0596,Cuidado Personal Cuidado corporal Nuna TB-659,Cuidado Personal,Cuidado corporal,Nuna,166.65,108.32,2021-05-26
+P0597,Cuidado Personal Cuidado corporal Vitalia FO-055,Cuidado Personal,Cuidado corporal,Vitalia,20.72,13.47,2021-10-01
+P0598,Cuidado Personal Afeitado Nuna BO-830,Cuidado Personal,Afeitado,Nuna,134.6,87.49,2020-06-12
+P0599,Cuidado Personal Higiene oral Ayni Care TY-071,Cuidado Personal,Higiene oral,Ayni Care,23.47,15.26,2022-11-05
+P0600,Cuidado Personal Higiene femenina Kantu CX-555,Cuidado Personal,Higiene femenina,Kantu,95.6,62.14,2022-07-31
+P0601,Electrohogar Cocina NovaHome RH-223,Electrohogar,Cocina,NovaHome,599.71,431.79,2020-08-30
+P0602,Electrohogar Refrigeracion NovaHome DW-883,Electrohogar,Refrigeracion,NovaHome,217.92,156.9,2021-01-19
+P0603,Electrohogar Pequenos electrodomesticos Kuntur TV-226,Electrohogar,Pequenos electrodomesticos,Kuntur,170.12,122.49,2021-05-29
+P0604,Electrohogar Cocina Kuntur HL-490,Electrohogar,Cocina,Kuntur,1715.27,1234.99,2022-08-08
+P0605,Electrohogar Climatizacion Prisma PG-823,Electrohogar,Climatizacion,Prisma,1719.33,1237.92,2022-12-02
+P0606,Electrohogar Refrigeracion Prisma YV-430,Electrohogar,Refrigeracion,Prisma,2207.97,1589.74,2021-12-30
+P0607,Electrohogar Refrigeracion Prisma HN-906,Electrohogar,Refrigeracion,Prisma,1056.59,760.74,2020-01-14
+P0608,Electrohogar Pequenos electrodomesticos NovaHome XU-227,Electrohogar,Pequenos electrodomesticos,NovaHome,574.94,413.96,2022-03-27
+P0609,Electrohogar Cocina AndeTech JP-354,Electrohogar,Cocina,AndeTech,740.21,532.95,2022-01-21
+P0610,Electrohogar Refrigeracion Kuntur RT-447,Electrohogar,Refrigeracion,Kuntur,1587.32,1142.87,2021-06-29
+P0611,Electrohogar Cocina NovaHome KU-519,Electrohogar,Cocina,NovaHome,809.93,583.15,2022-03-23
+P0612,Electrohogar Refrigeracion Prisma VM-593,Electrohogar,Refrigeracion,Prisma,1806.83,1300.92,2020-09-06
+P0613,Electrohogar Lavado NovaHome FD-298,Electrohogar,Lavado,NovaHome,1496.29,1077.33,2021-03-18
+P0614,Electrohogar Pequenos electrodomesticos Prisma FO-036,Electrohogar,Pequenos electrodomesticos,Prisma,480.51,345.97,2022-10-13
+P0615,Electrohogar Lavado NovaHome NA-387,Electrohogar,Lavado,NovaHome,716.91,516.18,2022-10-21
+P0616,Electrohogar Refrigeracion AndeTech JA-375,Electrohogar,,AndeTech,1773.8,1277.14,2020-11-04
+P0617,Electrohogar Refrigeracion Kuntur FH-805,Electrohogar,Refrigeracion,Kuntur,174.31,125.5,2020-06-29
+P0618,Electrohogar Refrigeracion NovaHome UW-605,Electrohogar,Refrigeracion,NovaHome,1941.77,1398.07,2020-09-30
+P0619,Electrohogar Climatizacion NovaHome XV-183,Electrohogar,Climatizacion,NovaHome,281.72,202.84,2020-07-31
+P0620,Electrohogar Climatizacion Prisma JV-761,Electrohogar,Climatizacion,Prisma,1771.86,1275.74,2020-04-03
+P0621,Electrohogar Pequenos electrodomesticos NovaHome ZT-398,Electrohogar,Pequenos electrodomesticos,NovaHome,1599.26,1151.47,2020-02-17
+P0622,Electrohogar Refrigeracion NovaHome US-257,Electrohogar,Refrigeracion,NovaHome,1761.66,1268.4,2020-03-25
+P0623,Electrohogar Lavado NovaHome UV-370,Electrohogar,Lavado,NovaHome,1895.46,1364.73,2020-01-13
+P0624,Electrohogar Pequenos electrodomesticos Prisma GA-730,Electrohogar,Pequenos electrodomesticos,Prisma,1233.71,888.27,2020-08-18
+P0625,Electrohogar Climatizacion AndeTech YK-908,Electrohogar,Climatizacion,AndeTech,787.32,566.87,2020-12-06
+P0626,Electrohogar Lavado NovaHome IA-773,Electrohogar,Lavado,NovaHome,837.51,603.01,2020-02-02
+P0627,Electrohogar Climatizacion Kuntur KF-445,Electrohogar,Climatizacion,Kuntur,1691.77,1218.07,2022-04-08
+P0628,Electrohogar Climatizacion Prisma OJ-436,Electrohogar,Climatizacion,Prisma,2201.01,1584.73,2022-01-18
+P0629,Electrohogar Climatizacion Prisma HC-043,Electrohogar,Climatizacion,Prisma,304.87,219.51,2022-02-21
+P0630,Electrohogar Climatizacion NovaHome KZ-417,Electrohogar,Climatizacion,NovaHome,828.57,596.57,2021-01-07
+P0631,Electrohogar Pequenos electrodomesticos Prisma KV-142,Electrohogar,Pequenos electrodomesticos,Prisma,1345.7,968.9,2021-05-28
+P0632,Electrohogar Lavado AndeTech EZ-152,Electrohogar,Lavado,AndeTech,1863.47,1341.7,2020-07-29
+P0633,Electrohogar Refrigeracion Prisma CV-576,Electrohogar,Refrigeracion,Prisma,1683.81,1212.34,2022-01-05
+P0634,Electrohogar Climatizacion AndeTech BX-526,Electrohogar,Climatizacion,AndeTech,824.95,593.96,2020-04-30
+P0635,Electrohogar Refrigeracion Kuntur GV-818,Electrohogar,Refrigeracion,Kuntur,1964.13,1414.17,2020-07-16
+P0636,Electrohogar Cocina Kuntur XM-589,Electrohogar,Cocina,Kuntur,2381.66,1714.8,2020-08-15
+P0637,Electrohogar Lavado NovaHome LM-832,Electrohogar,Lavado,NovaHome,1844.6,1328.11,2021-11-11
+P0638,Electrohogar Lavado AndeTech CM-077,Electrohogar,Lavado,AndeTech,217.77,156.79,2022-08-18
+P0639,Electrohogar Refrigeracion AndeTech CV-131,Electrohogar,Refrigeracion,AndeTech,2377.47,1711.78,2021-03-31
+P0640,Electrohogar Climatizacion AndeTech DH-706,Electrohogar,Climatizacion,AndeTech,2419.37,1741.95,2021-02-02
+P0641,Electrohogar Pequenos electrodomesticos Prisma EY-696,Electrohogar,,Prisma,1712.13,1232.73,2022-01-30
+P0642,Electrohogar Refrigeracion Prisma MC-447,Electrohogar,Refrigeracion,Prisma,2270.94,1635.08,2022-04-05
+P0643,Electrohogar Lavado AndeTech BG-837,Electrohogar,Lavado,AndeTech,989.65,712.55,2022-10-01
+P0644,Electrohogar Pequenos electrodomesticos Kuntur VD-917,Electrohogar,Pequenos electrodomesticos,Kuntur,838.37,603.63,2020-03-05
+P0645,Electrohogar Climatizacion Prisma SI-603,Electrohogar,Climatizacion,Prisma,1567.11,1128.32,2021-08-06
+P0646,Electrohogar Cocina Prisma TK-365,Electrohogar,Cocina,Prisma,2495.72,1796.92,2021-09-07
+P0647,Electrohogar Cocina Prisma LB-660,Electrohogar,Cocina,Prisma,807.11,581.12,2021-05-14
+P0648,Electrohogar Refrigeracion Kuntur VR-837,Electrohogar,Refrigeracion,Kuntur,584.91,421.14,2020-10-21
+P0649,Electrohogar Cocina NovaHome VS-741,Electrohogar,Cocina,NovaHome,793.52,571.33,2022-11-29
+P0650,Electrohogar Climatizacion AndeTech NO-773,Electrohogar,Climatizacion,AndeTech,598.55,430.96,2021-07-31
+P0651,Electrohogar Climatizacion Prisma WQ-374,Electrohogar,Climatizacion,Prisma,1117.65,804.71,2022-10-19
+P0652,Electrohogar Cocina AndeTech RM-366,Electrohogar,Cocina,AndeTech,181.03,130.34,2021-11-18
+P0653,Electrohogar Cocina NovaHome ZG-044,Electrohogar,Cocina,NovaHome,1962.12,1412.73,2021-10-02
+P0654,Electrohogar Refrigeracion AndeTech GP-811,Electrohogar,Refrigeracion,AndeTech,1141.81,822.1,2021-11-10
+P0655,Electrohogar Climatizacion Prisma IL-317,Electrohogar,Climatizacion,Prisma,265.26,190.99,2022-09-10
+P0656,Electrohogar Pequenos electrodomesticos Prisma AQ-054,Electrohogar,Pequenos electrodomesticos,Prisma,2492.83,1794.84,2022-01-31
+P0657,Electrohogar Lavado NovaHome XN-491,Electrohogar,Lavado,NovaHome,771.41,555.42,2020-04-21
+P0658,Electrohogar Cocina NovaHome QG-216,Electrohogar,Cocina,NovaHome,765.68,551.29,2022-12-20
+P0659,Electrohogar Refrigeracion NovaHome GT-707,Electrohogar,Refrigeracion,NovaHome,1381.78,994.88,2021-10-23
+P0660,Electrohogar Pequenos electrodomesticos Prisma PV-443,Electrohogar,,Prisma,87.26,62.83,2021-08-20
+P0661,Electrohogar Refrigeracion Kuntur AW-173,Electrohogar,Refrigeracion,Kuntur,1596.13,1149.21,2021-10-29
+P0662,Electrohogar Lavado AndeTech ZL-751,Electrohogar,Lavado,AndeTech,907.17,653.16,2020-08-22
+P0663,Electrohogar Lavado Kuntur WO-725,Electrohogar,Lavado,Kuntur,77.04,55.47,2021-05-16
+P0664,Electrohogar Climatizacion NovaHome HC-565,Electrohogar,Climatizacion,NovaHome,459.37,330.75,2022-07-21
+P0665,Electrohogar Pequenos electrodomesticos Prisma UA-472,Electrohogar,Pequenos electrodomesticos,Prisma,1023.74,737.09,2020-03-01
+P0666,Electrohogar Refrigeracion NovaHome ID-001,Electrohogar,Refrigeracion,NovaHome,488.25,351.54,2021-09-21
+P0667,Electrohogar Refrigeracion Kuntur LC-266,Electrohogar,Refrigeracion,Kuntur,2042.75,1470.78,2022-05-08
+P0668,Electrohogar Lavado AndeTech AC-973,Electrohogar,Lavado,AndeTech,719.13,517.77,2022-11-21
+P0669,Electrohogar Refrigeracion NovaHome NE-666,Electrohogar,Refrigeracion,NovaHome,1362.81,981.22,2020-10-14
+P0670,Electrohogar Pequenos electrodomesticos AndeTech QE-169,Electrohogar,Pequenos electrodomesticos,AndeTech,630.45,453.92,2022-05-22
+P0671,Electrohogar Climatizacion NovaHome RI-316,Electrohogar,Climatizacion,NovaHome,864.63,622.53,2021-03-31
+P0672,Electrohogar Lavado Prisma GR-919,Electrohogar,Lavado,Prisma,481.6,346.75,2020-07-25
+P0673,Electrohogar Pequenos electrodomesticos AndeTech MN-409,Electrohogar,Pequenos electrodomesticos,AndeTech,802.48,577.79,2021-11-15
+P0674,Electrohogar Pequenos electrodomesticos Kuntur SN-797,Electrohogar,Pequenos electrodomesticos,Kuntur,131.59,94.74,2021-08-08
+P0675,Electrohogar Climatizacion AndeTech TW-622,Electrohogar,Climatizacion,AndeTech,493.08,355.02,2022-09-26
+P0676,Electrohogar Lavado Kuntur QC-900,Electrohogar,Lavado,Kuntur,155.7,112.1,2021-04-23
+P0677,Electrohogar Refrigeracion Prisma PV-184,Electrohogar,Refrigeracion,Prisma,738.48,531.71,2020-04-05
+P0678,Electrohogar Climatizacion AndeTech ZJ-807,Electrohogar,Climatizacion,AndeTech,1488.71,1071.87,2020-10-07
+P0679,Electrohogar Refrigeracion Prisma WW-269,Electrohogar,Refrigeracion,Prisma,491.26,353.71,2020-05-14
+P0680,Electrohogar Lavado AndeTech MX-043,Electrohogar,Lavado,AndeTech,305.1,219.67,2021-07-29
+P0681,Electrohogar Lavado AndeTech AJ-744,Electrohogar,Lavado,AndeTech,2498.51,1798.93,2020-12-15
+P0682,Electrohogar Pequenos electrodomesticos NovaHome KB-521,Electrohogar,Pequenos electrodomesticos,NovaHome,547.03,393.86,2021-07-22
+P0683,Electrohogar Refrigeracion NovaHome PI-076,Electrohogar,Refrigeracion,NovaHome,2197.79,1582.41,2020-01-13
+P0684,Electrohogar Climatizacion Kuntur WH-653,Electrohogar,Climatizacion,Kuntur,1196.78,861.68,2022-04-22
+P0685,Electrohogar Refrigeracion NovaHome ED-904,Electrohogar,Refrigeracion,NovaHome,1451.62,1045.17,2021-06-10
+P0686,Electrohogar Lavado NovaHome FU-876,Electrohogar,Lavado,NovaHome,995.87,717.03,2020-02-18
+P0687,Electrohogar Refrigeracion AndeTech CQ-375,Electrohogar,Refrigeracion,AndeTech,377.54,271.83,2021-07-10
+P0688,Electrohogar Refrigeracion Kuntur SL-997,Electrohogar,Refrigeracion,Kuntur,1862.25,1340.82,2020-09-03
+P0689,Electrohogar Refrigeracion Kuntur QI-162,Electrohogar,Refrigeracion,Kuntur,1622.01,1167.85,2020-09-13
+P0690,Electrohogar Refrigeracion AndeTech KL-624,Electrohogar,Refrigeracion,AndeTech,352.55,253.84,2021-04-14
+P0691,Electrohogar Climatizacion Kuntur CJ-170,Electrohogar,Climatizacion,Kuntur,2496.2,1797.26,2021-01-26
+P0692,Electrohogar Climatizacion AndeTech VV-874,Electrohogar,,AndeTech,2027.77,1459.99,2022-01-28
+P0693,Electrohogar Pequenos electrodomesticos NovaHome JQ-492,Electrohogar,Pequenos electrodomesticos,NovaHome,2009.64,1446.94,2020-05-09
+P0694,Electrohogar Climatizacion NovaHome IK-452,Electrohogar,Climatizacion,NovaHome,2290.23,1648.97,2021-12-24
+P0695,Electrohogar Refrigeracion NovaHome OW-504,Electrohogar,Refrigeracion,NovaHome,269.94,194.36,2022-10-21
+P0696,Electrohogar Pequenos electrodomesticos NovaHome CB-519,Electrohogar,Pequenos electrodomesticos,NovaHome,2366.04,1703.55,2021-03-25
+P0697,Electrohogar Refrigeracion Kuntur SN-043,Electrohogar,Refrigeracion,Kuntur,1113.3,801.58,2022-07-12
+P0698,Electrohogar Pequenos electrodomesticos Kuntur JY-817,Electrohogar,Pequenos electrodomesticos,Kuntur,486.5,350.28,2021-05-24
+P0699,Electrohogar Climatizacion Kuntur MM-168,Electrohogar,Climatizacion,Kuntur,557.94,401.72,2021-03-28
+P0700,Electrohogar Pequenos electrodomesticos Prisma GG-956,Electrohogar,Pequenos electrodomesticos,Prisma,357.41,257.34,2022-07-22
+P0701,Electrohogar Lavado Kuntur BQ-621,Electrohogar,Lavado,Kuntur,2039.82,1468.67,2021-08-15
+P0702,Electrohogar Cocina NovaHome PU-810,Electrohogar,Cocina,NovaHome,504.36,363.14,2020-01-04
+P0703,Electrohogar Refrigeracion Prisma GC-247,Electrohogar,Refrigeracion,Prisma,1229.6,885.31,2020-12-30
+P0704,Electrohogar Cocina Prisma CW-530,Electrohogar,Cocina,Prisma,383.25,275.94,2020-08-21
+P0705,Electrohogar Climatizacion AndeTech FO-029,Electrohogar,Climatizacion,AndeTech,543.66,391.44,2022-01-24
+P0706,Electrohogar Climatizacion Prisma TG-757,Electrohogar,Climatizacion,Prisma,1566.97,1128.22,2022-12-07
+P0707,Electrohogar Climatizacion NovaHome FC-878,Electrohogar,Climatizacion,NovaHome,451.88,325.35,2022-06-22
+P0708,Electrohogar Refrigeracion NovaHome GC-108,Electrohogar,Refrigeracion,NovaHome,571.79,411.69,2021-06-10
+P0709,Electrohogar Refrigeracion NovaHome CN-232,Electrohogar,Refrigeracion,NovaHome,1987.82,1431.23,2021-10-29
+P0710,Electrohogar Lavado AndeTech XY-306,Electrohogar,Lavado,AndeTech,1020.38,734.67,2022-03-07
+P0711,Electrohogar Pequenos electrodomesticos NovaHome FI-477,Electrohogar,Pequenos electrodomesticos,NovaHome,1539.08,1108.14,2021-10-28
+P0712,Electrohogar Lavado AndeTech KI-376,Electrohogar,Lavado,AndeTech,2136.22,1538.08,2020-11-03
+P0713,Electrohogar Lavado Prisma SR-720,Electrohogar,Lavado,Prisma,1970.32,1418.63,2021-04-30
+P0714,Electrohogar Pequenos electrodomesticos Prisma EZ-533,Electrohogar,Pequenos electrodomesticos,Prisma,663.35,477.61,2021-10-12
+P0715,Electrohogar Refrigeracion Prisma GQ-188,Electrohogar,,Prisma,1833.83,1320.36,2022-02-18
+P0716,Electrohogar Cocina NovaHome CZ-433,Electrohogar,Cocina,NovaHome,2354.8,1695.46,2022-12-13
+P0717,Electrohogar Cocina Kuntur KF-001,Electrohogar,Cocina,Kuntur,1147.47,826.18,2022-07-15
+P0718,Electrohogar Lavado Prisma YB-206,Electrohogar,Lavado,Prisma,707.93,509.71,2021-07-06
+P0719,Electrohogar Climatizacion NovaHome PU-120,Electrohogar,Climatizacion,NovaHome,2351.53,1693.1,2020-04-19
+P0720,Electrohogar Climatizacion NovaHome TJ-593,Electrohogar,Climatizacion,NovaHome,1760.69,1267.7,2022-12-16
+P0721,Hogar Ferreteria ligera Tawa BF-825,Hogar,Ferreteria ligera,Tawa,402.5,273.7,2022-01-12
+P0722,Hogar Dormitorio Tawa AX-014,Hogar,Dormitorio,Tawa,198.27,134.82,2022-12-30
+P0723,Hogar Dormitorio Tawa IB-761,Hogar,Dormitorio,Tawa,348.8,237.18,2020-04-23
+P0724,Hogar Dormitorio Tawa KF-524,Hogar,Dormitorio,Tawa,180.87,122.99,2021-05-02
+P0725,Hogar Decoracion Casa Misti HR-381,Hogar,,Casa Misti,298.0,202.64,2022-04-16
+P0726,Hogar Organizacion Urbania NK-620,Hogar,Organizacion,Urbania,191.73,130.38,2021-01-17
+P0727,Hogar Decoracion Casa Misti PP-588,Hogar,Decoracion,Casa Misti,161.3,109.68,2022-03-31
+P0728,Hogar Decoracion Casa Misti YY-271,Hogar,Decoracion,Casa Misti,100.68,68.46,2021-06-22
+P0729,Hogar Cocina y mesa Casa Misti II-339,Hogar,Cocina y mesa,Casa Misti,246.3,167.48,2021-04-30
+P0730,Hogar Organizacion Urbania DK-510,Hogar,Organizacion,Urbania,299.09,203.38,2021-05-19
+P0731,Hogar Ferreteria ligera Tawa LS-949,Hogar,Ferreteria ligera,Tawa,203.31,138.25,2021-11-25
+P0732,Hogar Dormitorio Andina Deco RP-421,Hogar,Dormitorio,Andina Deco,26.74,18.18,2021-11-13
+P0733,Hogar Decoracion Andina Deco EU-135,Hogar,Decoracion,Andina Deco,403.18,274.16,2022-02-09
+P0734,Hogar Dormitorio Casa Misti AY-721,Hogar,Dormitorio,Casa Misti,354.62,241.14,2020-02-02
+P0735,Hogar Decoracion Andina Deco CV-835,Hogar,Decoracion,Andina Deco,379.21,257.86,2020-04-03
+P0736,Hogar Cocina y mesa Tawa ZH-999,Hogar,Cocina y mesa,Tawa,198.91,135.26,2021-09-18
+P0737,Hogar Cocina y mesa Casa Misti DM-953,Hogar,Cocina y mesa,Casa Misti,321.13,218.37,2020-09-21
+P0738,Hogar Organizacion Urbania HP-552,Hogar,Organizacion,Urbania,182.4,124.03,2022-06-01
+P0739,Hogar Cocina y mesa Tawa AG-111,Hogar,Cocina y mesa,Tawa,137.3,93.36,2021-12-07
+P0740,Hogar Organizacion Andina Deco OU-728,Hogar,Organizacion,Andina Deco,44.92,30.55,2021-06-04
+P0741,Hogar Dormitorio Urbania TU-401,Hogar,Dormitorio,Urbania,413.32,281.06,2022-11-11
+P0742,Hogar Ferreteria ligera Urbania GB-672,Hogar,,Urbania,195.16,132.71,2021-06-20
+P0743,Hogar Dormitorio Andina Deco RG-112,Hogar,Dormitorio,Andina Deco,494.05,335.95,2020-10-23
+P0744,Hogar Decoracion Casa Misti QS-168,Hogar,Decoracion,Casa Misti,402.34,273.59,2020-04-10
+P0745,Hogar Ferreteria ligera Tawa OS-558,Hogar,Ferreteria ligera,Tawa,16.11,10.95,2020-04-17
+P0746,Hogar Dormitorio Urbania VF-419,Hogar,Dormitorio,Urbania,248.8,169.18,2022-09-19
+P0747,Hogar Organizacion Andina Deco RB-083,Hogar,Organizacion,Andina Deco,226.15,153.78,2021-03-12
+P0748,Hogar Cocina y mesa Tawa VL-983,Hogar,Cocina y mesa,Tawa,148.54,101.01,2021-10-25
+P0749,Hogar Decoracion Casa Misti TN-439,Hogar,Decoracion,Casa Misti,346.19,235.41,2022-01-21
+P0750,Hogar Decoracion Urbania AF-119,Hogar,Decoracion,Urbania,33.11,22.51,2020-09-28
+P0751,Hogar Dormitorio Urbania EI-014,Hogar,Dormitorio,,351.83,239.24,2022-11-26
+P0752,Hogar Cocina y mesa Casa Misti PI-499,Hogar,Cocina y mesa,Casa Misti,198.93,135.27,2022-05-07
+P0753,Hogar Organizacion Urbania XS-040,Hogar,Organizacion,Urbania,430.19,292.53,2020-03-13
+P0754,Hogar Cocina y mesa Tawa BW-918,Hogar,Cocina y mesa,Tawa,386.42,262.77,2021-06-11
+P0755,Hogar Organizacion Urbania EK-350,Hogar,Organizacion,Urbania,335.08,227.85,2022-07-13
+P0756,Hogar Decoracion Casa Misti UJ-196,Hogar,Decoracion,Casa Misti,72.07,49.01,2022-11-13
+P0757,Hogar Organizacion Andina Deco PS-003,Hogar,Organizacion,,357.54,243.13,2022-06-09
+P0758,Hogar Dormitorio Tawa JA-684,Hogar,Dormitorio,Tawa,230.21,156.54,2021-10-04
+P0759,Hogar Organizacion Casa Misti WD-340,Hogar,,Casa Misti,198.29,134.84,2020-10-21
+P0760,Hogar Cocina y mesa Urbania XI-641,Hogar,Cocina y mesa,Urbania,447.62,304.38,2022-02-24
+P0761,Hogar Ferreteria ligera Casa Misti DB-497,Hogar,Ferreteria ligera,Casa Misti,445.86,303.18,2021-10-10
+P0762,Hogar Dormitorio Tawa YV-533,Hogar,Dormitorio,Tawa,166.26,113.06,2020-01-30
+P0763,Hogar Cocina y mesa Tawa DH-620,Hogar,Cocina y mesa,Tawa,421.37,286.53,2020-06-08
+P0764,Hogar Organizacion Tawa CU-108,Hogar,Organizacion,Tawa,113.29,77.04,2020-04-01
+P0765,Hogar Dormitorio Andina Deco AW-307,Hogar,Dormitorio,Andina Deco,251.05,170.71,2021-10-26
+P0766,Hogar Decoracion Urbania SN-015,Hogar,Decoracion,Urbania,294.21,200.06,2020-06-05
+P0767,Hogar Dormitorio Tawa AG-791,Hogar,Dormitorio,Tawa,33.28,22.63,2021-06-23
+P0768,Hogar Dormitorio Urbania HW-727,Hogar,Dormitorio,Urbania,293.57,199.63,2021-10-10
+P0769,Hogar Cocina y mesa Tawa TV-722,Hogar,Cocina y mesa,Tawa,233.15,158.54,2020-02-29
+P0770,Hogar Dormitorio Casa Misti SK-599,Hogar,Dormitorio,Casa Misti,396.04,269.31,2021-05-31
+P0771,Hogar Decoracion Andina Deco JK-045,Hogar,Decoracion,Andina Deco,227.87,154.95,2021-01-01
+P0772,Hogar Cocina y mesa Tawa FM-313,Hogar,Cocina y mesa,Tawa,380.51,258.75,2020-09-06
+P0773,Hogar Ferreteria ligera Tawa SP-900,Hogar,Ferreteria ligera,Tawa,352.13,239.45,2022-09-13
+P0774,Hogar Cocina y mesa Tawa UR-264,Hogar,Cocina y mesa,Tawa,423.37,287.89,2020-06-03
+P0775,Hogar Organizacion Andina Deco HB-081,Hogar,Organizacion,Andina Deco,81.64,55.52,2021-07-31
+P0776,Hogar Ferreteria ligera Urbania ZC-953,Hogar,Ferreteria ligera,Urbania,280.81,190.95,2022-07-21
+P0777,Hogar Cocina y mesa Tawa NL-661,Hogar,Cocina y mesa,Tawa,118.94,80.88,2022-12-21
+P0778,Hogar Dormitorio Andina Deco OW-496,Hogar,Dormitorio,Andina Deco,109.77,74.64,2022-02-02
+P0779,Hogar Cocina y mesa Urbania LX-679,Hogar,Cocina y mesa,Urbania,486.58,330.87,2021-06-14
+P0780,Hogar Decoracion Casa Misti RB-179,Hogar,Decoracion,Casa Misti,134.07,91.17,2020-03-26
+P0781,Hogar Cocina y mesa Casa Misti HU-432,Hogar,,Casa Misti,297.28,202.15,2021-11-15
+P0782,Hogar Dormitorio Urbania IS-077,Hogar,Dormitorio,Urbania,24.05,16.35,2020-11-27
+P0783,Hogar Decoracion Andina Deco YX-575,Hogar,Decoracion,Andina Deco,347.12,236.04,2022-04-06
+P0784,Hogar Organizacion Andina Deco CW-090,Hogar,Organizacion,Andina Deco,353.53,240.4,2020-04-27
+P0785,Hogar Cocina y mesa Urbania NS-830,Hogar,Cocina y mesa,Urbania,453.5,308.38,2021-02-28
+P0786,Hogar Ferreteria ligera Andina Deco OV-549,Hogar,Ferreteria ligera,Andina Deco,357.29,242.96,2022-08-15
+P0787,Hogar Cocina y mesa Casa Misti VC-297,Hogar,Cocina y mesa,Casa Misti,499.08,339.37,2020-04-30
+P0788,Hogar Dormitorio Casa Misti ML-777,Hogar,Dormitorio,Casa Misti,470.56,319.98,2021-02-25
+P0789,Hogar Dormitorio Urbania XH-440,Hogar,Dormitorio,Urbania,161.92,110.11,2022-05-10
+P0790,Hogar Ferreteria ligera Tawa GV-438,Hogar,Ferreteria ligera,Tawa,125.08,85.05,2020-06-26
+P0791,Hogar Dormitorio Casa Misti SV-964,Hogar,Dormitorio,Casa Misti,347.51,236.31,2022-06-11
+P0792,Hogar Cocina y mesa Casa Misti UR-103,Hogar,Cocina y mesa,Casa Misti,224.69,152.79,2021-08-30
+P0793,Hogar Decoracion Tawa GK-075,Hogar,Decoracion,Tawa,366.9,249.49,2022-07-21
+P0794,Hogar Decoracion Urbania HU-280,Hogar,Decoracion,Urbania,114.58,77.91,2021-01-23
+P0795,Hogar Organizacion Urbania DP-569,Hogar,Organizacion,Urbania,327.81,222.91,2022-10-18
+P0796,Hogar Ferreteria ligera Andina Deco XS-634,Hogar,Ferreteria ligera,Andina Deco,482.84,328.33,2020-07-31
+P0797,Hogar Ferreteria ligera Urbania GV-626,Hogar,Ferreteria ligera,Urbania,459.9,312.73,2021-10-19
+P0798,Hogar Organizacion Andina Deco ND-721,Hogar,Organizacion,Andina Deco,248.08,168.69,2022-05-09
+P0799,Hogar Cocina y mesa Urbania YP-516,Hogar,Cocina y mesa,Urbania,139.16,94.63,2020-06-01
+P0800,Hogar Decoracion Andina Deco YV-167,Hogar,Decoracion,Andina Deco,153.62,104.46,2020-06-25
