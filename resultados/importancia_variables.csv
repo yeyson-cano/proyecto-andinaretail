@@ -1,0 +1,28 @@
+familia_modelo,modelo,metodo_importancia,variable,importancia,variable_origen,ranking
+churn,Logistic Regression,coeficiente absoluto,frecuencia_365d,0.021190875348562507,frecuencia_365d,1
+churn,Logistic Regression,coeficiente absoluto,categorias_distintas_365d,0.020904158392548236,categorias_distintas_365d,2
+churn,Logistic Regression,coeficiente absoluto,ciudad_Trujillo,0.005560096515991611,ciudad,3
+churn,Logistic Regression,coeficiente absoluto,canal_preferido_Tienda,0.005017993675578231,canal_preferido,4
+churn,Logistic Regression,coeficiente absoluto,tiene_compras_365d,0.0034298993563822403,tiene_compras_365d,5
+churn,Logistic Regression,coeficiente absoluto,segmento_Masivo,0.0032471169249844085,segmento,6
+churn,Logistic Regression,coeficiente absoluto,cantidad_365d,0.003094798990662539,cantidad_365d,7
+churn,Logistic Regression,coeficiente absoluto,canal_preferido_Web,0.0030224288311015463,canal_preferido,8
+churn,Logistic Regression,coeficiente absoluto,genero_M,0.0030034693532694275,genero,9
+churn,Logistic Regression,coeficiente absoluto,canales_distintos_365d,0.0029483757475264683,canales_distintos_365d,10
+churn,Logistic Regression,coeficiente absoluto,ciudad_Lima,0.0027308626524668866,ciudad,11
+churn,Logistic Regression,coeficiente absoluto,canal_preferido_App,0.0015286786660553043,canal_preferido,12
+churn,Logistic Regression,coeficiente absoluto,genero_F,0.0013889806848916822,genero,13
+churn,Logistic Regression,coeficiente absoluto,segmento_Preferente,0.0013474912896279698,segmento,14
+churn,Logistic Regression,coeficiente absoluto,ciudad_Piura,0.0006114152809747284,ciudad,15
+churn,Logistic Regression,coeficiente absoluto,canal_preferido_No informado,0.0005765741405944983,canal_preferido,16
+churn,Logistic Regression,coeficiente absoluto,segmento_Premium,0.000493790563489138,segmento,17
+churn,Logistic Regression,coeficiente absoluto,ciudad_Cusco,0.0004049130213684863,ciudad,18
+churn,Logistic Regression,coeficiente absoluto,genero_No especificado,0.0002916323870427681,genero,19
+churn,Logistic Regression,coeficiente absoluto,edad,0.00028395973487554206,edad,20
+churn,Logistic Regression,coeficiente absoluto,descuento_pct_ponderado_365d,0.0002778279078520435,descuento_pct_ponderado_365d,21
+churn,Logistic Regression,coeficiente absoluto,ciudad_Arequipa,0.00025525548525329845,ciudad,22
+churn,Logistic Regression,coeficiente absoluto,participacion_digital_365d,0.00016459964967384022,participacion_digital_365d,23
+churn,Logistic Regression,coeficiente absoluto,antiguedad_cliente_dias,0.00012455697241086082,antiguedad_cliente_dias,24
+churn,Logistic Regression,coeficiente absoluto,recencia_dias,3.1176093213799216e-05,recencia_dias,25
+churn,Logistic Regression,coeficiente absoluto,ticket_promedio_365d,1.1786296976187047e-05,ticket_promedio_365d,26
+churn,Logistic Regression,coeficiente absoluto,monto_365d,2.470332512475046e-06,monto_365d,27

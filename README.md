@@ -35,39 +35,39 @@ El trabajo abarcará:
 - `presentacion/`: presentación utilizada en la defensa final.
 
 ## Entorno de trabajo
- 
+
 El proyecto debe ejecutarse con Python 3.11.x. Se recomienda usar Python 3.11.9 si está disponible. Cada integrante debe crear su propio entorno virtual local; la carpeta `.venv/` no debe subirse al repositorio.
- 
+
 ### Crear entorno virtual
- 
+
 En Windows con Git Bash:
- 
+
 ```bash
 py -3.11 -m venv .venv
 source .venv/Scripts/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
- 
+
 En Windows con PowerShell:
- 
+
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
- 
+
 ### Registrar kernel para notebooks
- 
+
 ```bash
 python -m ipykernel install --user --name andinaretail --display-name "Python 3.11 - AndinaRetail"
 ```
- 
+
 ### Ejecutar generación de datos
- 
+
 Desde la raíz del repositorio:
- 
+
 ```bash
 python datos/generar_datos.py
 ```
@@ -86,19 +86,22 @@ resultados/reporte_validacion_datos.txt
 ```
 
 ### Consideraciones
- 
+
 - No subir `.venv/` al repositorio.
 - Instalar dependencias únicamente desde `requirements.txt`.
 - Ejecutar los comandos desde la raíz del repositorio.
 - Si se cambia el entorno del proyecto, actualizar primero `requirements.txt` y luego este README.
 
 ## Flujo previsto de ejecución
-
-1. Instalar las dependencias de `requirements.txt`.
-2. Generar los datos sintéticos.
+1. Instalar las dependencias de requirements.txt.
+2. Generar los datos sintéticos o usar el dataset oficial v1 ya congelado.
 3. Validar la integridad y los patrones del dataset.
-4. Ejecutar los notebooks en orden numérico.
-5. Actualizar y abrir el tablero de Power BI.
+4. Ejecutar los notebooks en orden numérico:
+   - notebooks/01_estadistica.ipynb
+   - notebooks/02_descriptivo_diagnostico.ipynb
+   - notebooks/03_predictivo.ipynb
+5. Utilizar los resultados generados en resultados/ como insumo para optimización, Power BI y presentación final.
+6. Actualizar y abrir el tablero de Power BI.
 
 > La guía de ejecución se completará conforme se implementen los componentes.
 > Los patrones analíticos y las reglas de calidad implementadas por el generador se documentan en `datos/data_dictionary.md` y `docs/00_especificacion_datos_y_analitica.md`. Los valores numéricos de generación y validación se mantienen en `config/escenarios.yaml`.
@@ -118,6 +121,21 @@ Archivos oficiales:
 
 La versión y regla de congelamiento se documentan en `datos/DATASET_VERSION.md`. Los CSV oficiales no deben modificarse manualmente después de congelarlos.
 
+### Modelos predictivos P3
+El notebook notebooks/03_predictivo.ipynb contiene la Parte 3 del proyecto:
+- **Parte 3A – Modelo predictivo de demanda:** pronostica demanda mensual por periodo_objetivo x id_tienda x categoria.
+- **Parte 3B – Modelo predictivo de churn:** estima la probabilidad de inactividad a 90 días por cliente usando snapshots cliente x fecha observación.
+
+Salidas generadas en resultados/:
+- resultados/predicciones_demanda.csv
+- resultados/predicciones_churn.csv
+- resultados/metricas_predictivas.csv
+- resultados/importancia_variables.csv
+
+Ejecución recomendada desde la raíz del repositorio:
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/03_predictivo.ipynb --ExecutePreprocessor.kernel_name=python3
+```
 ## Estado
 
 Proyecto en Fase 0: especificación y preparación inicial.
