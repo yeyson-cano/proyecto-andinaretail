@@ -1,0 +1,23 @@
+familia_modelo,modelo,tipo,conjunto,modelo_seleccionado,criterio_seleccion,MAE,RMSE,R2,WAPE,accuracy,precision,recall,f1,auc_roc,tn,fp,fn,tp
+demanda,Baseline lag_1,baseline,validacion,False,validacion WAPE MAE RMSE,44.08888888888889,63.39570028649273,0.8326167851213001,24.539270253555966,,,,,,,,,
+demanda,Baseline lag_12,baseline,validacion,False,validacion WAPE MAE RMSE,39.49629629629629,65.28348438413298,0.8224997578256259,21.983096268810552,,,,,,,,,
+demanda,Baseline media_movil_3,baseline,validacion,False,validacion WAPE MAE RMSE,36.32345679012346,52.60042716814764,0.8847685995575254,20.217137359994506,,,,,,,,,
+demanda,Baseline lag_1,baseline,prueba,False,validacion WAPE MAE RMSE,44.32592592592592,68.28524052878538,0.8466309531402785,22.74333928775037,,,,,,,,,
+demanda,Baseline lag_12,baseline,prueba,False,validacion WAPE MAE RMSE,39.385185185185186,64.4788222482275,0.8632528688621204,20.208277906579,,,,,,,,,
+demanda,Baseline media_movil_3,baseline,prueba,False,validacion WAPE MAE RMSE,42.44444444444444,69.43483785405515,0.8414234800136122,21.777963589373268,,,,,,,,,
+demanda,Ridge Regression,modelo,validacion,True,validacion WAPE MAE RMSE,26.208044598012936,36.70994179546236,0.9438745689158727,14.587037809654696,,,,,,,,,
+demanda,Ridge Regression,modelo,prueba,True,validacion WAPE MAE RMSE,29.2608364734889,40.70894086544334,0.9454915743876232,15.01354157546654,,,,,,,,,
+demanda,Random Forest,modelo,validacion,False,validacion WAPE MAE RMSE,27.365899126739517,41.36355242733424,0.9287429303993342,15.231483744010866,,,,,,,,,
+demanda,Random Forest,modelo,prueba,False,validacion WAPE MAE RMSE,29.886403715509246,49.797410258626925,0.9184361820159208,15.334515987966055,,,,,,,,,
+demanda,Gradient Boosting,modelo,validacion,False,validacion WAPE MAE RMSE,27.58030399569555,39.605714220018946,0.934670701204793,15.3508185504799,,,,,,,,,
+demanda,Gradient Boosting,modelo,prueba,False,validacion WAPE MAE RMSE,27.379447937929353,44.37396852523506,0.9352349696275283,14.048213567026957,,,,,,,,,
+churn,Baseline clase mayoritaria,baseline,validacion,False,validacion F1 AUC recall,,,,,0.671744601934031,0.0,0.0,0.0,0.5,5071.0,0.0,2478.0,0.0
+churn,Baseline recencia > 90 dias,baseline,validacion,False,validacion F1 AUC recall,,,,,0.5518611736653861,0.33172182967645963,0.35996771589991927,0.3452680472227598,0.5025364998617692,3274.0,1797.0,1586.0,892.0
+churn,Baseline clase mayoritaria,baseline,prueba,False,validacion F1 AUC recall,,,,,0.6996290899456882,0.0,0.0,0.0,0.5,10563.0,0.0,4535.0,0.0
+churn,Baseline recencia > 90 dias,baseline,prueba,False,validacion F1 AUC recall,,,,,0.5688170618624984,0.2922364822217547,0.30628445424476297,0.29909560723514217,0.49092849841675523,7199.0,3364.0,3146.0,1389.0
+churn,Logistic Regression,modelo,validacion,True,validacion F1 AUC recall,,,,,0.584713207047291,0.322911051212938,0.241727199354318,0.2764828063697208,0.5031360173828647,3815.0,1256.0,1879.0,599.0
+churn,Logistic Regression,modelo,prueba,True,validacion F1 AUC recall,,,,,0.6296860511326003,0.2945525291828794,0.1669239250275634,0.21308937368050668,0.4992191649807147,8750.0,1813.0,3778.0,757.0
+churn,Random Forest Classifier,modelo,validacion,False,validacion F1 AUC recall,,,,,0.589217114849649,0.3164407778432528,0.21670702179176757,0.25724550898203596,0.5002696177555547,3911.0,1160.0,1941.0,537.0
+churn,Random Forest Classifier,modelo,prueba,False,validacion F1 AUC recall,,,,,0.6288912438733607,0.31170662905500707,0.19492833517089306,0.23985890652557318,0.5043216210689869,8611.0,1952.0,3651.0,884.0
+churn,Gradient Boosting Classifier,modelo,validacion,False,validacion F1 AUC recall,,,,,0.6714796661809511,0.0,0.0,0.0,0.5014529754961388,5069.0,2.0,2478.0,0.0
+churn,Gradient Boosting Classifier,modelo,prueba,False,validacion F1 AUC recall,,,,,0.6989005166247185,0.2608695652173913,0.001323042998897464,0.0026327336551118913,0.5001852068144501,10546.0,17.0,4529.0,6.0
