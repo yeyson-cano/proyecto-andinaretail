@@ -1,0 +1,91 @@
+periodo_objetivo,id_tienda,categoria,tipo,canal,ciudad_tienda,demanda_baja,demanda_predicha,demanda_central,demanda_alta,modelo,metodo_intervalo,cuantil_inferior_residuo,cuantil_superior_residuo
+2026-01,APP,Abarrotes,Virtual,App,No aplica,883,919,919,961,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,APP,Bebidas,Virtual,App,No aplica,670,706,706,749,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,APP,Cuidado Personal,Virtual,App,No aplica,433,470,470,512,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,APP,Electrohogar,Virtual,App,No aplica,403,439,439,481,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,APP,Hogar,Virtual,App,No aplica,326,362,362,404,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,APP,Limpieza,Virtual,App,No aplica,420,457,457,499,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T001,Abarrotes,Fisica,Tienda,Lima,172,209,209,251,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T001,Bebidas,Fisica,Tienda,Lima,100,136,136,178,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T001,Cuidado Personal,Fisica,Tienda,Lima,50,87,87,129,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T001,Electrohogar,Fisica,Tienda,Lima,36,73,73,115,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T001,Hogar,Fisica,Tienda,Lima,16,52,52,94,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T001,Limpieza,Fisica,Tienda,Lima,45,81,81,123,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T002,Abarrotes,Fisica,Tienda,Lima,175,211,211,253,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T002,Bebidas,Fisica,Tienda,Lima,114,151,151,193,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T002,Cuidado Personal,Fisica,Tienda,Lima,62,99,99,141,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T002,Electrohogar,Fisica,Tienda,Lima,32,69,69,111,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T002,Hogar,Fisica,Tienda,Lima,22,58,58,100,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T002,Limpieza,Fisica,Tienda,Lima,48,84,84,127,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T003,Abarrotes,Fisica,Tienda,Lima,195,231,231,273,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T003,Bebidas,Fisica,Tienda,Lima,143,180,180,222,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T003,Cuidado Personal,Fisica,Tienda,Lima,62,99,99,141,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T003,Electrohogar,Fisica,Tienda,Lima,62,98,98,140,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T003,Hogar,Fisica,Tienda,Lima,23,59,59,101,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T003,Limpieza,Fisica,Tienda,Lima,62,98,98,140,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T004,Abarrotes,Fisica,Tienda,Lima,178,215,215,257,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T004,Bebidas,Fisica,Tienda,Lima,151,188,188,230,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T004,Cuidado Personal,Fisica,Tienda,Lima,75,112,112,154,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T004,Electrohogar,Fisica,Tienda,Lima,45,81,81,124,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T004,Hogar,Fisica,Tienda,Lima,38,75,75,117,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T004,Limpieza,Fisica,Tienda,Lima,45,81,81,123,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T005,Abarrotes,Fisica,Tienda,Lima,159,196,196,238,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T005,Bebidas,Fisica,Tienda,Lima,131,167,167,209,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T005,Cuidado Personal,Fisica,Tienda,Lima,49,85,85,128,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T005,Electrohogar,Fisica,Tienda,Lima,35,72,72,114,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T005,Hogar,Fisica,Tienda,Lima,20,56,56,99,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T005,Limpieza,Fisica,Tienda,Lima,54,91,91,133,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T006,Abarrotes,Fisica,Tienda,Arequipa,194,231,231,273,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T006,Bebidas,Fisica,Tienda,Arequipa,134,171,171,213,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T006,Cuidado Personal,Fisica,Tienda,Arequipa,76,112,112,154,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T006,Electrohogar,Fisica,Tienda,Arequipa,47,83,83,125,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T006,Hogar,Fisica,Tienda,Arequipa,45,81,81,123,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T006,Limpieza,Fisica,Tienda,Arequipa,80,117,117,159,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T007,Abarrotes,Fisica,Tienda,Arequipa,222,258,258,300,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T007,Bebidas,Fisica,Tienda,Arequipa,186,223,223,265,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T007,Cuidado Personal,Fisica,Tienda,Arequipa,87,124,124,166,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T007,Electrohogar,Fisica,Tienda,Arequipa,86,122,122,164,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T007,Hogar,Fisica,Tienda,Arequipa,53,90,90,132,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T007,Limpieza,Fisica,Tienda,Arequipa,77,114,114,156,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T008,Abarrotes,Fisica,Tienda,Trujillo,266,302,302,344,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T008,Bebidas,Fisica,Tienda,Trujillo,178,214,214,256,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T008,Cuidado Personal,Fisica,Tienda,Trujillo,58,95,95,137,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T008,Electrohogar,Fisica,Tienda,Trujillo,47,84,84,126,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T008,Hogar,Fisica,Tienda,Trujillo,37,74,74,116,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T008,Limpieza,Fisica,Tienda,Trujillo,61,97,97,140,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T009,Abarrotes,Fisica,Tienda,Trujillo,227,264,264,306,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T009,Bebidas,Fisica,Tienda,Trujillo,184,221,221,263,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T009,Cuidado Personal,Fisica,Tienda,Trujillo,52,89,89,131,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T009,Electrohogar,Fisica,Tienda,Trujillo,40,76,76,118,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T009,Hogar,Fisica,Tienda,Trujillo,27,63,63,106,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T009,Limpieza,Fisica,Tienda,Trujillo,51,88,88,130,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T010,Abarrotes,Fisica,Tienda,Cusco,115,152,152,194,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T010,Bebidas,Fisica,Tienda,Cusco,78,114,114,156,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T010,Cuidado Personal,Fisica,Tienda,Cusco,45,82,82,124,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T010,Electrohogar,Fisica,Tienda,Cusco,10,47,47,89,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T010,Hogar,Fisica,Tienda,Cusco,19,56,56,98,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T010,Limpieza,Fisica,Tienda,Cusco,19,56,56,98,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T011,Abarrotes,Fisica,Tienda,Cusco,119,155,155,197,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T011,Bebidas,Fisica,Tienda,Cusco,71,108,108,150,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T011,Cuidado Personal,Fisica,Tienda,Cusco,32,68,68,110,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T011,Electrohogar,Fisica,Tienda,Cusco,15,52,52,94,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T011,Hogar,Fisica,Tienda,Cusco,16,53,53,95,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T011,Limpieza,Fisica,Tienda,Cusco,33,70,70,112,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T012,Abarrotes,Fisica,Tienda,Piura,79,116,116,158,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T012,Bebidas,Fisica,Tienda,Piura,48,84,84,126,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T012,Cuidado Personal,Fisica,Tienda,Piura,13,50,50,92,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T012,Electrohogar,Fisica,Tienda,Piura,10,46,46,88,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T012,Hogar,Fisica,Tienda,Piura,0,32,32,74,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T012,Limpieza,Fisica,Tienda,Piura,22,58,58,101,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T013,Abarrotes,Fisica,Tienda,Piura,75,111,111,153,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T013,Bebidas,Fisica,Tienda,Piura,68,104,104,146,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T013,Cuidado Personal,Fisica,Tienda,Piura,24,60,60,102,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T013,Electrohogar,Fisica,Tienda,Piura,2,38,38,80,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T013,Hogar,Fisica,Tienda,Piura,0,37,37,79,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,T013,Limpieza,Fisica,Tienda,Piura,11,47,47,89,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,WEB,Abarrotes,Virtual,Web,No aplica,683,720,720,762,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,WEB,Bebidas,Virtual,Web,No aplica,547,583,583,625,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,WEB,Cuidado Personal,Virtual,Web,No aplica,317,354,354,396,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,WEB,Electrohogar,Virtual,Web,No aplica,260,296,296,338,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,WEB,Hogar,Virtual,Web,No aplica,201,238,238,280,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
+2026-01,WEB,Limpieza,Virtual,Web,No aplica,355,392,392,434,Ridge Regression,cuantiles_residuo_validacion,0.1,0.9
