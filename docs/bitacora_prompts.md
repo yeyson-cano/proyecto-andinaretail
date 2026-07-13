@@ -13,3 +13,31 @@ Esta bitácora registra los prompts relevantes utilizados durante el proyecto. N
 | 2026-07-11 | Carlos Castillo| P2 - análisis descriptivo, RFM y diagnóstico Trujillo | ChatGPT | Se solicitó apoyo para implementar el notebook de Parte 2 con tendencias, Pareto, segmentación RFM y diagnóstico de la caída de margen en Trujillo usando el dataset oficial v1. | Se generó estructura de notebook, criterios de validación, exportaciones y guía de cierre. | Se revisó y adaptó manualmente antes de commit. |
 | P3-demanda | ChatGPT | Se implementó el notebook predictivo de demanda mensual por nodo y categoría, con panel temporal, baselines, modelos comparativos, métricas MAE/RMSE/R2/WAPE, predicción enero 2026 y exportación de predicciones_demanda.csv. | Notebook 03_predictivo.ipynb y predicciones_demanda.csv generados y revisados. |
 | 2026-07-12 | ChatGPT | Apoyo para extender notebooks/03_predictivo.ipynb con modelo de churn a 90 días, baselines, modelos de clasificación, métricas, importancia de variables y salidas CSV. Se agregaron las celdas de churn y se generaron 'predicciones_churn.csv', 'metricas_predictivas.csv' e 'importancia_variables.csv'. | El equipo ejecutó el notebook localmente, revisó el PDF/resultados y ajustó interpretaciones Markdown antes del PR. |
+## Parte 4 — Modelo prescriptivo de reposición
+
+### Objetivo
+
+Implementar un modelo de optimización de reposición usando la demanda pronosticada y el inventario disponible.
+
+### Herramientas utilizadas
+
+- Python
+- Pandas
+- PuLP
+- CBC Solver
+- Jupyter Notebook
+
+### Actividades realizadas
+
+- Se cargaron las predicciones de demanda generadas en la Parte 3.
+- Se obtuvo el stock final de diciembre de 2025.
+- Se calcularon costos de adquisición, almacenamiento y faltantes.
+- Se formuló el modelo de optimización mediante PuLP.
+- Se resolvieron nueve escenarios de sensibilidad con CBC.
+- Se generaron los archivos oficiales para Power BI.
+
+### Resultados generados
+
+- resultados/recomendaciones_reposicion.csv
+- resultados/resumen_escenarios_optimizacion.csv
+- resultados/uso_capacidad_optimizacion.csv
