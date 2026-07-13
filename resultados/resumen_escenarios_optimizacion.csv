@@ -1,0 +1,10 @@
+﻿escenario,tipo_demanda,factor_presupuesto,factor_capacidad,nivel_servicio_objetivo,estado_solver,demanda_total,reposicion_total,demanda_atendida,faltante_total,nivel_servicio_alcanzado_pct,presupuesto_disponible,presupuesto_utilizado,costo_adquisicion,costo_almacenamiento,costo_faltante,costo_total
+base,central,1.0,1.0,0.95,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196
+demanda_baja,baja,1.0,1.0,0.95,Optimal,11336,0,11336,0,100.0,0.0,0.0,0.0,208604.2719443629,0.0,208604.2719443629
+demanda_alta,alta,1.0,1.0,0.95,Optimal,18407,0,18407,0,100.0,0.0,0.0,0.0,179099.9352920714,0.0,179099.9352920714
+presupuesto_menos_10,central,0.9,1.0,0.95,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196
+presupuesto_mas_10,central,1.1,1.0,0.95,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196
+capacidad_menos_10,central,1.0,0.9,0.95,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196
+capacidad_mas_10,central,1.0,1.1,0.95,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196
+servicio_90,central,1.0,1.0,0.9,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196
+servicio_98,central,1.0,1.0,0.98,Optimal,14619,0,14619,0,100.0,0.0,0.0,0.0,194917.94003580196,0.0,194917.94003580196

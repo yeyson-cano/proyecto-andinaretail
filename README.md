@@ -136,6 +136,27 @@ Ejecución recomendada desde la raíz del repositorio:
 ```bash
 jupyter nbconvert --to notebook --execute --inplace notebooks/03_predictivo.ipynb --ExecutePreprocessor.kernel_name=python3
 ```
+### Parte 4 — Modelo prescriptivo de reposición
+
+La Parte 4 se implementa en `notebooks/04_prescriptivo.ipynb` y utiliza como input principal `resultados/predicciones_demanda.csv`, generado por la Parte 3.
+
+El notebook usa el stock final de diciembre de 2025 desde `datos/inventario.csv`, costos derivados de `datos/productos.csv` y `datos/ventas.csv`, y los escenarios configurados en `config/escenarios.yaml`.
+
+Para ejecutar la Parte 4 desde la raíz del repositorio:
+
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/04_prescriptivo.ipynb --ExecutePreprocessor.kernel_name=python3
+```
+
+Salidas oficiales:
+
+- `resultados/recomendaciones_reposicion.csv`
+- `resultados/resumen_escenarios_optimizacion.csv`
+- `resultados/uso_capacidad_optimizacion.csv`
+
+Estas salidas son consumidas por Power BI y por la presentación final para explicar reposición recomendada, sensibilidad por escenario, nivel de servicio y uso de capacidad.
+
+
 ## Estado
 
-Proyecto en Fase 0: especificación y preparación inicial.
+Proyecto con dataset oficial v1 y Partes 1, 2, 3 y 4 implementadas. Pendiente la integración final en Power BI, exportación del tablero y presentación.
