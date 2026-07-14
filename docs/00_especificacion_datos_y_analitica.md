@@ -2,9 +2,9 @@
 
 ## 1. Propósito del documento
 
-Este documento consolida las decisiones funcionales y analíticas que guiarán el Proyecto Grupal de Analítica de Datos. Su propósito es proporcionar una referencia común para los cinco integrantes y asegurar que la generación de datos sintéticos, los análisis estadísticos, los modelos descriptivos, predictivos y prescriptivos, y los tableros de Power BI formen parte de una única solución coherente.
+Este documento consolida las decisiones funcionales y analíticas utilizadas en el Proyecto Grupal de Analítica de Datos. Su propósito es proporcionar una referencia común para los cinco integrantes y evidenciar que la generación de datos sintéticos, los análisis estadísticos, los modelos descriptivos, predictivos y prescriptivos, y el tablero Power BI forman parte de una única solución coherente.
 
-El documento se amplía progresivamente durante la Fase 0. El detalle físico de tablas, campos, dominios, fórmulas y reglas de integridad se mantiene en [`datos/data_dictionary.md`](../datos/data_dictionary.md).
+El detalle físico de tablas, campos, dominios, fórmulas y reglas de integridad se mantiene en [`datos/data_dictionary.md`](../datos/data_dictionary.md). Los parámetros numéricos, escenarios y tolerancias se mantienen en [`config/escenarios.yaml`](../config/escenarios.yaml).
 
 ---
 
@@ -149,7 +149,9 @@ Preguntas complementarias:
 > ¿Qué clientes presentan mayor probabilidad de no comprar durante los siguientes 90 días?
 
 El proyecto abordará:
- - regresión de demanda mensual por nodo y categoría, con horizonte de un mes; - clasificación de churn mediante observaciones cliente-fecha de corte y una ventana futura de 90 días.
+
+- regresión de demanda mensual por nodo y categoría, con horizonte de un mes;
+- clasificación de churn mediante observaciones cliente-fecha de corte y una ventana futura de 90 días.
 
 El pronóstico operativo final corresponderá a enero de 2026 y servirá como insumo de la Parte 4.
 
@@ -265,30 +267,21 @@ El tablero deberá permitir revisar:
 
 ---
 
-## 10. Aspectos reservados para tareas posteriores
+## 10. Estado de implementación de decisiones
 
-F0-05 cerró la planificación estadística de la Parte 1, F0-06 cerró los problemas predictivos de la Parte 3, F0-07 cerró el modelo prescriptivo y las salidas analíticas principales, y F0-08 consolida la especificación funcional, técnica y trazable del proyecto.
+Las decisiones estructurales sobre hipótesis estadísticas, demanda, churn, optimización, salidas analíticas principales, parámetros de generación y criterios de aceptación quedaron consolidadas en esta especificación.
 
-Después de F0-08, ya no quedan reservadas decisiones estructurales sobre hipótesis estadísticas, demanda, churn, optimización, salidas analíticas principales, parámetros de generación ni criterios principales de aceptación.
+En la entrega final, las decisiones de esta sección se implementan mediante:
 
-Las siguientes actividades permanecen pendientes para las siguientes fases del proyecto:
+- el generador de datos sintéticos y los cinco CSV oficiales en `datos/`;
+- el script de validación y el reporte de validación en `resultados/`;
+- los notebooks de las Partes 1 a 4 en `notebooks/`;
+- los resultados analíticos derivados en `resultados/`;
+- el tablero Power BI en `powerbi/`;
+- la bitácora de prompts en `docs/bitacora_prompts.md`;
+- la presentación final en `presentacion/`.
 
-- aprobación formal de la especificación v1 en F0-09;
-- implementación del generador de datos sintéticos;
-- ejecución de los scripts de validación;
-- generación y congelamiento de los CSV oficiales;
-- ejecución de los notebooks de las Partes 1 a 4;
-- reglas definitivas de construcción e interpretación de la segmentación RFM o clustering de la Parte 2;
-- diseño detallado del modelo de datos de Power BI;
-- definición final de medidas DAX;
-- diseño final de páginas, navegación, interactividad y storytelling del tablero;
-- elaboración de la presentación final;
-- consolidación final de la bitácora de prompts;
-- autoevaluación y evidencias finales de participación.
-
-Las tareas posteriores deberán respetar las granularidades, fórmulas, parámetros, interfaces, salidas y reglas de trazabilidad aprobadas en esta especificación. Cualquier cambio posterior deberá documentar su impacto sobre el generador, los notebooks, las validaciones, los resultados analíticos y Power BI.
-
----
+Las tareas de implementación deben respetar las granularidades, fórmulas, parámetros, interfaces, salidas y reglas de trazabilidad aprobadas en esta especificación. Cualquier cambio posterior debe documentar su impacto sobre el generador, los notebooks, las validaciones, los resultados analíticos y Power BI.
 
 ## 11. Contrato de datos
 
@@ -375,15 +368,17 @@ El diagnóstico de Trujillo utilizará principalmente el margen operativo, porqu
 | Reposición, faltantes y servicio | — | — | — | ✓ | ✓ |
 | Escenarios prescriptivos | — | — | — | ✓ | ✓ |
 
-### 11.7 Continuidad después de F0-07
+### 11.7 Continuidad entre demanda, optimización y Power BI
 
-Las cinco tablas fuente se mantienen sin nuevas columnas. La capacidad, el presupuesto, los costos agregados y los parámetros del modelo prescriptivo se derivan mediante código o se declaran en config/escenarios.yaml.
+Las cinco tablas fuente se mantienen sin nuevas columnas. La capacidad, el presupuesto, los costos agregados y los parámetros del modelo prescriptivo se derivan mediante código o se declaran en `config/escenarios.yaml`.
 
-F0-07 consume el pronóstico de enero de 2026 generado por la Parte 3 y el stock final de diciembre de 2025. La optimización utiliza la misma granularidad nodo-categoría y no realiza una desagregación a producto.
+La Parte 4 consume el pronóstico de enero de 2026 generado por la Parte 3 y el stock final de diciembre de 2025. La optimización utiliza la misma granularidad nodo-categoría y no realiza una desagregación a producto.
 
-La Parte 4 producirá archivos derivados en resultados/. Power BI deberá relacionarlos con tiendas mediante id_tienda y, cuando corresponda, con una dimensión de categoría y una tabla calendario.
+La Parte 4 produce archivos derivados en `resultados/`. Power BI los relaciona con tiendas mediante `id_tienda` y, cuando corresponde, con una dimensión de categoría y una tabla calendario.
 
-Cualquier modificación posterior deberá revisar su impacto en la generación, la predicción, la optimización y el modelo de Power BI.
+Cualquier modificación posterior debe revisar su impacto en la generación, la predicción, la optimización y el modelo de Power BI.
+
+---
 
 ---
 
@@ -470,7 +465,7 @@ El costo unitario base se calculará mediante:
 
 ```text
 costo_unitario = precio_lista * (1 - margen_bruto_base_categoria)
-````
+```
 
 `precio_unitario` representará el precio vigente antes de aplicar el descuento de la línea. El descuento promocional se representará únicamente mediante `descuento_pct`, evitando aplicar dos veces la misma reducción de precio.
 
@@ -803,12 +798,12 @@ Los patrones se incorporan como señales reproducibles dentro del proceso de gen
 - los faltantes se introducen solo en campos elegibles de `clientes` y `productos`;
 - los outliers se introducen solo en `ventas.cantidad`, tras lo cual se recalcula `monto_total` y se genera inventario desde las ventas finales.
 
-Las validaciones internas del generador comprueban integridad básica y presencia de patrones principales. Estas validaciones son pruebas de humo para evitar errores evidentes antes del PR; la validación integral del dataset oficial se desarrollará como tarea posterior.
+Las validaciones internas del generador comprueban integridad básica y presencia de patrones principales. Estas validaciones funcionan como pruebas de humo para evitar errores evidentes antes del PR. La validación integral del dataset oficial se ejecuta mediante `datos/validar_datos.py` y genera `resultados/reporte_validacion_datos.txt`.
 
 La advertencia local de Faker sobre la ausencia del locale `es_PE` en algunas instalaciones no modifica el contrato del proyecto. El generador puede usar `es_ES` como respaldo local para no bloquear la ejecución, manteniendo la semilla y el resto de parámetros definidos por configuración.
 
 
-## 13. Hipotesis estadisticas y variables requeridas
+## 13. Hipótesis estadísticas y variables requeridas
 
 ### 13.1 Objetivo y alcance
 
@@ -854,11 +849,11 @@ Para las cuatro hipotesis principales se reportaran:
 
 Debido al volumen aproximado de 100 000 tickets y 250 000 lineas de venta, un valor p pequeno no sera considerado suficiente para afirmar que una diferencia es relevante. Toda conclusion debera considerar tambien la magnitud del efecto y su importancia practica.
 
-### 13.3 Preparacion de los niveles de analisis
+### 13.3 Preparación de los niveles de análisis
 
 El notebook estadistico construira cuatro vistas derivadas sin modificar los CSV originales.
 
-#### Vista a nivel de linea
+#### Vista a nivel de línea
 
 Cada observacion corresponde a una fila de `ventas.csv`.
 
@@ -940,7 +935,7 @@ margen_operativo_ciudad_mes / ventas_netas_ciudad_mes
 
 Esta vista permitira comparar las ciudades sin asignar artificialmente los costos de los nodos nacionales `WEB` y `APP` a una ciudad concreta.
 
-### 13.4 Plan de estadistica descriptiva
+### 13.4 Plan de estadística descriptiva
 
 La Parte 1 calculara, como minimo, las siguientes medidas.
 
@@ -968,13 +963,13 @@ Las visualizaciones minimas seran:
 - intervalos de confianza de las metricas principales por grupo;
 - matriz descriptiva de correlaciones numericas.
 
-### 13.5 Hipotesis H1 - Ticket fisico frente a digital
+### 13.5 Hipótesis H1 - Ticket físico frente a digital
 
 #### Pregunta
 
 ¿El valor promedio de los tickets difiere entre las compras realizadas en tiendas fisicas y las compras realizadas mediante canales digitales?
 
-#### Unidad de analisis
+#### Unidad de análisis
 
 Un ticket identificado por `id_venta`.
 
@@ -989,7 +984,7 @@ No se utilizaran lineas individuales como observaciones independientes.
 | Grupo 1 | `Fisico` |
 | Grupo 2 | `Digital` |
 
-#### Formulacion
+#### Formulación
 
 ```text
 H0: media_ticket_fisico = media_ticket_digital
@@ -1011,7 +1006,7 @@ Prueba U de Mann-Whitney si:
 - los valores extremos dominan las medias;
 - los diagnosticos desaconsejan una comparacion parametrica.
 
-#### Supuestos y diagnosticos
+#### Supuestos y diagnósticos
 
 Se revisara:
 
@@ -1024,7 +1019,7 @@ Se revisara:
 
 La normalidad no se decidira unicamente mediante una prueba de Shapiro-Wilk, porque con muestras grandes puede rechazar desviaciones pequenas sin importancia practica.
 
-#### Tamano del efecto
+#### Tamaño del efecto
 
 Se reportara Hedges `g`.
 
@@ -1038,7 +1033,7 @@ Se calcularan:
 
 Cuando la distribucion sea muy asimetrica, se utilizara ademas un intervalo bootstrap reproducible.
 
-#### Analisis de sensibilidad
+#### Análisis de sensibilidad
 
 Como comprobacion adicional, podra repetirse la comparacion utilizando el ticket promedio por cliente y grupo de canal, reduciendo la influencia de clientes con un numero muy alto de compras.
 
@@ -1046,7 +1041,7 @@ Como comprobacion adicional, podra repetirse la comparacion utilizando el ticket
 
 La prueba determinara si existe evidencia de una diferencia, pero no se fijara anticipadamente cual canal debe presentar el mayor ticket.
 
-### 13.6 Hipotesis H2 - Margen operativo entre ciudades
+### 13.6 Hipótesis H2 - Margen operativo entre ciudades
 
 #### Pregunta
 
@@ -1060,7 +1055,7 @@ La prueba determinara si existe evidencia de una diferencia, pero no se fijara a
 
 Este periodo corresponde al inicio y desarrollo del deterioro controlado de las tiendas fisicas de Trujillo.
 
-#### Unidad de analisis
+#### Unidad de análisis
 
 Una combinacion ciudad-mes.
 
@@ -1072,7 +1067,7 @@ margen_operativo_pct_ciudad_mes
 
 La comparacion tendra cinco ciudades observadas durante nueve meses.
 
-#### Formulacion
+#### Formulación
 
 ```text
 H0:
@@ -1106,7 +1101,7 @@ Se revisara:
 - observaciones influyentes;
 - coherencia temporal de las metricas.
 
-#### Alternativa no parametrica
+#### Alternativa no paramétrica
 
 Si los supuestos del modelo no son razonables, se utilizara la prueba de Friedman:
 
@@ -1123,7 +1118,7 @@ El contraste de mayor interes sera:
 Trujillo frente a las demas ciudades
 ```
 
-#### Tamano del efecto
+#### Tamaño del efecto
 
 Se reportara:
 
@@ -1139,13 +1134,13 @@ Se calculara el IC 95 % del margen operativo promedio de cada ciudad y de las di
 
 El generador si debera producir la caida de margen operativo de Trujillo definida en `config/escenarios.yaml`, pero no se fijara previamente el valor exacto del estadistico ni del valor p.
 
-### 13.7 Hipotesis H3 - Categoria principal del ticket y metodo de pago
+### 13.7 Hipótesis H3 - Categoría principal del ticket y método de pago
 
 #### Pregunta
 
 ¿Existe asociacion entre la categoria principal de una compra y el metodo de pago utilizado?
 
-#### Unidad de analisis
+#### Unidad de análisis
 
 Un ticket identificado por `id_venta`.
 
@@ -1165,7 +1160,7 @@ Si dos categorias tienen exactamente el mismo monto agregado, se seleccionara de
 | Variable categorica 1 | `categoria_ticket` |
 | Variable categorica 2 | `metodo_pago` |
 
-#### Formulacion
+#### Formulación
 
 ```text
 H0:
@@ -1194,17 +1189,17 @@ Si las condiciones no se cumplen, se evaluara:
 - utilizar una estimacion Monte Carlo del valor p;
 - analizar tablas estratificadas por canal.
 
-#### Tamano del efecto
+#### Tamaño del efecto
 
 Se reportara `V` de Cramer.
 
-#### Analisis posterior
+#### Análisis posterior
 
 Se examinaran residuos estandarizados ajustados para identificar que combinaciones contribuyen mas a la asociacion global.
 
 Los analisis por celda utilizaran correccion por comparaciones multiples.
 
-#### Analisis de sensibilidad
+#### Análisis de sensibilidad
 
 Debido a que los metodos de pago tienen distribuciones diferentes por canal, se presentaran tambien tablas descriptivas separadas para:
 
@@ -1218,13 +1213,13 @@ Esto permitira detectar si una asociacion global esta explicada principalmente p
 
 El dataset debera garantizar representacion suficiente de categorias y metodos de pago, pero no se forzara una asociacion significativa entre ambas variables.
 
-### 13.8 Hipotesis H4 - Descuento y cantidad vendida
+### 13.8 Hipótesis H4 - Descuento y cantidad vendida
 
 #### Pregunta
 
 ¿Existe una relacion monotonica entre el porcentaje de descuento y la cantidad vendida por linea?
 
-#### Unidad de analisis
+#### Unidad de análisis
 
 Una linea de `ventas.csv`.
 
@@ -1235,7 +1230,7 @@ Una linea de `ventas.csv`.
 | Variable 1 | `descuento_pct` |
 | Variable 2 | `cantidad` |
 
-#### Formulacion
+#### Formulación
 
 ```text
 H0:
@@ -1267,7 +1262,7 @@ Se revisara:
 - resultados generales y por canal;
 - resultados generales y por categoria.
 
-#### Tamano del efecto
+#### Tamaño del efecto
 
 El propio coeficiente `rho` de Spearman sera la medida del efecto.
 
@@ -1275,7 +1270,7 @@ El propio coeficiente `rho` de Spearman sera la medida del efecto.
 
 Se calculara un IC 95 % mediante bootstrap con semilla 2026.
 
-#### Analisis de sensibilidad
+#### Análisis de sensibilidad
 
 La correlacion se calculara:
 
@@ -1353,7 +1348,7 @@ Antes de ejecutar las pruebas se verificara que:
 
 Si alguno de estos requisitos no se cumple, se revisara el proceso generador por insuficiencia metodologica. No se modificaran los datos unicamente para obtener valores p favorables.
 
-### 13.12 Matriz resumida de hipotesis
+### 13.12 Matriz resumida de hipótesis
 
 | ID | Pregunta | Unidad | Prueba principal | Alternativa | Tamano del efecto |
 |---|---|---|---|---|---|
@@ -1373,7 +1368,7 @@ Si alguno de estos requisitos no se cumple, se revisara el proceso generador por
 
 La revision de F0-05 concluye que el contrato actual contiene todos los campos fisicos necesarios. No se requiere anadir nuevas columnas a los CSV.
 
-### 13.14 Reproducibilidad del analisis
+### 13.14 Reproducibilidad del análisis
 
 El notebook de la Parte 1 debera:
 
@@ -1410,7 +1405,16 @@ La Parte 1 debera implementar esta especificacion sobre el dataset oficial, sin 
 ### 14.1 Objetivo y alcance
 
 Esta sección define la planificación de la Parte 3. Su propósito es establecer de forma reproducible:
- - los dos problemas predictivos; - sus variables objetivo y unidades de análisis; - las ventanas y particiones temporales; - las variables permitidas y prohibidas; - los baselines y modelos candidatos; - el preprocesamiento y la optimización de hiperparámetros; - las métricas de evaluación; - la interpretación de los modelos; - las salidas que consumirán F0-07 y Power BI.
+
+- los dos problemas predictivos;
+- sus variables objetivo y unidades de análisis;
+- las ventanas y particiones temporales;
+- las variables permitidas y prohibidas;
+- los baselines y modelos candidatos;
+- el preprocesamiento y la optimización de hiperparámetros;
+- las métricas de evaluación;
+- la interpretación de los modelos;
+- las salidas que consumirán la Parte 4 y Power BI.
 La Parte 3 implementará un problema de regresión para demanda y un problema de clasificación para churn. La
 especificación se formula antes de observar los resultados definitivos y no predetermina qué modelo será el
 ganador.
@@ -1500,7 +1504,7 @@ periodo que se intenta predecir.
 No se utilizarán el descuento real, el precio real, el número de tickets real ni la cantidad real del mes
 objetivo.
 
-### 14.15 Relación con F0-07
+### 14.5 Relación con la Parte 4
 
 La salida principal hacia la Parte 4 será el pronóstico de enero de 2026 por nodo y categoría.
 
@@ -1692,7 +1696,7 @@ Las interpretaciones deberán traducirse a lenguaje de negocio y no presentarse 
 #### `resultados/predicciones_demanda.csv`
 
 ```text
-periodo_pronostico
+periodo_objetivo
 id_tienda
 categoria
 demanda_predicha
@@ -1709,9 +1713,9 @@ y 90 % de los residuos de validación. El límite inferior se truncará en cero.
 ```text
 fecha_observacion
 id_cliente
-probabilidad_churn
-prediccion_churn
-nivel_riesgo
+probabilidad_churn_90d
+prediccion_churn_90d
+nivel_riesgo_churn
 modelo
 ```
 
@@ -1734,7 +1738,8 @@ modelo
 conjunto
 metrica
 valor
-``
+```
+
 #### `resultados/importancia_variables.csv`
 
 ```text
@@ -1745,15 +1750,13 @@ importancia
 metodo
 ```
 
-### 14.15 Relación con F0-07
+### 14.15 Relación con la Parte 4
 
 La salida principal hacia la Parte 4 será el pronóstico de enero de 2026 por nodo y categoría.
 
-F0-07 deberá:
- - formular la optimización en esa misma granularidad; o - documentar un método reproducible para desagregar la demanda a producto-nodo mediante participaciones
-históricas.
+La Parte 4 debe formular la optimización en esa misma granularidad. Si en una versión futura se requiere desagregar a producto-nodo, el método deberá ser reproducible y documentado mediante participaciones históricas.
 
-F0-06 no asignará silenciosamente la demanda de una categoría a productos individuales.
+La Parte 3 no asigna silenciosamente la demanda de una categoría a productos individuales.
 
 Los límites bajo y alto permitirán evaluar escenarios de demanda conservador, central y alto.
 
@@ -1762,10 +1765,10 @@ Los límites bajo y alto permitirán evaluar escenarios de demanda conservador, 
 El notebook de la Parte 3 deberá:
  - ejecutarse de principio a fin sin intervención manual; - cargar únicamente los CSV oficiales y la configuración aprobada; - construir targets y features mediante código; - utilizar semilla 2026; - aplicar particiones temporales declaradas en el YAML; - conservar el conjunto de prueba aislado; - exportar los cuatro archivos de resultados; - mostrar métricas, gráficos e interpretación; - registrar prompts de IA relevantes en la bitácora; - documentar las versiones de librerías y el entorno; - evitar editar manualmente predicciones o métricas.
 
-### 14.17 Resultado esperado de F0-06
+### 14.17 Resultado esperado de la Parte 3
 
-F0-06 deja definidos:
- - un problema de regresión de demanda; - un problema de clasificación de churn; - sus targets y granularidades; - horizontes, ventanas y cortes temporales; - variables permitidas y prohibidas; - reglas de elegibilidad; - baselines y modelos candidatos; - preprocesamiento mediante pipelines; - validación cruzada temporal; - métricas y reglas de selección; - prevención de fuga de información; - interpretación de variables; - salidas hacia F0-07 y Power BI; - criterios de aptitud predictiva del dataset.
+Esta sección deja definidos:
+ - un problema de regresión de demanda; - un problema de clasificación de churn; - sus targets y granularidades; - horizontes, ventanas y cortes temporales; - variables permitidas y prohibidas; - reglas de elegibilidad; - baselines y modelos candidatos; - preprocesamiento mediante pipelines; - validación cruzada temporal; - métricas y reglas de selección; - prevención de fuga de información; - interpretación de variables; - salidas hacia la Parte 4 y Power BI; - criterios de aptitud predictiva del dataset.
 
 La Parte 3 deberá implementar esta especificación sin redefinir unilateralmente los problemas o consultar los
 conjuntos de prueba durante el desarrollo.
@@ -2102,9 +2105,9 @@ El notebook de la Parte 4 deberá:
 - registrar prompts relevantes en la bitácora;
 - evitar cualquier edición manual de los resultados.
 
-### 15.19 Resultado esperado de F0-07
+### 15.19 Resultado esperado de la Parte 4
 
-F0-07 deja definidos:
+Esta sección deja definidos:
 
 - problema y periodo de optimización;
 - conjuntos, granularidad y variables;
@@ -2117,15 +2120,15 @@ F0-07 deja definidos:
 - integración con Power BI;
 - reglas de validación, factibilidad y reproducibilidad.
 
-La Parte 4 deberá implementar esta especificación sin redefinir unilateralmente el modelo.
+La Parte 4 implementa esta especificación sin redefinir unilateralmente el modelo.
 
 ## 16. Consolidación y trazabilidad integral del proyecto
 
 ### 16.1 Objetivo de consolidación
 
-Esta sección consolida las decisiones definidas durante la Fase 0 y deja trazabilidad entre el caso de negocio, los datos sintéticos, los parámetros de generación, las partes analíticas, los archivos de salida y los entregables finales.
+Esta sección consolida las decisiones funcionales y técnicas del proyecto y deja trazabilidad entre el caso de negocio, los datos sintéticos, los parámetros de generación, las partes analíticas, los archivos de salida y los entregables finales.
 
-F0-08 no redefine las decisiones técnicas aprobadas en F0-05, F0-06 o F0-07. Su propósito es integrar lo ya definido, detectar contradicciones y dejar la especificación lista para la revisión de F0-09.
+Esta consolidación no redefine las decisiones técnicas aprobadas previamente. Su propósito es integrar lo definido, detectar contradicciones y dejar la especificación lista para la revisión final del proyecto.
 
 ### 16.2 Fuentes canónicas del proyecto
 
@@ -2141,7 +2144,7 @@ F0-08 no redefine las decisiones técnicas aprobadas en F0-05, F0-06 o F0-07. Su
 
 Ante cualquier discrepancia, deberá identificarse cuál fuente es canónica para el tema afectado y sincronizar los documentos antes de implementar o ejecutar el generador.
 
-### 16.3 Estado consolidado de decisiones F0-02 a F0-07
+### 16.3 Estado consolidado de decisiones del proyecto
 
 | Tarea | Decisión consolidada |
 |---|---|
@@ -2226,7 +2229,7 @@ README.md
 
 ### 16.8 Integración con Power BI
 
-Power BI integrará los CSV fuente y los resultados analíticos derivados. El tablero tendrá como mínimo cuatro páginas:
+Power BI integra los CSV fuente y los resultados analíticos derivados. El tablero final se organiza en cuatro páginas:
 
 1. Ejecutivo.
 2. Ventas y margen.
@@ -2237,15 +2240,15 @@ La página de predicción y reposición integrará los resultados de la Parte 3 
 
 ### 16.9 Bitácora de prompts y uso de IA
 
-El proyecto deberá mantener una bitácora en:
+El proyecto mantiene una bitácora en:
 
 ```text
 docs/bitacora_prompts.md
 ```
 
-La bitácora registrará los prompts relevantes utilizados para generación de datos, diseño estadístico, modelos predictivos, optimización, Power BI y revisión crítica.
+La bitácora registra los prompts relevantes utilizados para generación de datos, diseño estadístico, modelos predictivos, optimización, Power BI y revisión crítica.
 
-Cada registro deberá indicar:
+Cada registro indica:
 
 - fecha;
 - responsable;
@@ -2258,15 +2261,15 @@ Cada registro deberá indicar:
 - cambios aceptados;
 - cambios descartados.
 
-La bitácora no reemplaza el criterio del equipo. Todas las respuestas de IA deberán ser revisadas, corregidas y adaptadas antes de incorporarse al proyecto.
+La bitácora no reemplaza el criterio del equipo. Todas las respuestas de IA se revisan, corrigen y adaptan antes de incorporarse al proyecto.
 
 ### 16.10 Evidencia de participación y trazabilidad de PRs
 
-Cada tarea deberá vincularse con su Issue y Pull Request correspondiente. Cuando sea posible, el PR deberá incluir `Closes #NUMERO_ISSUE`.
+Cada tarea se vincula con su Issue y Pull Request correspondiente. Cuando corresponde, el PR incluye `Closes #NUMERO_ISSUE`.
 
 | Rol | Evidencia esperada |
 |---|---|
-| Líder / Data PM | Coordinación, revisión, integración, F0-08, F0-09 |
+| Líder / Data PM | Coordinación, revisión, integración, documentación y cierre final |
 | Ingeniería de datos | Scripts de generación, validación y CSV sintéticos |
 | Estadística | Notebook de Parte 1, hipótesis y resultados |
 | Analítica descriptiva | Tendencias, segmentación, diagnóstico y outputs |
@@ -2275,37 +2278,34 @@ Cada tarea deberá vincularse con su Issue y Pull Request correspondiente. Cuand
 
 La evidencia se sustentará en Issues, commits, PRs, revisiones, bitácora y defensa oral.
 
-### 16.11 Pendientes controlados después de F0-08
+### 16.11 Estado final de implementación
 
-Después de F0-08 no deben quedar abiertas decisiones estructurales sobre esquema, volúmenes, hipótesis, demanda, churn, optimización o salidas analíticas principales.
+En la entrega final no quedan abiertas decisiones estructurales sobre esquema, volúmenes, hipótesis, demanda, churn, optimización o salidas analíticas principales.
 
-Permanecen pendientes de implementación o detalle final:
+Los componentes implementados se encuentran trazados de la siguiente forma:
 
-- aprobación formal de F0-09;
-- implementación del generador;
-- ejecución de notebooks;
-- reglas finales de segmentación RFM o clustering;
-- diseño detallado del modelo de Power BI;
-- medidas DAX;
-- páginas finales, interactividad y storytelling;
-- presentación final;
-- autoevaluación;
-- consolidación final de la bitácora.
+- generación de datos: `datos/generar_datos.py`;
+- validación integral: `datos/validar_datos.py` y `resultados/reporte_validacion_datos.txt`;
+- dataset oficial v1: `datos/tiendas.csv`, `datos/productos.csv`, `datos/clientes.csv`, `datos/ventas.csv` e `datos/inventario.csv`;
+- análisis estadístico: `notebooks/01_estadistica.ipynb`;
+- análisis descriptivo y diagnóstico: `notebooks/02_descriptivo_diagnostico.ipynb`;
+- modelos predictivos: `notebooks/03_predictivo.ipynb`;
+- modelo prescriptivo: `notebooks/04_prescriptivo.ipynb`;
+- tablero integrado: `powerbi/`;
+- bitácora de prompts: `docs/bitacora_prompts.md`;
+- presentación final: `presentacion/`.
 
-### 16.12 Criterios de aprobación para F0-09
+### 16.12 Criterios de cierre de la especificación
 
-F0-09 deberá revisar que:
+La especificación se considera consistente para la entrega final porque:
 
-1. no existan contradicciones entre documento maestro, diccionario y YAML;
-2. todos los escenarios aparezcan en el documento y la configuración;
-3. cada patrón generado tenga una finalidad analítica;
-4. cada parte tenga inputs, procesos y outputs identificados;
-5. las decisiones pendientes sean visibles y controladas;
-6. la especificación pueda comprenderse sin consultar conversaciones externas;
-7. Power BI tenga identificados los archivos que consumirá;
-8. la bitácora de prompts esté reconocida como entregable obligatorio;
-9. las fuentes canónicas estén claramente definidas;
-10. la especificación esté lista para pasar a generación de datos.
-
-
-
+1. no existen contradicciones deliberadas entre documento maestro, diccionario y YAML;
+2. los escenarios principales aparecen documentados y vinculados a la configuración;
+3. cada patrón generado tiene una finalidad analítica;
+4. cada parte tiene inputs, procesos y outputs identificados;
+5. las decisiones de implementación quedan trazadas hacia archivos concretos;
+6. la especificación puede comprenderse sin consultar conversaciones externas;
+7. Power BI tiene identificados los archivos que consume;
+8. la bitácora de prompts queda reconocida como entregable obligatorio;
+9. las fuentes canónicas están claramente definidas;
+10. el documento permite revisar la solución completa de inicio a fin.
